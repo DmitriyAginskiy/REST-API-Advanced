@@ -23,7 +23,7 @@ public interface GiftCertificateDao {
      * @return long value with created object id.
      * @throws DaoException if object is not inserted
      */
-    long insert(GiftCertificate certificate) throws DaoException;
+    Optional<GiftCertificate> insert(GiftCertificate certificate) throws DaoException;
 
     /**
      * Deletes gift certificate from the table.

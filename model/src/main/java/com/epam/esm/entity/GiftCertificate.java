@@ -2,6 +2,11 @@ package com.epam.esm.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,8 +16,14 @@ import java.util.List;
  *
  * @author Dzmitry Ahinski
  */
+@Entity(name = "gift_certificates")
+@Table(name = "gift_certificates", schema = "gifts")
 public class GiftCertificate {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     private String name;
     private String description;
     private BigDecimal price;
@@ -21,6 +32,7 @@ public class GiftCertificate {
     private LocalDateTime createDate;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastUpdateDate;
+
     private List<Tag> tags;
 
     public GiftCertificate() {

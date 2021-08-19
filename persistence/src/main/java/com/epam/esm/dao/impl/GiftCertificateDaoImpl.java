@@ -16,6 +16,9 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -32,34 +35,30 @@ import java.util.Optional;
 @Repository
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
-    private final JdbcTemplate jdbcTemplate;
+    @PersistenceContext
+    private EntityManager entityManager;
     private final GiftCertificateMapper mapper;
 
     @Autowired
-    public GiftCertificateDaoImpl(DataSource dataSource, GiftCertificateMapper mapper) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public GiftCertificateDaoImpl(GiftCertificateMapper mapper) {
         this.mapper = mapper;
     }
 
     @Override
-    public long insert(GiftCertificate certificate) throws DaoException {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        boolean isInserted = jdbcTemplate.update(con -> {
-            PreparedStatement statement = con.prepareStatement(GiftCertificateQuery.INSERT_GIFT_CERTIFICATE_QUERY,
-                    Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, certificate.getName());
-            statement.setString(2, certificate.getDescription());
-            statement.setBigDecimal(3, certificate.getPrice());
-            statement.setInt(4, certificate.getDuration());
-            statement.setTimestamp(5, Timestamp.valueOf(certificate.getCreateDate()));
-            statement.setTimestamp(6, Timestamp.valueOf(certificate.getLastUpdateDate()));
-            return statement;
-        }, keyHolder) == 1;
-        if (isInserted && keyHolder.getKey() != null) {
+    public Optional<GiftCertificate> insert(GiftCertificate certificate) throws DaoException {
+        Query query = entityManager.createNativeQuery(GiftCertificateQuery.INSERT_GIFT_CERTIFICATE_QUERY);
+        query.setParameter(1, certificate.getName());
+        query.setParameter(2, certificate.getDescription());
+        query.setParameter(3, certificate.getPrice());
+        query.setParameter(4, certificate.getDuration());
+        query.setParameter(5, Timestamp.valueOf(certificate.getCreateDate()));
+        query.setParameter(6, Timestamp.valueOf(certificate.getLastUpdateDate()));
+        int result = query.executeUpdate();
+        if (result > 0) {
             if (certificate.getTags() != null && !certificate.getTags().isEmpty()) {
-                updateCertificateTags(keyHolder.getKey().longValue(), certificate.getTags());
+                updateCertificateTags(certificate.getId(), certificate.getTags());
             }
-            return keyHolder.getKey().longValue();
+            return Optional.of(certificate);
         } else {
             throw new DaoException("Element with id " + certificate.getId() + " was not inserted!");
         }

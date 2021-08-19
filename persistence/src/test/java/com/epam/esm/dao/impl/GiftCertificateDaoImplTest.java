@@ -1,6 +1,5 @@
 package com.epam.esm.dao.impl;
 
-import com.epam.esm.configuration.DatabaseConfiguration;
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.constant.GiftCertificateColumnName;
 import com.epam.esm.dao.creator.criteria.Criteria;
@@ -18,8 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GiftCertificateDaoImplTest {
 
-    private static final GiftCertificateDao dao = new GiftCertificateDaoImpl(new DatabaseConfiguration().embeddedDataSource(),
-            new GiftCertificateMapper());
+    private static final GiftCertificateDao dao = new GiftCertificateDaoImpl(new GiftCertificateMapper());
 
     @Test
     void findById() {
