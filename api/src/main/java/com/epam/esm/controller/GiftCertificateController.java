@@ -61,7 +61,7 @@ public class GiftCertificateController {
      * @param sortByName the sort param for name.
      * @return list with found items.
      */
-    @GetMapping(produces = "application/json; charset=utf-8")
+    @GetMapping(produces = "application/json; charset=utf-8", consumes = "application/json; charset=utf-8")
     public List<GiftCertificate> findAllGiftCertificates(@RequestParam(required = false) String certificateName,
                                                                @RequestParam(required = false) String tagName,
                                                                @RequestParam(required = false) String description,

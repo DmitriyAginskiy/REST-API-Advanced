@@ -1,11 +1,16 @@
 package com.epam.esm.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.TypeDef;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -17,13 +22,14 @@ import java.util.List;
  * @author Dzmitry Ahinski
  */
 @Entity(name = "gift_certificates")
-@Table(name = "gift_certificates", schema = "gifts")
+@Table(name = "gift_certificates")
 public class GiftCertificate {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "certificate_id")
     private long id;
-
+    @Column(name = "certificate_name")
     private String name;
     private String description;
     private BigDecimal price;
@@ -33,6 +39,12 @@ public class GiftCertificate {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastUpdateDate;
 
+    @ManyToMany
+    @JoinTable(
+            name = "gift_certificates_has_tags",
+            joinColumns = @JoinColumn(name = "gift_certificates_id_fk"),
+            inverseJoinColumns = @JoinColumn(name = "tags_id_fk")
+    )
     private List<Tag> tags;
 
     public GiftCertificate() {
@@ -114,6 +126,8 @@ public class GiftCertificate {
     public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

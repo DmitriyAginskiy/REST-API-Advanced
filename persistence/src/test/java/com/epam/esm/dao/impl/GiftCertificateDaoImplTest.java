@@ -46,7 +46,7 @@ class GiftCertificateDaoImplTest {
                 LocalDateTime.of(2021, 3, 11, 15, 32, 12), new ArrayList<>());
         boolean actual = false;
         try {
-            actual = dao.insert(certificate) > 0;
+            actual = dao.insert(certificate).isEmpty();
         } catch (DaoException e) {
             e.printStackTrace();
         }

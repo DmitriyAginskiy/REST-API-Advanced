@@ -63,7 +63,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                 certificate.setTags(tagService.findAllExisting(certificate.getTags()));
             }
             try {
-                long id = certificateDao.insert(certificate);
+                int id = 1;
+                certificateDao.insert(certificate);
                 Optional<GiftCertificate> certificateOptional = certificateDao.findById(id);
                 return certificateOptional.orElseThrow(() -> new ElementSearchException(
                         ExceptionMessageManager.getMessage(MessageKey.ELEMENT_SEARCH_KEY, Locale.getDefault(), id)));
