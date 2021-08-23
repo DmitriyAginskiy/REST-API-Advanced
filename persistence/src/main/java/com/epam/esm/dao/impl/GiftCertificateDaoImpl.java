@@ -46,23 +46,8 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
     @Override
-    public Optional<GiftCertificate> insert(GiftCertificate certificate) throws DaoException {
-        Query query = entityManager.createNativeQuery(GiftCertificateQuery.INSERT_GIFT_CERTIFICATE_QUERY);
-        query.setParameter(1, certificate.getName());
-        query.setParameter(2, certificate.getDescription());
-        query.setParameter(3, certificate.getPrice());
-        query.setParameter(4, certificate.getDuration());
-        query.setParameter(5, Timestamp.valueOf(certificate.getCreateDate()));
-        query.setParameter(6, Timestamp.valueOf(certificate.getLastUpdateDate()));
-        int result = query.executeUpdate();
-        if (result > 0) {
-            if (certificate.getTags() != null && !certificate.getTags().isEmpty()) {
-                updateCertificateTags(certificate.getId(), certificate.getTags());
-            }
-            return Optional.of(certificate);
-        } else {
-            throw new DaoException("Element with id " + certificate.getId() + " was not inserted!");
-        }
+    public void insert(GiftCertificate certificate) throws DaoException {
+        entityManager.persist(certificate);
     }
 
     @Override
@@ -82,7 +67,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
     @Override
     public Optional<GiftCertificate> findById(long id) {
-        return Optional.of(new GiftCertificate());
+        return Optional.of(entityManager.find(GiftCertificate.class, id));
     }
 
     @Override
@@ -98,6 +83,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
     @Override
     public boolean updateCertificateTags(long id, List<Tag> tags) {
-        return false;
+        tags.forEach(tag -> entityManager.persist(tag));
+        return true;
     }
 }

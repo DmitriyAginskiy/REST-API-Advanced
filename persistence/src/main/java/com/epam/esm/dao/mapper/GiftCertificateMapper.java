@@ -44,7 +44,7 @@ public class GiftCertificateMapper implements ResultSetExtractor<List<GiftCertif
                         tags.add(new Tag(tagId, name));
                     }
                 } while(rs.next() && rs.getLong(GiftCertificateColumnName.ID) == certificateId);
-                certificates.add(new GiftCertificate(certificateId, certificateName, description, price, duration, createDate, lastUpdateDate, tags));
+                certificates.add(new GiftCertificate(certificateName, description, price, duration, createDate, lastUpdateDate, tags));
             }
         }
         return certificates;

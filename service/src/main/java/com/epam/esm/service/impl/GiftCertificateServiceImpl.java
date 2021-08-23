@@ -57,17 +57,14 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                 List<Tag> existingTags = tagService.findAllExisting(certificate.getTags());
                 List<Tag> newTags = tagsWithoutDuplicates.stream().filter(t -> !existingTags
                         .contains(t)).collect(Collectors.toList());
-                if(newTags.size() > 0) {
-                    newTags.forEach(tagService::insert);
-                }
-                certificate.setTags(tagService.findAllExisting(certificate.getTags()));
+                newTags.addAll(existingTags);
+                certificate.setTags(newTags);
             }
             try {
-                int id = 1;
                 certificateDao.insert(certificate);
-                Optional<GiftCertificate> certificateOptional = certificateDao.findById(id);
+                Optional<GiftCertificate> certificateOptional = certificateDao.findById(certificate.getId());
                 return certificateOptional.orElseThrow(() -> new ElementSearchException(
-                        ExceptionMessageManager.getMessage(MessageKey.ELEMENT_SEARCH_KEY, Locale.getDefault(), id)));
+                        ExceptionMessageManager.getMessage(MessageKey.ELEMENT_SEARCH_KEY, Locale.getDefault(), certificate.getId())));
             } catch (DaoException e) {
                 throw new ElementSearchException(ExceptionMessageManager.getMessage(MessageKey.ELEMENT_SEARCH_KEY, Locale.getDefault(), certificate.getId()));
             }

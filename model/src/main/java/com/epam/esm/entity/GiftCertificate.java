@@ -3,6 +3,7 @@ package com.epam.esm.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.TypeDef;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,7 +27,7 @@ import java.util.List;
 public class GiftCertificate {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "certificate_id")
     private long id;
     @Column(name = "certificate_name")
@@ -38,8 +39,7 @@ public class GiftCertificate {
     private LocalDateTime createDate;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastUpdateDate;
-
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "gift_certificates_has_tags",
             joinColumns = @JoinColumn(name = "gift_certificates_id_fk"),
@@ -51,9 +51,8 @@ public class GiftCertificate {
 
     }
 
-    public GiftCertificate(long id, String name, String description, BigDecimal price, int duration, LocalDateTime createDate,
+    public GiftCertificate(String name, String description, BigDecimal price, int duration, LocalDateTime createDate,
                            LocalDateTime lastUpdateDate, List<Tag> tags) {
-        this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
@@ -65,10 +64,6 @@ public class GiftCertificate {
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {

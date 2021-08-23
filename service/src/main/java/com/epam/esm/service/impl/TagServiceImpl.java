@@ -33,7 +33,6 @@ public class TagServiceImpl implements TagService {
     @Transactional
     @Override
     public Tag insert(Tag tag) {
-        System.out.println("insert tag: " + TransactionSynchronizationManager.isActualTransactionActive());
         Optional<Tag> tagOptional = tagDao.findByName(tag.getName());
         if(TagValidator.isNameValid(tag.getName()) && tagOptional.isEmpty()) {
             try {
@@ -54,7 +53,6 @@ public class TagServiceImpl implements TagService {
         if(tagOptional.isPresent()) {
             tagDao.disconnectTagFromCertificates(id);
             tagDao.delete(id);
-            System.out.println("delete tag: " + TransactionSynchronizationManager.isActualTransactionActive());
         } else {
             throw new ElementSearchException("There is not element with id " + id);
         }

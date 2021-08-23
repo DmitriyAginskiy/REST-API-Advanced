@@ -1,5 +1,8 @@
 package com.epam.esm.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,12 +22,13 @@ import java.util.List;
 public class Tag {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "tag_id")
     private long id;
-    @Column(name = "tag_name")
+    @Column(name = "tag_name", unique = true)
     private String name;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "tags")
     private List<GiftCertificate> giftCertificates;
 
@@ -42,16 +46,20 @@ public class Tag {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<GiftCertificate> getGiftCertificates() {
+        return giftCertificates;
+    }
+
+    public void setGiftCertificates(List<GiftCertificate> giftCertificates) {
+        this.giftCertificates = giftCertificates;
     }
 
     @Override
