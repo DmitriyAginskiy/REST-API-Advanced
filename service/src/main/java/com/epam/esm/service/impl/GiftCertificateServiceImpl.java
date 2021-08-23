@@ -78,11 +78,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     public void delete(long id) {
         Optional<GiftCertificate> giftCertificateOptional = certificateDao.findById(id);
         if(giftCertificateOptional.isPresent()) {
-            GiftCertificate giftCertificate = giftCertificateOptional.get();
-            if(giftCertificate.getTags() != null && !giftCertificate.getTags().isEmpty()) {
-                certificateDao.removeTagsFromCertificate(id);
-            }
-            certificateDao.delete(id);
+            certificateDao.delete(giftCertificateOptional.get());
         } else {
             throw new ElementSearchException(ExceptionMessageManager.getMessage(MessageKey.ELEMENT_SEARCH_KEY, Locale.getDefault(), id));
         }
@@ -91,7 +87,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Transactional
     @Override
     public GiftCertificate update(long id, GiftCertificate certificate) {
-        System.out.println("update: " + TransactionSynchronizationManager.isActualTransactionActive());
         if(id == certificate.getId()) {
             Optional<GiftCertificate> giftCertificateOptional = certificateDao.findById(id);
             if(giftCertificateOptional.isPresent()) {

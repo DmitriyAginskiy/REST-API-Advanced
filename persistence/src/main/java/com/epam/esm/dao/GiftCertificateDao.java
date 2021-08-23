@@ -31,7 +31,7 @@ public interface GiftCertificateDao {
      * @param id of the object to be deleted.
      *
      */
-    void delete(long id);
+    void delete(GiftCertificate giftCertificate);
 
     /**
      * Removes all tags from the certificate.
