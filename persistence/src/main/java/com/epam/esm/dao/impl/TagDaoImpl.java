@@ -68,9 +68,11 @@ public class TagDaoImpl implements TagDao {
     public List<Tag> findAllExisting(List<Tag> tags) {
         String query = TagQueryCreator.createExistingTagsSelectionQuery(tags.size());
         Query nativeQuery = entityManager.createNativeQuery(query, Tag.class);
-        nativeQuery.setParameter(1, tags.get(0).getName());
-        List<Tag> exTags = nativeQuery.getResultList();
-        return exTags;
+        int counter = 1;
+        for(Tag tag : tags) {
+            nativeQuery.setParameter(counter++, tag.getName());
+        }
+        return nativeQuery.getResultList();
     }
 
     @Override

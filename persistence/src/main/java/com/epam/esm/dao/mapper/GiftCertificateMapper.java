@@ -41,7 +41,7 @@ public class GiftCertificateMapper implements ResultSetExtractor<List<GiftCertif
                     long tagId = rs.getLong(TagColumnName.TAG_ID);
                     String name = rs.getString(TagColumnName.TAG_NAME);
                     if(tagId != 0 && name != null) {
-                        tags.add(new Tag(name));
+                        tags.add(new Tag(tagId, name));
                     }
                 } while(rs.next() && rs.getLong(GiftCertificateColumnName.ID) == certificateId);
             }

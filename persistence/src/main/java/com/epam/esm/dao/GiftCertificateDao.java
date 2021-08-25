@@ -48,7 +48,7 @@ public interface GiftCertificateDao {
      * @param conditionList with fields to be updated.
      * @throws DaoException if resources does not exist
      */
-    void update(long id, List<FieldCondition> conditionList) throws DaoException;
+    void update(GiftCertificate certificate) throws DaoException;
 
     /**
      * Finds the certificate by id.

@@ -59,8 +59,8 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
     @Override
-    public void update(long id, List<FieldCondition> conditionList) throws DaoException {
-
+    public void update(GiftCertificate certificate) throws DaoException {
+        entityManager.merge(certificate);
     }
 
     @Override

@@ -22,10 +22,10 @@ import java.util.List;
 public class Tag {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tag_id")
     private long id;
-    @Column(name = "tag_name", unique = true)
+    @Column(name = "tag_name")
     private String name;
 
     @JsonIgnore
@@ -36,13 +36,17 @@ public class Tag {
 
     }
 
-    public Tag(String name) {
+    public Tag(long id, String name) {
         this.name = name;
     }
 
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -73,7 +77,7 @@ public class Tag {
 
     @Override
     public int hashCode() {
-        return 31 * (name != null ? name.hashCode() : 0);
+        return name != null ? name.hashCode() : 0;
     }
 
     @Override

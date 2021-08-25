@@ -1,12 +1,7 @@
 package com.epam.esm.service;
 
-import com.epam.esm.dao.constant.GiftCertificateColumnName;
-import com.epam.esm.dao.creator.FieldCondition;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.validator.GiftCertificateValidator;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Enum contains methods for certificate fields.
@@ -17,31 +12,36 @@ public enum CertificateConditionStrategy {
 
     NAME {
         @Override
-        public void addCondition(GiftCertificate certificate, List<FieldCondition> conditionList) {
-            if(GiftCertificateValidator.isNameValid(certificate.getName())) {
-                conditionList.add(new FieldCondition(GiftCertificateColumnName.NAME, certificate.getName()));
+        public void updateCondition(GiftCertificate newCertificate, GiftCertificate certificate) {
+            if(!newCertificate.getName().equals(certificate.getName())
+                    && GiftCertificateValidator.isNameValid(certificate.getName())) {
+                newCertificate.setName(certificate.getName());
             }
         }
     },
     DESCRIPTION {
         @Override
-        public void addCondition(GiftCertificate certificate, List<FieldCondition> conditionList) {
-            if(GiftCertificateValidator.isDescriptionValid(certificate.getDescription())) {
-                conditionList.add(new FieldCondition(GiftCertificateColumnName.DESCRIPTION, certificate.getDescription()));
+        public void updateCondition(GiftCertificate newCertificate, GiftCertificate certificate) {
+            if(!newCertificate.getDescription().equals(certificate.getDescription())
+                    && GiftCertificateValidator.isDescriptionValid(certificate.getDescription())) {
+                newCertificate.setDescription(certificate.getDescription());
             }
         }
     },
     PRICE {
-        public void addCondition(GiftCertificate certificate, List<FieldCondition> conditionList) {
-            if(GiftCertificateValidator.isPriceValid(certificate.getPrice())) {
-                conditionList.add(new FieldCondition(GiftCertificateColumnName.PRICE, certificate.getPrice().toString()));
+        @Override
+        public void updateCondition(GiftCertificate newCertificate, GiftCertificate certificate) {
+            if(!newCertificate.getPrice().equals(certificate.getPrice())
+                    && GiftCertificateValidator.isPriceValid(certificate.getPrice())) {
+                newCertificate.setPrice(certificate.getPrice());
             }
         }
     },
     DURATION {
-        public void addCondition(GiftCertificate certificate, List<FieldCondition> conditionList) {
-            if(GiftCertificateValidator.isDurationValid(certificate.getDuration())) {
-                conditionList.add(new FieldCondition(GiftCertificateColumnName.DURATION, Integer.toString(certificate.getDuration())));
+        @Override
+        public void updateCondition(GiftCertificate newCertificate, GiftCertificate certificate) {
+            if(newCertificate.getDuration() != certificate.getDuration() && GiftCertificateValidator.isNameValid(certificate.getName())) {
+                newCertificate.setDuration(certificate.getDuration());
             }
         }
     };
@@ -52,7 +52,7 @@ public enum CertificateConditionStrategy {
      * @param certificate as GiftCertificate object
      * @param conditionList with FieldCondition objects
      */
-    public abstract void addCondition(GiftCertificate certificate, List<FieldCondition> conditionList);
+    public abstract void updateCondition(GiftCertificate newCertificate, GiftCertificate certificate);
 
     /**
      * Creates list with FieldCondition objects.
@@ -60,11 +60,9 @@ public enum CertificateConditionStrategy {
      * @param certificate as GiftCertificate object
      * @return list with FieldCondition objects
      */
-    public static List<FieldCondition> createConditionsList(GiftCertificate certificate) {
-        List<FieldCondition> conditionList = new ArrayList<>();
+    public static void updateCertificate(GiftCertificate newCertificate, GiftCertificate certificate) {
         for(CertificateConditionStrategy conditionStrategy : CertificateConditionStrategy.values()) {
-            conditionStrategy.addCondition(certificate, conditionList);
+            conditionStrategy.updateCondition(newCertificate, certificate);
         }
-        return conditionList;
     }
 }

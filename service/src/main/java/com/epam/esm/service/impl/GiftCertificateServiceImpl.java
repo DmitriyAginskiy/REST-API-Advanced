@@ -82,33 +82,15 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Transactional
     @Override
     public GiftCertificate update(long id, GiftCertificate certificate) {
-        if(id == certificate.getId()) {
-            Optional<GiftCertificate> giftCertificateOptional = certificateDao.findById(id);
-            if(giftCertificateOptional.isPresent()) {
-                List<FieldCondition> conditionList = CertificateConditionStrategy.createConditionsList(certificate);
-                try {
-                    certificateDao.update(id, conditionList);
-                } catch (DaoException e) {
-                    throw new ElementSearchException(id);
-                }
-                if(GiftCertificateValidator.areTagsValid(certificate.getTags())) {
-                    certificateDao.removeTagsFromCertificate(id);
-                    HashSet<Tag> tagsWithoutDuplicates = new HashSet<>(certificate.getTags());
-                    List<Tag> existingTags = tagService.findAllExisting(certificate.getTags());
-                    List<Tag> newTags = tagsWithoutDuplicates.stream().filter(t -> !existingTags
-                            .contains(t)).collect(Collectors.toList());
-                    if(newTags.size() > 0) {
-                        newTags.forEach(tagService::insert);
-                    }
-                    certificateDao.updateCertificateTags(id, tagService.findAllExisting(certificate.getTags()));
-                }
-                return certificateDao.findById(id).orElseThrow(() -> new ElementSearchException(id));
-            } else {
-                throw new ElementSearchException(id);
-            }
-        } else {
-            throw new InvalidFieldException(certificate.getId());
+        Optional<GiftCertificate> giftCertificateOptional = certificateDao.findById(id);
+        GiftCertificate newCertificate = giftCertificateOptional.orElseThrow(() -> new ElementSearchException(id));
+        CertificateConditionStrategy.updateCertificate(newCertificate, certificate);
+        try {
+            certificateDao.update(newCertificate);
+        } catch (DaoException e) {
+            throw new ElementSearchException(id);
         }
+        return newCertificate;
     }
 
     @Override

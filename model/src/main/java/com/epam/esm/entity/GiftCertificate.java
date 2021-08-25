@@ -27,7 +27,7 @@ import java.util.List;
 public class GiftCertificate {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "certificate_id")
     private long id;
     @Column(name = "certificate_name")
@@ -51,8 +51,9 @@ public class GiftCertificate {
 
     }
 
-    public GiftCertificate(String name, String description, BigDecimal price, int duration, LocalDateTime createDate,
+    public GiftCertificate(long id, String name, String description, BigDecimal price, int duration, LocalDateTime createDate,
                            LocalDateTime lastUpdateDate, List<Tag> tags) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
@@ -64,6 +65,10 @@ public class GiftCertificate {
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -123,7 +128,6 @@ public class GiftCertificate {
     }
 
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -131,14 +135,13 @@ public class GiftCertificate {
 
         GiftCertificate that = (GiftCertificate) o;
 
+        if (id != that.id) return false;
         if (duration != that.duration) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (price != null ? !price.equals(that.price) : that.price != null) return false;
         if (createDate != null ? !createDate.equals(that.createDate) : that.createDate != null) return false;
-        if (lastUpdateDate != null ? !lastUpdateDate.equals(that.lastUpdateDate) : that.lastUpdateDate != null)
-            return false;
-        return tags != null ? tags.equals(that.tags) : that.tags == null;
+        return lastUpdateDate != null ? lastUpdateDate.equals(that.lastUpdateDate) : that.lastUpdateDate == null;
     }
 
     @Override
@@ -150,7 +153,6 @@ public class GiftCertificate {
         result = 31 * result + duration;
         result = 31 * result + (createDate != null ? createDate.hashCode() : 0);
         result = 31 * result + (lastUpdateDate != null ? lastUpdateDate.hashCode() : 0);
-        result = 31 * result + (tags != null ? tags.hashCode() : 0);
         return result;
     }
 
