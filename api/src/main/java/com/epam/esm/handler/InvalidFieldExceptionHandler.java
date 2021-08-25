@@ -22,7 +22,7 @@ public class InvalidFieldExceptionHandler {
      */
     @ExceptionHandler(InvalidFieldException.class)
     public ResponseEntity<ExceptionResponse> handleException(InvalidFieldException e) {
-        ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.NOT_FOUND.value(), e.getLocalizedMessage());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(InvalidFieldException.ERROR_CODE, e.getLocalizedMessage());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 }

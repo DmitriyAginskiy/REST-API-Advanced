@@ -37,12 +37,12 @@ public class TagServiceImpl implements TagService {
         if(TagValidator.isNameValid(tag.getName()) && tagOptional.isEmpty()) {
             try {
                 long id = tagDao.insert(tag);
-                return tagDao.findById(id).orElseThrow(() -> new ElementSearchException("Tag " + tag + " is not added!"));
+                return tagDao.findById(id).orElseThrow(() -> new ElementSearchException(id));
             } catch (DaoException e) {
-                throw new ElementSearchException(e.getMessage());
+                throw new ElementSearchException(tag.getId());
             }
         } else {
-            throw new InvalidFieldException("Invalid name field");
+            throw new InvalidFieldException(tag.getId());
         }
     }
 
@@ -54,7 +54,7 @@ public class TagServiceImpl implements TagService {
             tagDao.disconnectTagFromCertificates(id);
             tagDao.delete(id);
         } else {
-            throw new ElementSearchException("There is not element with id " + id);
+            throw new ElementSearchException(id);
         }
     }
 
@@ -64,7 +64,7 @@ public class TagServiceImpl implements TagService {
         if(tagOptional.isPresent()) {
             return tagOptional.get();
         } else {
-            throw new ElementSearchException("There is not element with id " + id);
+            throw new ElementSearchException(id);
         }
     }
 

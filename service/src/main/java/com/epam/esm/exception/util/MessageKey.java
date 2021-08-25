@@ -1,6 +1,8 @@
-package com.epam.esm.util.constant;
+package com.epam.esm.exception.util;
 
 public class MessageKey {
+
+    public static final String BUNDLE_PATH = "message";
 
     public static final String ELEMENT_SEARCH_KEY = "element_search";
 

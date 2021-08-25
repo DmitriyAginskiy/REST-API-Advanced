@@ -22,7 +22,7 @@ public class ElementSearchExceptionHandler {
      */
     @ExceptionHandler(ElementSearchException.class)
     public ResponseEntity<ExceptionResponse> handleException(ElementSearchException e) {
-        ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.NOT_FOUND.value(), e.getLocalizedMessage());
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ElementSearchException.ERROR_CODE, e.getLocalizedMessage());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 }
