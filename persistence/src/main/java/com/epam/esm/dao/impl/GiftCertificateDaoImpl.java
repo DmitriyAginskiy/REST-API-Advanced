@@ -38,11 +38,9 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
     @PersistenceContext
     private EntityManager entityManager;
-    private final GiftCertificateMapper mapper;
 
     @Autowired
-    public GiftCertificateDaoImpl(GiftCertificateMapper mapper) {
-        this.mapper = mapper;
+    public GiftCertificateDaoImpl() {
     }
 
     @Override
@@ -67,7 +65,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
     @Override
     public Optional<GiftCertificate> findById(long id) {
-        return Optional.of(entityManager.find(GiftCertificate.class, id));
+        return Optional.ofNullable(entityManager.find(GiftCertificate.class, id));
     }
 
     @Override

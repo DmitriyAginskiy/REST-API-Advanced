@@ -78,7 +78,9 @@ public class GiftCertificateController {
      */
     @GetMapping(value = "/{id}", produces = "application/json; charset=utf-8")
     public GiftCertificate findGiftCertificateById(@PathVariable long id) {
-        return certificateService.findById(id);
+        GiftCertificate certificate = certificateService.findById(id);
+        System.out.println(certificate);
+        return certificate;
     }
 
     /**

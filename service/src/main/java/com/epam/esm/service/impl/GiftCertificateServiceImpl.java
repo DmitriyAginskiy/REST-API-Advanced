@@ -121,6 +121,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public GiftCertificate findById(long id) {
         Optional<GiftCertificate> certificate = certificateDao.findById(id);
+        if(certificate.isEmpty()) {
+            System.out.println(ExceptionMessageManager.getMessage(
+                    MessageKey.ELEMENT_SEARCH_KEY, Locale.getDefault(), id));
+            throw new ElementSearchException(ExceptionMessageManager.getMessage(
+                    MessageKey.ELEMENT_SEARCH_KEY, Locale.getDefault(), id));
+        }
         return certificate.orElseThrow(() -> new ElementSearchException(ExceptionMessageManager.getMessage(
                 MessageKey.ELEMENT_SEARCH_KEY, Locale.getDefault(), id)));
     }
