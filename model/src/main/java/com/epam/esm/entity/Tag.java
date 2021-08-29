@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Entity of a tag.
@@ -30,13 +31,13 @@ public class Tag {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "tags")
-    private List<GiftCertificate> giftCertificates;
+    private Set<GiftCertificate> giftCertificates;
 
     public Tag() {
 
     }
 
-    public Tag(long id, String name) {
+    public Tag(String name) {
         this.name = name;
     }
 
@@ -57,11 +58,11 @@ public class Tag {
         this.name = name;
     }
 
-    public List<GiftCertificate> getGiftCertificates() {
+    public Set<GiftCertificate> getGiftCertificates() {
         return giftCertificates;
     }
 
-    public void setGiftCertificates(List<GiftCertificate> giftCertificates) {
+    public void setGiftCertificates(Set<GiftCertificate> giftCertificates) {
         this.giftCertificates = giftCertificates;
     }
 

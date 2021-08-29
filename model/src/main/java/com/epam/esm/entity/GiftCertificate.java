@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Entity of a gift certificate.
@@ -39,20 +40,20 @@ public class GiftCertificate {
     private LocalDateTime createDate;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastUpdateDate;
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "gift_certificates_has_tags",
             joinColumns = @JoinColumn(name = "gift_certificates_id_fk"),
             inverseJoinColumns = @JoinColumn(name = "tags_id_fk")
     )
-    private List<Tag> tags;
+    private Set<Tag> tags;
 
     public GiftCertificate() {
 
     }
 
     public GiftCertificate(long id, String name, String description, BigDecimal price, int duration, LocalDateTime createDate,
-                           LocalDateTime lastUpdateDate, List<Tag> tags) {
+                           LocalDateTime lastUpdateDate, Set<Tag> tags) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -119,11 +120,11 @@ public class GiftCertificate {
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    public List<Tag> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 

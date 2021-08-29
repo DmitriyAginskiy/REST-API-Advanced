@@ -26,15 +26,6 @@ public enum CriteriaStrategy {
             return Optional.empty();
         }
     },
-    TAG_NAME {
-        @Override
-        public Optional<Criteria> createCriteria(String criteria) {
-            if(TagValidator.isNameValid(criteria)) {
-                return Optional.of(new SearchCriteria(TagColumnName.TAG_NAME, criteria));
-            }
-            return Optional.empty();
-        }
-    },
     DESCRIPTION {
         @Override
         public Optional<Criteria> createCriteria(String criteria) {

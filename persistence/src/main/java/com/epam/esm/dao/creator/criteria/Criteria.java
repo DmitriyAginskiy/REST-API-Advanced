@@ -13,4 +13,6 @@ public interface Criteria {
      * @param query current query
      */
     void addCriteria(StringBuilder query);
+
+    String getCriteriaField();
 }

@@ -76,7 +76,7 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     @Override
     public List<GiftCertificate> findAllByCriteria(List<Criteria> criteriaList) {
         String query = GiftCertificateQueryCreator.createSearchQuery(criteriaList);
-        return new ArrayList<>();
+        return entityManager.createNativeQuery(query, GiftCertificate.class).getResultList();
     }
 
     @Override

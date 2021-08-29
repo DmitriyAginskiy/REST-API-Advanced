@@ -20,7 +20,7 @@ public interface TagDao {
      * @return long value with id of added object.
      * @throws DaoException if object was not added.
      */
-    long insert(Tag tag) throws DaoException;
+    void insert(Tag tag);
 
     /**
      * Deletes tag from the table.
@@ -37,6 +37,8 @@ public interface TagDao {
      * @return optional object with found tag.
      */
     Optional<Tag> findById(long id);
+
+    List<Tag> findByCertificate(long certificateId);
 
     /**
      * Finds the tag by name.

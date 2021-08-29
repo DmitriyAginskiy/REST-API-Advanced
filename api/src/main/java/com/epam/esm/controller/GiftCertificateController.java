@@ -61,13 +61,13 @@ public class GiftCertificateController {
      * @param sortByName the sort param for name.
      * @return list with found items.
      */
-    @GetMapping(produces = "application/json; charset=utf-8", consumes = "application/json; charset=utf-8")
+    @GetMapping(produces = "application/json; charset=utf-8")
     public List<GiftCertificate> findAllGiftCertificates(@RequestParam(required = false) String certificateName,
-                                                               @RequestParam(required = false) String tagName,
                                                                @RequestParam(required = false) String description,
                                                                @RequestParam(required = false) String sortByDate,
-                                                               @RequestParam(required = false) String sortByName) {
-        return certificateService.findAll(certificateName, tagName, description, sortByDate, sortByName);
+                                                               @RequestParam(required = false) String sortByName,
+                                                               @RequestParam(required = false) List<String> tagName) {
+        return certificateService.findAll(certificateName, description, sortByDate, sortByName, tagName);
     }
 
     /**
@@ -78,9 +78,7 @@ public class GiftCertificateController {
      */
     @GetMapping(value = "/{id}", produces = "application/json; charset=utf-8")
     public GiftCertificate findGiftCertificateById(@PathVariable long id) {
-        GiftCertificate certificate = certificateService.findById(id);
-        System.out.println(certificate);
-        return certificate;
+        return certificateService.findById(id);
     }
 
     /**

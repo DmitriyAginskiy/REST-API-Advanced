@@ -32,26 +32,30 @@ public class TagDaoImpl implements TagDao {
 
     @PersistenceContext
     private EntityManager entityManager;
-    private final TagMapper mapper;
 
     @Autowired
-    public TagDaoImpl(TagMapper mapper) {
-        this.mapper = mapper;
+    public TagDaoImpl() {
     }
 
     @Override
-    public long insert(Tag tag) throws DaoException {
-        return 15;
+    public void insert(Tag tag) {
+        return entityManager.persist(tag);
     }
 
     @Override
     public void delete(long id) {
-
     }
 
     @Override
     public Optional<Tag> findById(long id) {
         return Optional.of(new Tag());
+    }
+
+    @Override
+    public List<Tag> findByCertificate(long certificateId) {
+        return entityManager.createNativeQuery(TagQuery.FIND_TAGS_BY_CERTIFICATE, Tag.class)
+                .setParameter(1, certificateId)
+                .getResultList();
     }
 
     @Override
