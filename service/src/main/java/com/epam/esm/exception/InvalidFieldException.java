@@ -14,10 +14,14 @@ import java.util.ResourceBundle;
 public class InvalidFieldException extends RuntimeException {
 
     public static final int ERROR_CODE = 40402;
-    long objectId;
+    String objectField;
 
-    public InvalidFieldException(long objectId) {
-        this.objectId = objectId;
+    public InvalidFieldException(long objectField) {
+        this.objectField = String.valueOf(objectField);
+    }
+
+    public InvalidFieldException(String objectField) {
+        this.objectField = objectField;
     }
 
     @Override
@@ -25,6 +29,6 @@ public class InvalidFieldException extends RuntimeException {
         return new String(ResourceBundle
                 .getBundle(MessageKey.BUNDLE_PATH, Locale.getDefault())
                 .getString(MessageKey.INVALID_FIELD_KEY)
-                .getBytes(StandardCharsets.ISO_8859_1)) + objectId;
+                .getBytes(StandardCharsets.ISO_8859_1)) + objectField;
     }
 }

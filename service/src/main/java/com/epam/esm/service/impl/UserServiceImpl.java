@@ -3,7 +3,9 @@ package com.epam.esm.service.impl;
 import com.epam.esm.dao.UserDao;
 import com.epam.esm.entity.User;
 import com.epam.esm.exception.ElementSearchException;
+import com.epam.esm.exception.InvalidFieldException;
 import com.epam.esm.service.UserService;
+import com.epam.esm.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +30,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByName(String name) {
-
-        return null;
+        if(!UserValidator.isNameValid(name)) {
+            throw new InvalidFieldException(name);
+        }
+        Optional<User> userOptional = userDao.findByName(name);
+        return userOptional.orElseThrow(() -> new ElementSearchException(name));
     }
 
     @Override
     public List<User> findAll(int page, int size) {
-        return null;
+        return userDao.findAll(page, size);
     }
 }
