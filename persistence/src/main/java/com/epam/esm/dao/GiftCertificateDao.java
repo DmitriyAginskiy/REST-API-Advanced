@@ -1,10 +1,7 @@
 package com.epam.esm.dao;
 
-import com.epam.esm.dao.creator.FieldCondition;
 import com.epam.esm.dao.creator.criteria.Criteria;
 import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.entity.Tag;
-import com.epam.esm.exception.DaoException;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +20,7 @@ public interface GiftCertificateDao {
      * @return long value with created object id.
      * @throws DaoException if object is not inserted
      */
-    void insert(GiftCertificate certificate) throws DaoException;
+    void insert(GiftCertificate certificate);
 
     /**
      * Deletes gift certificate from the table.
@@ -34,21 +31,13 @@ public interface GiftCertificateDao {
     void delete(GiftCertificate giftCertificate);
 
     /**
-     * Removes all tags from the certificate.
-     *
-     * @param id of the object to be updated.
-     * @return true if the tags were removed, otherwise - false.
-     */
-    boolean removeTagsFromCertificate(long id);
-
-    /**
      * Updates the certificate.
      *
      * @param id of the object to be updated.
      * @param conditionList with fields to be updated.
      * @throws DaoException if resources does not exist
      */
-    void update(GiftCertificate certificate) throws DaoException;
+    void update(GiftCertificate certificate);
 
     /**
      * Finds the certificate by id.
@@ -72,13 +61,4 @@ public interface GiftCertificateDao {
      * @return list with found certificates.
      */
     List<GiftCertificate> findAllByCriteria(List<Criteria> criteriaList);
-
-    /**
-     * Updates certificate tags.
-     *
-     * @param id the id of object to be updated
-     * @param tags the list of the tags to connect.
-     * @return true if the tags were connected, otherwise - false.
-     */
-    boolean updateCertificateTags(long id, List<Tag> tags);
 }

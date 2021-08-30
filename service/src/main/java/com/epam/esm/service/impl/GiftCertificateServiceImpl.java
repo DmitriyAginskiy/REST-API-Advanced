@@ -2,15 +2,13 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.constant.TagColumnName;
-import com.epam.esm.dao.creator.FieldCondition;
 import com.epam.esm.dao.creator.criteria.Criteria;
 import com.epam.esm.dao.creator.criteria.impl.SearchCriteria;
-import com.epam.esm.dao.impl.TagDaoImpl;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
-import com.epam.esm.exception.DaoException;
 import com.epam.esm.exception.ElementSearchException;
 import com.epam.esm.exception.InvalidFieldException;
+import com.epam.esm.exception.OperationNotPerformedException;
 import com.epam.esm.service.CertificateConditionStrategy;
 import com.epam.esm.service.CriteriaStrategy;
 import com.epam.esm.service.GiftCertificateService;
@@ -64,13 +62,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                 newTags.addAll(existingTags);
                 certificate.setTags(new HashSet<>(newTags));
             }
-            try {
-                certificateDao.insert(certificate);
-                Optional<GiftCertificate> certificateOptional = certificateDao.findById(certificate.getId());
-                return certificateOptional.orElseThrow(() -> new ElementSearchException(certificate.getId()));
-            } catch (DaoException e) {
-                throw new ElementSearchException(certificate.getId());
-            }
+            certificateDao.insert(certificate);
+            Optional<GiftCertificate> certificateOptional = certificateDao.findById(certificate.getId());
+            return certificateOptional.orElseThrow(() -> new OperationNotPerformedException(certificate.getId()));
         } else {
             throw new InvalidFieldException(certificate.getId());
         }
@@ -93,20 +87,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         Optional<GiftCertificate> giftCertificateOptional = certificateDao.findById(id);
         GiftCertificate newCertificate = giftCertificateOptional.orElseThrow(() -> new ElementSearchException(id));
         CertificateConditionStrategy.updateCertificate(newCertificate, certificate);
-        try {
-            certificateDao.update(newCertificate);
-        } catch (DaoException e) {
-            throw new ElementSearchException(id);
-        }
+        certificateDao.update(newCertificate);
         return newCertificate;
     }
 
     @Override
     public GiftCertificate findById(long id) {
         Optional<GiftCertificate> certificate = certificateDao.findById(id);
-        if(certificate.isEmpty()) {
-            throw new ElementSearchException(id);
-        }
         return certificate.orElseThrow(() -> new ElementSearchException(id));
     }
 

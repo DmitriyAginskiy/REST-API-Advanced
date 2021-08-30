@@ -75,4 +75,9 @@ public class TagDaoImpl implements TagDao {
         }
         return nativeQuery.getResultList();
     }
+
+    @Override
+    public void disconnectTagFromCertificates(long id) {
+        entityManager.createNativeQuery(TagQuery.DISCONNECT_TAG_FROM_CERTIFICATES).setParameter(1, id).executeUpdate();
+    }
 }

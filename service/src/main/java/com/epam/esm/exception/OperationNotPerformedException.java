@@ -11,12 +11,12 @@ import java.util.ResourceBundle;
  *
  * @author Dzmitry Ahinski
  */
-public class InvalidFieldException extends RuntimeException {
+public class OperationNotPerformedException extends RuntimeException {
 
-    public static final int ERROR_CODE = 40402;
+    public static final int ERROR_CODE = 40403;
     long objectId;
 
-    public InvalidFieldException(long objectId) {
+    public OperationNotPerformedException(long objectId) {
         this.objectId = objectId;
     }
 
@@ -24,7 +24,7 @@ public class InvalidFieldException extends RuntimeException {
     public String getLocalizedMessage() {
         return new String(ResourceBundle
                 .getBundle(MessageKey.BUNDLE_PATH, Locale.getDefault())
-                .getString(MessageKey.INVALID_FIELD_KEY)
+                .getString(MessageKey.OPERATION_NOT_PERFORMED)
                 .getBytes(StandardCharsets.ISO_8859_1)) + objectId;
     }
 }

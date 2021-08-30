@@ -2,7 +2,6 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.Tag;
-import com.epam.esm.exception.DaoException;
 import com.epam.esm.exception.ElementSearchException;
 import com.epam.esm.exception.InvalidFieldException;
 import com.epam.esm.service.TagService;
@@ -10,7 +9,6 @@ import com.epam.esm.validator.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +34,7 @@ public class TagServiceImpl implements TagService {
         Optional<Tag> tagOptional = tagDao.findByName(tag.getName());
         if(TagValidator.isNameValid(tag.getName()) && tagOptional.isEmpty()) {
             tagDao.insert(tag);
-            return tagDao.findById(tag.getId()).orElseThrow(() -> new ElementSearchException(tag.getId()));
+            return tagDao.findById(tag.getId()).orElseThrow(() -> new InvalidFieldException(tag.getId()));
         } else {
             throw new InvalidFieldException(tag.getId());
         }
@@ -46,17 +44,14 @@ public class TagServiceImpl implements TagService {
     @Override
     public void delete(long id) {
         Optional<Tag> tagOptional = tagDao.findById(id);
+        tagDao.disconnectTagFromCertificates(id);
         tagDao.delete(tagOptional.orElseThrow(() -> new ElementSearchException(id)));
     }
 
     @Override
     public Tag findById(long id) {
         Optional<Tag> tagOptional = tagDao.findById(id);
-        if(tagOptional.isPresent()) {
-            return tagOptional.get();
-        } else {
-            throw new ElementSearchException(id);
-        }
+        return tagOptional.orElseThrow(() -> new ElementSearchException(id));
     }
 
     @Override
