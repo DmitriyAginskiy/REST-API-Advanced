@@ -52,7 +52,7 @@ public interface GiftCertificateDao {
      *
      * @return list with found certificates
      */
-    List<GiftCertificate> findAll();
+    List<GiftCertificate> findAll(int page, int size);
 
     /**
      * Finds all the certificates by search and sort criteria.

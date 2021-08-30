@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -72,11 +73,12 @@ public class TagController {
      * @return list with found tags.
      */
     @GetMapping(produces = "application/json; charset=utf-8")
-    public List<Tag> findAll() {
-        List<Tag> tags = tagService.findAll();
+    public List<Tag> findAll(@RequestParam(defaultValue = "0") int page,
+                             @RequestParam(defaultValue = "10") int size) {
+        List<Tag> tags = tagService.findAll(page, size);
         tags.forEach(tag -> tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class)
                 .findTagById(tag.getId())).withSelfRel()));
-        return tagService.findAll();
+        return tags;
     }
 
     /**

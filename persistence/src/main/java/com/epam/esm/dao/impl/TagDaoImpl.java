@@ -51,8 +51,9 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public List<Tag> findAll() {
-        return entityManager.createNativeQuery(TagQuery.FIND_ALL_TAGS, Tag.class).getResultList();
+    public List<Tag> findAll(int page, int size) {
+        return entityManager.createNativeQuery(TagQuery.FIND_ALL_TAGS, Tag.class)
+                .setParameter(1, page * size).setParameter(2, size).getResultList();
     }
 
     @Override

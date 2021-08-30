@@ -50,7 +50,7 @@ public interface TagDao {
      *
      * @return list with found tags
      */
-    List<Tag> findAll();
+    List<Tag> findAll(int page, int size);
 
     /**
      * Finds all the existing tags.

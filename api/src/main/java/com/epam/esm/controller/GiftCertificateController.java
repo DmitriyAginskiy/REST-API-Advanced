@@ -68,11 +68,13 @@ public class GiftCertificateController {
      */
     @GetMapping(produces = "application/json; charset=utf-8")
     public List<GiftCertificate> findAllGiftCertificates(@RequestParam(required = false) String certificateName,
-                                                               @RequestParam(required = false) String description,
-                                                               @RequestParam(required = false) String sortByDate,
-                                                               @RequestParam(required = false) String sortByName,
-                                                               @RequestParam(required = false) List<String> tagName) {
-        List<GiftCertificate> certificates = certificateService.findAll(certificateName, description, sortByDate, sortByName, tagName);
+                                                         @RequestParam(required = false) String description,
+                                                         @RequestParam(required = false) String sortByDate,
+                                                         @RequestParam(required = false) String sortByName,
+                                                         @RequestParam(required = false) List<String> tagName,
+                                                         @RequestParam(defaultValue = "0") int page,
+                                                         @RequestParam(defaultValue = "10") int size) {
+        List<GiftCertificate> certificates = certificateService.findAll(certificateName, description, sortByDate, sortByName, tagName, page, size);
         for(GiftCertificate certificate : certificates) {
             certificate.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class)
                     .findGiftCertificateById(certificate.getId())).withSelfRel());

@@ -39,7 +39,7 @@ public interface TagService {
      *
      * @return list of the found tags.
      */
-    List<Tag> findAll();
+    List<Tag> findAll(int page, int size);
 
     List<Tag> findAllExisting(List<Tag> tags);
 }

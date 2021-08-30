@@ -21,7 +21,7 @@ public class OperationNotPerformedExceptionHandler {
      *
      * @return response entity
      */
-    @ExceptionHandler(OperationNotPerformedException.class)
+    @ExceptionHandler(Throwable.class)
     public ResponseEntity<ExceptionResponse> handleException(OperationNotPerformedException e) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(OperationNotPerformedException.ERROR_CODE, e.getLocalizedMessage());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);

@@ -54,5 +54,5 @@ public interface GiftCertificateService {
      * @return list of the found gift certificates.
      */
     List<GiftCertificate> findAll(String certificateName, String description, String sortByDate,
-                                  String sortByName, List<String> tagName);
+                                  String sortByName, List<String> tagName, int page, int size);
 }

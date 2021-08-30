@@ -49,8 +49,9 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
     @Override
-    public List<GiftCertificate> findAll() {
-        return entityManager.createNativeQuery(GiftCertificateQuery.FIND_ALL_QUERY, GiftCertificate.class).getResultList();
+    public List<GiftCertificate> findAll(int page, int size) {
+        return entityManager.createNativeQuery(GiftCertificateQuery.FIND_ALL_QUERY, GiftCertificate.class)
+                .setParameter(1, page * size).setParameter(2, size).getResultList();
     }
 
     @Override

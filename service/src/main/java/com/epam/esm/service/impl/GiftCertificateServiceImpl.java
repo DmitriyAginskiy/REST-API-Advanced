@@ -99,7 +99,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     public List<GiftCertificate> findAll(String certificateName, String description, String sortByDate, String sortByName,
-                                         List<String> tagName) {
+                                         List<String> tagName, int page, int size) {
         List<Criteria> criteriaList = new ArrayList<>();
         List<String> criteriaForValidation = Arrays.asList(certificateName, description, sortByDate, sortByName);
         int counter = 0;
@@ -112,7 +112,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             validTagNames.forEach(tag -> criteriaList.add(new SearchCriteria(TagColumnName.TAG_NAME, tag)));
         }
         if(criteriaList.isEmpty()) {
-            return certificateDao.findAll();
+            return certificateDao.findAll(page, size);
         } else {
             return certificateDao.findAllByCriteria(criteriaList);
         }
