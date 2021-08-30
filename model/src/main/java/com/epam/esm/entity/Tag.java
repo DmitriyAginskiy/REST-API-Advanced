@@ -2,7 +2,7 @@ package com.epam.esm.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.CascadeType;
+import org.springframework.hateoas.RepresentationModel;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,7 +19,7 @@ import java.util.Set;
  */
 @Entity(name = "tags")
 @Table(name = "tags")
-public class Tag {
+public class Tag extends RepresentationModel<Tag> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

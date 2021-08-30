@@ -107,7 +107,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             Optional<Criteria> criteriaOptional = criteriaStrategy.createCriteria(criteriaForValidation.get(counter++));
             criteriaOptional.ifPresent(criteriaList::add);
         }
-        if(!tagName.isEmpty()) {
+        if(tagName != null && !tagName.isEmpty()) {
             List<String> validTagNames = tagName.stream().filter(TagValidator::isNameValid).collect(Collectors.toList());
             validTagNames.forEach(tag -> criteriaList.add(new SearchCriteria(TagColumnName.TAG_NAME, tag)));
         }

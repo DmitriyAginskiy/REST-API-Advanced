@@ -3,9 +3,9 @@ package com.epam.esm.controller;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -48,7 +48,12 @@ public class GiftCertificateController {
      */
     @PostMapping(produces = "application/json; charset=utf-8")
     public GiftCertificate createGiftCertificate(@RequestBody GiftCertificate certificate) {
-        return certificateService.insert(certificate);
+        GiftCertificate giftCertificate = certificateService.insert(certificate);
+        giftCertificate.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class)
+                .findGiftCertificateById(giftCertificate.getId())).withSelfRel());
+        giftCertificate.getTags().forEach(tag -> tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
+                .methodOn(TagController.class).findTagById(tag.getId())).withSelfRel()));
+        return giftCertificate;
     }
 
     /**
@@ -67,7 +72,14 @@ public class GiftCertificateController {
                                                                @RequestParam(required = false) String sortByDate,
                                                                @RequestParam(required = false) String sortByName,
                                                                @RequestParam(required = false) List<String> tagName) {
-        return certificateService.findAll(certificateName, description, sortByDate, sortByName, tagName);
+        List<GiftCertificate> certificates = certificateService.findAll(certificateName, description, sortByDate, sortByName, tagName);
+        for(GiftCertificate certificate : certificates) {
+            certificate.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class)
+                    .findGiftCertificateById(certificate.getId())).withSelfRel());
+            certificate.getTags().forEach(tag -> tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
+                    .methodOn(TagController.class).findTagById(tag.getId())).withSelfRel()));
+        }
+        return certificates;
     }
 
     /**
@@ -78,7 +90,12 @@ public class GiftCertificateController {
      */
     @GetMapping(value = "/{id}", produces = "application/json; charset=utf-8")
     public GiftCertificate findGiftCertificateById(@PathVariable long id) {
-        return certificateService.findById(id);
+        GiftCertificate giftCertificate = certificateService.findById(id);
+        giftCertificate.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class)
+                .findGiftCertificateById(id)).withSelfRel());
+        giftCertificate.getTags().forEach(tag -> tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
+                .methodOn(TagController.class).findTagById(tag.getId())).withSelfRel()));
+        return giftCertificate;
     }
 
     /**
@@ -102,6 +119,11 @@ public class GiftCertificateController {
      */
     @PatchMapping(value = "/{id}", produces = "application/json; charset=utf-8")
     public GiftCertificate updateGiftCertificate(@PathVariable long id, @RequestBody GiftCertificate certificate) {
-        return certificateService.update(id, certificate);
+        GiftCertificate giftCertificate = certificateService.update(id, certificate);
+        giftCertificate.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class)
+                .findGiftCertificateById(id)).withSelfRel());
+        giftCertificate.getTags().forEach(tag -> tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
+                .methodOn(TagController.class).findTagById(tag.getId())).withSelfRel()));
+        return giftCertificate;
     }
 }

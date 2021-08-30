@@ -4,6 +4,7 @@ package com.epam.esm.controller;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,8 +46,10 @@ public class TagController {
      */
     @PostMapping(produces = "application/json; charset=utf-8")
     public Tag createTag(@RequestBody Tag tag) {
-        System.out.println(tag);
-        return tagService.insert(tag);
+        Tag insertedTag = tagService.insert(tag);
+        insertedTag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class)
+                .findTagById(insertedTag.getId())).withSelfRel());
+        return insertedTag;
     }
 
     /**
@@ -57,7 +60,10 @@ public class TagController {
      */
     @GetMapping(value = "/{id}", produces = "application/json; charset=utf-8")
     public Tag findTagById(@PathVariable long id) {
-        return tagService.findById(id);
+        Tag tag = tagService.findById(id);
+        tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class)
+                .findTagById(tag.getId())).withSelfRel());
+        return tag;
     }
 
     /**
@@ -67,6 +73,9 @@ public class TagController {
      */
     @GetMapping(produces = "application/json; charset=utf-8")
     public List<Tag> findAll() {
+        List<Tag> tags = tagService.findAll();
+        tags.forEach(tag -> tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class)
+                .findTagById(tag.getId())).withSelfRel()));
         return tagService.findAll();
     }
 

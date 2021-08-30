@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,7 +20,7 @@ class GiftCertificateValidatorTest {
 
     @BeforeAll
     public static void setUp() {
-        List<Tag> tags = new ArrayList<>();
+        Set<Tag> tags = new HashSet<>();
         tags.add(new Tag(1, "TagName"));
         certificate = new GiftCertificate(1, "SomeName", "Description", new BigDecimal("15.2"), 5, LocalDateTime.now(),
                 LocalDateTime.now(), tags);
@@ -56,7 +58,7 @@ class GiftCertificateValidatorTest {
 
     @Test
     void areTagsValid() {
-        boolean actual = GiftCertificateValidator.areTagsValid(certificate.getTags());
+        boolean actual = GiftCertificateValidator.areTagsValid(new ArrayList<>(certificate.getTags()));
         assertTrue(actual);
     }
 }

@@ -1,7 +1,7 @@
 package com.epam.esm.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.hibernate.annotations.TypeDef;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,7 +25,7 @@ import java.util.Set;
  */
 @Entity(name = "gift_certificates")
 @Table(name = "gift_certificates")
-public class GiftCertificate {
+public class GiftCertificate extends RepresentationModel<GiftCertificate> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

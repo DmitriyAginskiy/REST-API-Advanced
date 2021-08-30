@@ -15,6 +15,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GiftCertificateServiceImplTest {
     private static GiftCertificate giftCertificate = new GiftCertificate(3, "Black widow", "Marvel",
             new BigDecimal("100"), 125, LocalDateTime.of(2019, 9, 11, 15, 32, 12),
-            LocalDateTime.of(2021, 3, 11, 15, 32, 12), new ArrayList<>());
+            LocalDateTime.of(2021, 3, 11, 15, 32, 12), new HashSet<>());
     private GiftCertificateService service;
     @Mock
     private GiftCertificateDao dao;
@@ -42,7 +43,7 @@ public class GiftCertificateServiceImplTest {
         List<GiftCertificate> expected = new ArrayList<>();
         expected.add(giftCertificate);
         Mockito.when(dao.findAll()).thenReturn(expected);
-        List<GiftCertificate> actual = service.findAll("someName", "sometag", "somedesc", "ASC", "DESC");
+        List<GiftCertificate> actual = service.findAll("someName", "somedesc", "DESC", "ASC", new ArrayList<>());
         assertEquals(expected, actual);
     }
 
