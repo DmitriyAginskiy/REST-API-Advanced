@@ -1,5 +1,7 @@
 package com.epam.esm.entity;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +16,7 @@ import java.util.Set;
 
 @Entity(name = "users")
 @Table(name = "users")
-public class User {
+public class User extends RepresentationModel<Tag> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
