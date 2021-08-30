@@ -54,23 +54,15 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public List<Tag> findByCertificate(long certificateId) {
-        return entityManager.createNativeQuery(TagQuery.FIND_TAGS_BY_CERTIFICATE, Tag.class)
-                .setParameter(1, certificateId)
-                .getResultList();
-    }
-
-    @Override
     public Optional<Tag> findByName(String name) {
-       Tag tag = (Tag) entityManager.createNativeQuery(TagQuery.FIND_BY_NAME, Tag.class).setParameter(1, name)
-               .getSingleResult();
-       System.out.println(tag);
-       return Optional.of(tag);
+       Query query = entityManager.createNativeQuery(TagQuery.FIND_BY_NAME, Tag.class);
+       query = query.setParameter(1, name);
+       return query.getResultList().stream().findFirst();
     }
 
     @Override
     public List<Tag> findAll() {
-        return new ArrayList<>();
+        return entityManager.createNativeQuery(TagQuery.FIND_ALL_TAGS, Tag.class).getResultList();
     }
 
     @Override
@@ -82,9 +74,5 @@ public class TagDaoImpl implements TagDao {
             nativeQuery.setParameter(counter++, tag.getName());
         }
         return nativeQuery.getResultList();
-    }
-
-    @Override
-    public void disconnectTagFromCertificates(long id) {
     }
 }

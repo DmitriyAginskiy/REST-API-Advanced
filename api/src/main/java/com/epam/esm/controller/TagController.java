@@ -45,6 +45,7 @@ public class TagController {
      */
     @PostMapping(produces = "application/json; charset=utf-8")
     public Tag createTag(@RequestBody Tag tag) {
+        System.out.println(tag);
         return tagService.insert(tag);
     }
 

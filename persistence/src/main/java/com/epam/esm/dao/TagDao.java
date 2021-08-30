@@ -38,8 +38,6 @@ public interface TagDao {
      */
     Optional<Tag> findById(long id);
 
-    List<Tag> findByCertificate(long certificateId);
-
     /**
      * Finds the tag by name.
      *
@@ -62,10 +60,4 @@ public interface TagDao {
      */
     List<Tag> findAllExisting(List<Tag> tags);
 
-    /**
-     * Disconnects tag from all certificates.
-     *
-     * @param id of the tag
-     */
-    void disconnectTagFromCertificates(long id);
 }
