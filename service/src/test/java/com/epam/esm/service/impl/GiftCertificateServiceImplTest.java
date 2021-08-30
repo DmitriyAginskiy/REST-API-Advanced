@@ -42,8 +42,8 @@ public class GiftCertificateServiceImplTest {
         System.out.println(TransactionSynchronizationManager.isActualTransactionActive());
         List<GiftCertificate> expected = new ArrayList<>();
         expected.add(giftCertificate);
-        Mockito.when(dao.findAll()).thenReturn(expected);
-        List<GiftCertificate> actual = service.findAll("someName", "somedesc", "DESC", "ASC", new ArrayList<>());
+        Mockito.when(dao.findAll(0, 10)).thenReturn(expected);
+        List<GiftCertificate> actual = service.findAll("someName", "somedesc", "DESC", "ASC", new ArrayList<>(), 0, 10);
         assertEquals(expected, actual);
     }
 

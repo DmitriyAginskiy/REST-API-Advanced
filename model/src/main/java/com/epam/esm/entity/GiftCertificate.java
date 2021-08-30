@@ -1,6 +1,7 @@
 package com.epam.esm.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.CascadeType;
@@ -40,6 +41,9 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
     private LocalDateTime createDate;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastUpdateDate;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "giftCertificates")
+    private Set<User> users;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "gift_certificates_has_tags",

@@ -49,8 +49,8 @@ class TagServiceImplTest {
     void findAll() {
         List<Tag> expected = new ArrayList<>();
         expected.add(tag);
-        Mockito.when(dao.findAll()).thenReturn(expected);
-        List<Tag> actual = dao.findAll();
+        Mockito.when(dao.findAll(0, 10)).thenReturn(expected);
+        List<Tag> actual = dao.findAll(0, 10);
         assertEquals(expected, actual);
     }
 }
