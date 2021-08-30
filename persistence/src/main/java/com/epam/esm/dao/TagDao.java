@@ -28,7 +28,7 @@ public interface TagDao {
      * @param id of the object to be deleted.
      *
      */
-    void delete(long id);
+    void delete(Tag tag);
 
     /**
      * Finds the tag by id.

@@ -4,6 +4,7 @@ import com.epam.esm.dao.TagDao;
 import com.epam.esm.dao.constant.TagQuery;
 import com.epam.esm.dao.creator.TagQueryCreator;
 import com.epam.esm.dao.mapper.TagMapper;
+import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.DaoException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,16 +40,17 @@ public class TagDaoImpl implements TagDao {
 
     @Override
     public void insert(Tag tag) {
-        return entityManager.persist(tag);
+        entityManager.persist(tag);
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(Tag tag) {
+        entityManager.remove(tag);
     }
 
     @Override
     public Optional<Tag> findById(long id) {
-        return Optional.of(new Tag());
+        return Optional.ofNullable(entityManager.find(Tag.class, id));
     }
 
     @Override
@@ -60,7 +62,10 @@ public class TagDaoImpl implements TagDao {
 
     @Override
     public Optional<Tag> findByName(String name) {
-        return Optional.of(new Tag());
+       Tag tag = (Tag) entityManager.createNativeQuery(TagQuery.FIND_BY_NAME, Tag.class).setParameter(1, name)
+               .getSingleResult();
+       System.out.println(tag);
+       return Optional.of(tag);
     }
 
     @Override

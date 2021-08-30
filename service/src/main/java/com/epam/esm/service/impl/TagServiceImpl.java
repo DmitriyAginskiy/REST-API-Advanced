@@ -35,12 +35,8 @@ public class TagServiceImpl implements TagService {
     public Tag insert(Tag tag) {
         Optional<Tag> tagOptional = tagDao.findByName(tag.getName());
         if(TagValidator.isNameValid(tag.getName()) && tagOptional.isEmpty()) {
-            try {
-                long id = tagDao.insert(tag);
-                return tagDao.findById(id).orElseThrow(() -> new ElementSearchException(id));
-            } catch (DaoException e) {
-                throw new ElementSearchException(tag.getId());
-            }
+            tagDao.insert(tag);
+            return tagDao.findById(tag.getId()).orElseThrow(() -> new ElementSearchException(tag.getId()));
         } else {
             throw new InvalidFieldException(tag.getId());
         }
@@ -50,12 +46,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public void delete(long id) {
         Optional<Tag> tagOptional = tagDao.findById(id);
-        if(tagOptional.isPresent()) {
-            tagDao.disconnectTagFromCertificates(id);
-            tagDao.delete(id);
-        } else {
-            throw new ElementSearchException(id);
-        }
+        tagDao.delete(tagOptional.orElseThrow(() -> new ElementSearchException(id)));
     }
 
     @Override

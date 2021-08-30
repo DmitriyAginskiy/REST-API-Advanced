@@ -22,9 +22,13 @@ public class GiftCertificateQueryCreator {
     private static final String WHERE_WORD = "WHERE";
     private static final String ORDER_BY = "ORDER BY";
     private static final String GROUP_BY = "GROUP BY";
+    private static final String COUNT_ALL = "COUNT(*)";
+    private static final String HAVING = "HAVING";
+    private static final String EQUALS = "=";
     private static final String COMMA = ",";
     private static final String SEMICOLON = ";";
     private static final String WHITESPACE = " ";
+    private static final String OR_WORD = "OR";
 
     /**
      * Creates gift certificate searching query with criteria.
@@ -41,8 +45,6 @@ public class GiftCertificateQueryCreator {
         finalQuery.append(WHITESPACE);
         finalQuery.append(WHERE_WORD);
         addSearchCriteria(criteriaList, finalQuery);
-        finalQuery.append(WHITESPACE).append(GROUP_BY).append(WHITESPACE);
-        finalQuery.append(GiftCertificateColumnName.ID);
         finalQuery.append(SEMICOLON);
         return finalQuery.toString();
     }
@@ -55,18 +57,25 @@ public class GiftCertificateQueryCreator {
      */
     private static void addSearchCriteria(List<Criteria> criteriaList, StringBuilder finalQuery) {
         List<Criteria> searchCriteriaList = criteriaList.stream().filter(t -> t instanceof SearchCriteria).collect(Collectors.toList());
+        int counter = 0;
         if(!searchCriteriaList.isEmpty()) {
-            boolean isFirstSearchCriteria = true;
-            for(Criteria criteria : searchCriteriaList) {
-                if(isFirstSearchCriteria) {
-                    finalQuery.append(WHITESPACE);
-                    isFirstSearchCriteria = false;
-                } else {
-                    finalQuery.append(WHITESPACE);
-                    finalQuery.append(AND_WORD);
-                    finalQuery.append(WHITESPACE);
+            for(int i = 0; i < searchCriteriaList.size(); i++) {
+                Criteria criteria = searchCriteriaList.get(i);
+                finalQuery.append(WHITESPACE);
+                if(criteria.getCriteriaField().equals(TagColumnName.TAG_NAME)) {
+                    counter++;
                 }
                 criteria.addCriteria(finalQuery);
+                if(i != searchCriteriaList.size() - 1) {
+                    finalQuery.append(WHITESPACE);
+                    finalQuery.append(criteria.getCriteriaField().equals(TagColumnName.TAG_NAME) ?
+                            OR_WORD : AND_WORD);
+                }
+            }
+            if(counter > 0) {
+                finalQuery.append(WHITESPACE).append(GROUP_BY).append(WHITESPACE).append(GiftCertificateColumnName.ID);
+                finalQuery.append(WHITESPACE).append(HAVING).append(WHITESPACE).append(COUNT_ALL);
+                finalQuery.append(WHITESPACE).append(EQUALS).append(WHITESPACE).append(counter);
             }
         }
     }
