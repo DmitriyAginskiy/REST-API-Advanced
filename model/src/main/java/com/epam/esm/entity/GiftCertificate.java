@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -41,9 +42,11 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
     private LocalDateTime createDate;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastUpdateDate;
+
     @JsonIgnore
-    @ManyToMany(mappedBy = "giftCertificates")
-    private Set<User> users;
+    @OneToMany(mappedBy = "certificate")
+    private Set<Order> orders;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "gift_certificates_has_tags",
@@ -132,6 +135,13 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
         this.tags = tags;
     }
 
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
+    }
 
     @Override
     public boolean equals(Object o) {

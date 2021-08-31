@@ -1,5 +1,6 @@
 package com.epam.esm.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Set;
@@ -26,21 +28,17 @@ public class User extends RepresentationModel<Tag> {
     @Column(name = "user_name")
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "orders",
-            joinColumns = @JoinColumn(name = "users_id_fk"),
-            inverseJoinColumns = @JoinColumn(name = "gift_certificates_id_fk")
-    )
-    private Set<GiftCertificate> giftCertificates;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private Set<Order> orders;
 
     public User() {
     }
 
-    public User(long id, String name, Set<GiftCertificate> giftCertificates) {
+    public User(long id, String name, Set<Order> orders) {
         this.id = id;
         this.name = name;
-        this.giftCertificates = giftCertificates;
+        this.orders = orders;
     }
 
     public long getId() {
@@ -59,31 +57,33 @@ public class User extends RepresentationModel<Tag> {
         this.name = name;
     }
 
-    public Set<GiftCertificate> getGiftCertificates() {
-        return giftCertificates;
+    public Set<Order> getOrders() {
+        return orders;
     }
 
-    public void setGiftCertificates(Set<GiftCertificate> giftCertificates) {
-        this.giftCertificates = giftCertificates;
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
         User user = (User) o;
 
         if (id != user.id) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
-        return giftCertificates != null ? giftCertificates.equals(user.giftCertificates) : user.giftCertificates == null;
+        return orders != null ? orders.equals(user.orders) : user.orders == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = super.hashCode();
+        result = 31 * result + (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (giftCertificates != null ? giftCertificates.hashCode() : 0);
+        result = 31 * result + (orders != null ? orders.hashCode() : 0);
         return result;
     }
 
@@ -92,7 +92,7 @@ public class User extends RepresentationModel<Tag> {
         final StringBuilder sb = new StringBuilder("User{");
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
-        sb.append(", giftCertificates=").append(giftCertificates);
+        sb.append(", orders=").append(orders);
         sb.append('}');
         return sb.toString();
     }

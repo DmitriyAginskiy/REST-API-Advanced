@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
                 .getBundle(MessageKey.BUNDLE_PATH, Locale.getDefault())
                 .getString(MessageKey.SOMETHING_WENT_WRONG)
                 .getBytes(StandardCharsets.ISO_8859_1));
-        ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.NOT_FOUND.value(), message);
+        ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 }
