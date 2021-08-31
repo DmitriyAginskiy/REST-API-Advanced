@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.util.Set;
 
 @Entity(name = "users")
@@ -27,7 +28,7 @@ public class User extends RepresentationModel<Tag> {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "users_has_gift_certificates",
+            name = "orders",
             joinColumns = @JoinColumn(name = "users_id_fk"),
             inverseJoinColumns = @JoinColumn(name = "gift_certificates_id_fk")
     )

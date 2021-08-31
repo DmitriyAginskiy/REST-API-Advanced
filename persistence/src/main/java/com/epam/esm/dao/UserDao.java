@@ -9,7 +9,5 @@ public interface UserDao {
 
     Optional<User> findById(long id);
 
-    Optional<User> findByName(String name);
-
     List<User> findAll(int page, int size);
 }

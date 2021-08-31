@@ -22,12 +22,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> findByName(String name) {
-        return entityManager.createNativeQuery(UserQuery.FIND_BY_NAME_QUERY, User.class).setParameter(1, name)
-                .getResultList().stream().findAny();
-    }
-
-    @Override
     public List<User> findAll(int page, int size) {
         return entityManager.createNativeQuery(UserQuery.FIND_ALL_QUERY, User.class).setParameter(1, page * size)
                 .setParameter(2, size).getResultList();

@@ -29,15 +29,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByName(String name) {
-        if(!UserValidator.isNameValid(name)) {
-            throw new InvalidFieldException(name);
-        }
-        Optional<User> userOptional = userDao.findByName(name);
-        return userOptional.orElseThrow(() -> new ElementSearchException(name));
-    }
-
-    @Override
     public List<User> findAll(int page, int size) {
         return userDao.findAll(page, size);
     }

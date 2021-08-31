@@ -57,19 +57,6 @@ public class UserController {
     }
 
     /**
-     * Finds user by name.
-     *
-     * @return found user entity.
-     */
-    @GetMapping(produces = "application/json; charset=utf-8")
-    public User findByName(@RequestParam String name) {
-        User user = userService.findByName(name);
-        user.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class)
-                .findUserById(user.getId())).withSelfRel());
-        return user;
-    }
-
-    /**
      * Finds all users.
      *
      * @return list with found users.
