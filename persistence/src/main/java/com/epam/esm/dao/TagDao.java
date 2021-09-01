@@ -16,15 +16,14 @@ public interface TagDao {
      * Adds tag to the table.
      *
      * @param tag object to be added.
-     * @return long value with id of added object.
-     * @throws DaoException if object was not added.
+     *
      */
     void insert(Tag tag);
 
     /**
      * Deletes tag from the table.
      *
-     * @param id of the object to be deleted.
+     * @param tag object to be deleted.
      *
      */
     void delete(Tag tag);
@@ -48,6 +47,9 @@ public interface TagDao {
     /**
      * Finds all the tags.
      *
+     * @param page current page for search
+     * @param size count of found entities
+     *
      * @return list with found tags
      */
     List<Tag> findAll(int page, int size);
@@ -59,5 +61,10 @@ public interface TagDao {
      */
     List<Tag> findAllExisting(List<Tag> tags);
 
+    /**
+     * Disconnect tags from all certificates
+     *
+     * @param id as tag id
+     */
     void disconnectTagFromCertificates(long id);
 }

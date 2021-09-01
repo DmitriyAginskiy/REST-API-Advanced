@@ -1,7 +1,6 @@
 package com.epam.esm.dao.impl;
 
 import com.epam.esm.dao.UserDao;
-import com.epam.esm.dao.constant.OrderQuery;
 import com.epam.esm.dao.constant.UserQuery;
 import com.epam.esm.entity.User;
 import org.springframework.stereotype.Repository;
@@ -11,6 +10,11 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * UserDao implementation.
+ *
+ * @author Dzmitry Ahinski
+ */
 @Repository
 public class UserDaoImpl implements UserDao {
 

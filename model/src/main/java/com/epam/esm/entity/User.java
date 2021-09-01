@@ -3,20 +3,20 @@ package com.epam.esm.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.hateoas.RepresentationModel;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.math.BigDecimal;
 import java.util.Set;
 
+/**
+ * Entity of an user.
+ *
+ * @author Dzmitry Ahinski
+ */
 @Entity(name = "users")
 @Table(name = "users")
 public class User extends RepresentationModel<Tag> {
@@ -33,6 +33,10 @@ public class User extends RepresentationModel<Tag> {
     private Set<Order> orders;
 
     public User() {
+    }
+
+    public User(String name) {
+        this.name = name;
     }
 
     public User(long id, String name, Set<Order> orders) {

@@ -1,5 +1,10 @@
 package com.epam.esm.handler.entity;
 
+/**
+ * Exception response entity class.
+ *
+ * @author Dzmitry Ahinski
+ */
 public class ExceptionResponse {
 
     private int code;

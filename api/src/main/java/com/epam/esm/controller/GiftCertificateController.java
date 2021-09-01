@@ -60,10 +60,12 @@ public class GiftCertificateController {
      * Finds all gift certificates by criteria
      *
      * @param certificateName the name of certificate to be found.
-     * @param tagName the tag name of certificate to be found.
      * @param description the description of certificate to be found.
      * @param sortByDate the sort param for creation date.
      * @param sortByName the sort param for name.
+     * @param tagName the list of the tags names.
+     * @param page pagination current page.
+     * @param size pagination current page size.
      * @return list with found items.
      */
     @GetMapping(produces = "application/json; charset=utf-8")

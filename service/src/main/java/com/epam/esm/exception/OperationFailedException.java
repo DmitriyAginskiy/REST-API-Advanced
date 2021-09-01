@@ -11,13 +11,13 @@ import java.util.ResourceBundle;
  *
  * @author Dzmitry Ahinski
  */
-public class OperationNotPerformedException extends RuntimeException {
+public class OperationFailedException extends RuntimeException {
 
-    public static final int ERROR_CODE = 40403;
-    long objectId;
+    public static final int ERROR_CODE = 40402;
+    String objectField;
 
-    public OperationNotPerformedException(long objectId) {
-        this.objectId = objectId;
+    public OperationFailedException(long objectField) {
+        this.objectField = String.valueOf(objectField);
     }
 
     @Override
@@ -25,6 +25,6 @@ public class OperationNotPerformedException extends RuntimeException {
         return new String(ResourceBundle
                 .getBundle(MessageKey.BUNDLE_PATH, Locale.getDefault())
                 .getString(MessageKey.OPERATION_NOT_PERFORMED)
-                .getBytes(StandardCharsets.ISO_8859_1)) + objectId;
+                .getBytes(StandardCharsets.ISO_8859_1)) + objectField;
     }
 }

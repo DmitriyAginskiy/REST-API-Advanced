@@ -14,6 +14,11 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * Entity of an order.
+ *
+ * @author Dzmitry Ahinski
+ */
 @Entity(name = "orders")
 @Table(name = "orders")
 public class Order {
@@ -28,6 +33,7 @@ public class Order {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime purchaseTime;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "users_id_fk")
     User user;
@@ -115,8 +121,6 @@ public class Order {
         sb.append("id=").append(id);
         sb.append(", purchasePrice=").append(purchasePrice);
         sb.append(", purchaseTime=").append(purchaseTime);
-        sb.append(", user=").append(user);
-        sb.append(", certificate=").append(certificate);
         sb.append('}');
         return sb.toString();
     }

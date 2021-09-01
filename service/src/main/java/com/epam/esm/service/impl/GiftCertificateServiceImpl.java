@@ -7,8 +7,7 @@ import com.epam.esm.dao.creator.criteria.impl.SearchCriteria;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ElementSearchException;
-import com.epam.esm.exception.InvalidFieldException;
-import com.epam.esm.exception.OperationNotPerformedException;
+import com.epam.esm.exception.OperationFailedException;
 import com.epam.esm.service.CertificateConditionStrategy;
 import com.epam.esm.service.CriteriaStrategy;
 import com.epam.esm.service.GiftCertificateService;
@@ -22,11 +21,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 import com.epam.esm.validator.GiftCertificateValidator;
 
@@ -64,9 +60,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             }
             certificateDao.insert(certificate);
             Optional<GiftCertificate> certificateOptional = certificateDao.findById(certificate.getId());
-            return certificateOptional.orElseThrow(() -> new OperationNotPerformedException(certificate.getId()));
+            return certificateOptional.orElseThrow(() -> new OperationFailedException(certificate.getId()));
         } else {
-            throw new InvalidFieldException(certificate.getId());
+            throw new OperationFailedException(certificate.getId());
         }
     }
 

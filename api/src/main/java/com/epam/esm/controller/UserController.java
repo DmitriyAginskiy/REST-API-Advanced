@@ -33,7 +33,7 @@ public class UserController {
     private final UserService userService;
 
     /**
-     * Init the tags controller class.
+     * Init the user controller class.
      *
      * @author Dzmitry Ahinski
      */
@@ -61,6 +61,8 @@ public class UserController {
      * Finds all users.
      *
      * @return list with found users.
+     * @param page pagination current page.
+     * @param size pagination current page size.
      */
     @GetMapping(produces = "application/json; charset=utf-8")
     public List<User> findAll(@RequestParam(defaultValue = "0") int page,

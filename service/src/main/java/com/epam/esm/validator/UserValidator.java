@@ -2,6 +2,11 @@ package com.epam.esm.validator;
 
 import java.util.regex.Pattern;
 
+/**
+ * Validates user.
+ *
+ * @author Dzmitry Ahinski
+ */
 public class UserValidator {
 
     private static final Pattern NAME_PATTERN = Pattern.compile("[a-zA-Z0-9\\w\\s]{2,25}");

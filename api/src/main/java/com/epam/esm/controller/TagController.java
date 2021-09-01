@@ -71,6 +71,8 @@ public class TagController {
      * Finds all tags.
      *
      * @return list with found tags.
+     * @param page pagination current page.
+     * @param size pagination current page size.
      */
     @GetMapping(produces = "application/json; charset=utf-8")
     public List<Tag> findAll(@RequestParam(defaultValue = "0") int page,
