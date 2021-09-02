@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.util.Set;
 
 /**
@@ -27,6 +28,7 @@ public class User extends RepresentationModel<Tag> {
     private long id;
     @Column(name = "user_name")
     private String name;
+    private BigDecimal cash;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")
@@ -35,13 +37,15 @@ public class User extends RepresentationModel<Tag> {
     public User() {
     }
 
-    public User(String name) {
+    public User(String name, BigDecimal cash) {
         this.name = name;
+        this.cash = cash;
     }
 
-    public User(long id, String name, Set<Order> orders) {
+    public User(long id, String name, BigDecimal cash, Set<Order> orders) {
         this.id = id;
         this.name = name;
+        this.cash = cash;
         this.orders = orders;
     }
 
@@ -59,6 +63,14 @@ public class User extends RepresentationModel<Tag> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public BigDecimal getCash() {
+        return cash;
+    }
+
+    public void setCash(BigDecimal cash) {
+        this.cash = cash;
     }
 
     public Set<Order> getOrders() {
@@ -79,6 +91,7 @@ public class User extends RepresentationModel<Tag> {
 
         if (id != user.id) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
+        if (cash != null ? !cash.equals(user.cash) : user.cash != null) return false;
         return orders != null ? orders.equals(user.orders) : user.orders == null;
     }
 
@@ -87,6 +100,7 @@ public class User extends RepresentationModel<Tag> {
         int result = super.hashCode();
         result = 31 * result + (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (cash != null ? cash.hashCode() : 0);
         result = 31 * result + (orders != null ? orders.hashCode() : 0);
         return result;
     }
@@ -96,6 +110,7 @@ public class User extends RepresentationModel<Tag> {
         final StringBuilder sb = new StringBuilder("User{");
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
+        sb.append(", cash=").append(cash);
         sb.append(", orders=").append(orders);
         sb.append('}');
         return sb.toString();

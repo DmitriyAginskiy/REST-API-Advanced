@@ -58,7 +58,7 @@ class GiftCertificateValidatorTest {
 
     @Test
     void areTagsValid() {
-        boolean actual = GiftCertificateValidator.areTagsValid(new ArrayList<>(certificate.getTags()));
+        boolean actual = GiftCertificateValidator.areTagsValid(certificate.getTags());
         assertTrue(actual);
     }
 }
