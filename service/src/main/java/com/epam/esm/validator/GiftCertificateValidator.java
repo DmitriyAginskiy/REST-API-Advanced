@@ -16,11 +16,6 @@ import java.util.regex.Pattern;
 public class GiftCertificateValidator {
     private static final Pattern NAME_PATTERN = Pattern.compile("[a-zA-Z0-9\\w\\s]{1,128}");
 
-    public static boolean areValidFields(GiftCertificate certificate) {
-        return isNameValid(certificate.getName()) && isDescriptionValid(certificate.getDescription())
-                && isPriceValid(certificate.getPrice()) && isDurationValid(certificate.getDuration());
-    }
-
     public static boolean isNameValid(String name) {
         return (name != null) && NAME_PATTERN.matcher(name).matches();
     }

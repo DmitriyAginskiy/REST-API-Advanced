@@ -1,6 +1,7 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.Tag;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.util.HateoasWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * Gift certificates controller class.
@@ -89,6 +95,26 @@ public class GiftCertificateController {
      */
     @GetMapping(value = "/{id}", produces = "application/json; charset=utf-8")
     public GiftCertificate findGiftCertificateById(@PathVariable long id) {
+        Random rand = new Random();
+        String[] tagNames = {"Food", "Travelling", "Entertainment", "Relax", "Weather", "Health",
+        "Lifestyle", "Technics", "Robots", "People", "Films", "Famous people"};
+        String[] names = { "Sandwich", "Plane", "Burger", "Chips", "Potato", "Car", "Bicycle",
+                "House", "Spain", "USA", "Britain", "Paris", "Moscow", "Chocolate"};
+        String[] description = { "Some description - ", "This is new description - ", "And the other description - "};
+        GiftCertificate cert = null;
+        int counter = 3000;
+        for(int i = 0; i < 10000; i++) {
+            Set<Tag> someSet = new HashSet<>();
+            int c = rand.nextInt(20);
+            for(int j = 0; j < c; j++) {
+                someSet.add(new Tag(tagNames[rand.nextInt(tagNames.length)] + rand.nextInt(100)));
+            }
+            cert = new GiftCertificate(0, names[rand.nextInt(names.length)] + counter++, description[rand.nextInt(description.length)] + counter,
+                    BigDecimal.valueOf(Math.random() * 100), 1 + rand.nextInt(100), LocalDateTime.now(), LocalDateTime.now(),
+                    someSet);
+            System.out.println(cert);
+            certificateService.insert(cert);
+        }
         GiftCertificate giftCertificate = certificateService.findById(id);
         wrapper.certificateWrap(giftCertificate);
         return giftCertificate;
