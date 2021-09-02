@@ -9,7 +9,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.math.BigDecimal;
@@ -39,7 +38,6 @@ public class GiftCertificateServiceImplTest {
 
     @Test
     public void findAll() {
-        System.out.println(TransactionSynchronizationManager.isActualTransactionActive());
         List<GiftCertificate> expected = new ArrayList<>();
         expected.add(giftCertificate);
         Mockito.when(dao.findAll(0, 10)).thenReturn(expected);

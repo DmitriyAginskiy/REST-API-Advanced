@@ -27,12 +27,6 @@ class GiftCertificateValidatorTest {
     }
 
     @Test
-    void areValidFields() {
-        boolean actual = GiftCertificateValidator.areValidFields(certificate);
-        assertTrue(actual);
-    }
-
-    @Test
     void isNameValid() {
         boolean actual = GiftCertificateValidator.isNameValid(certificate.getName());
         assertTrue(actual);

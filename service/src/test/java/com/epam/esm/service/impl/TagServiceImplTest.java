@@ -32,15 +32,8 @@ class TagServiceImplTest {
     @Test
     void findById() {
         Mockito.when(dao.findById(1)).thenReturn(Optional.of(tag));
-        Optional<Tag> actual = dao.findById(1);
-        assertEquals(tag, actual.get());
-    }
-
-    @Test
-    void findByName() {
-        Mockito.when(dao.findByName("SomeTag")).thenReturn(Optional.of(tag));
-        Optional<Tag> actual = dao.findByName("SomeTag");
-        assertEquals(tag, actual.get());
+        Tag actual = service.findById(1);
+        assertEquals(tag, actual);
     }
 
     @Test
@@ -48,7 +41,7 @@ class TagServiceImplTest {
         List<Tag> expected = new ArrayList<>();
         expected.add(tag);
         Mockito.when(dao.findAll(0, 10)).thenReturn(expected);
-        List<Tag> actual = dao.findAll(0, 10);
+        List<Tag> actual = service.findAll(0, 10);
         assertEquals(expected, actual);
     }
 }
