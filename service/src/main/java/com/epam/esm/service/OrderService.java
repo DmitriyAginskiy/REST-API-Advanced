@@ -17,7 +17,7 @@ public interface OrderService {
      */
     Order findById(long id);
 
-    List<Order> findAllByUserId(long userId);
+    List<Order> findAllByUserId(long userId, int page, int size);
 
     Order findByUserAndCertificate(long userId, long certificateId);
 }

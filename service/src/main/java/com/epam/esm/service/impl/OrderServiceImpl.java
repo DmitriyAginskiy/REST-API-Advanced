@@ -40,8 +40,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findAllByUserId(long userId) {
-        return orderDao.findAllByUserId(userId);
+    public List<Order> findAllByUserId(long userId, int page, int size) {
+        return orderDao.findAllByUserId(userId, page, size);
     }
 
     @Override

@@ -75,8 +75,10 @@ public class OrderController {
      * @return List of found orders.
      */
     @GetMapping(produces = "application/json; charset=utf-8", params = "userId")
-    public List<Order> findAllByUserId(@RequestParam long userId) {
-        List<Order> orders = orderService.findAllByUserId(userId);
+    public List<Order> findAllByUserId(@RequestParam long userId,
+                                       @RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(defaultValue = "10") int size) {
+        List<Order> orders = orderService.findAllByUserId(userId, page, size);
         orders.forEach(wrapper::orderWrap);
         return orders;
     }

@@ -36,9 +36,9 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public List<Order> findAllByUserId(long userId) {
+    public List<Order> findAllByUserId(long userId, int page, int size) {
         return entityManager.createNativeQuery(OrderQuery.FIND_ORDERS_BY_USER, Order.class).setParameter(1, userId)
-                .getResultList();
+                .setParameter(2, page).setParameter(2, size).getResultList();
     }
 
     @Override

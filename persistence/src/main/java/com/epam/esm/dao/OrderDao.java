@@ -32,10 +32,12 @@ public interface OrderDao {
      * Finds all orders by user id.
      *
      * @param userId as user id.
+     * @param page as current page.
+     * @param page as current size.
      *
      * @return List of found orders
      */
-    List<Order> findAllByUserId(long userId);
+    List<Order> findAllByUserId(long userId, int page, int size);
 
     /**
      * Finds order connected with user and certificate.
