@@ -53,5 +53,5 @@ public interface TagService {
      *
      * @return list of found tags
      */
-    List<Tag> findMostExpensiveTag(long userId);
+    Tag findMostExpensiveTag(long userId);
 }

@@ -98,17 +98,14 @@ public class TagController {
     /**
      * Finds all most popular tag of a user (by cost).
      *
-     * @return list with found tags.
+     * @return optional with found tag.
      * @param userId user id
-     * @param page pagination current page.
-     * @param size pagination current page size.
+     *
      */
-    @GetMapping(produces = "application/json; charset=utf-8")
-    public List<Tag> findMostPopularUserTags(@RequestParam long userId,
-                                              @RequestParam(defaultValue = "0") int page,
-                                              @RequestParam(defaultValue = "10") int size) {
-        List<Tag> tags = tagService.findMostExpensiveTag(userId);
-        tags.forEach(wrapper::tagWrap);
-        return tags;
+    @GetMapping(produces = "application/json; charset=utf-8", params = "userId")
+    public Tag findMostPopularUserTags(@RequestParam long userId) {
+        Tag tag = tagService.findMostExpensiveTag(userId);
+        wrapper.tagWrap(tag);
+        return tag;
     }
 }

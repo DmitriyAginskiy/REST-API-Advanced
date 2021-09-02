@@ -73,8 +73,8 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public List<Tag> findMostExpensiveTag(long userId) {
+    public Optional<Tag> findMostExpensiveTag(long userId) {
         return entityManager.createNativeQuery(TagQuery.FIND_MOST_EXPENSIVE_TAG, Tag.class)
-                .setParameter(1, userId).setParameter(2, userId).getResultList();
+                .setParameter(1, userId).setParameter(2, userId).getResultList().stream().findFirst();
     }
 }
