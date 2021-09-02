@@ -37,24 +37,24 @@ public class GlobalExceptionHandler {
      *
      * @return response entity
      */
-//    @ExceptionHandler(OperationNotPerformedException.class)
-//    public ResponseEntity<ExceptionResponse> handleException(OperationNotPerformedException e) {
-//        ExceptionResponse exceptionResponse = new ExceptionResponse(OperationNotPerformedException.ERROR_CODE, e.getLocalizedMessage());
-//        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
-//    }
+    @ExceptionHandler(OperationNotPerformedException.class)
+    public ResponseEntity<ExceptionResponse> handleException(OperationNotPerformedException e) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(OperationNotPerformedException.ERROR_CODE, e.getLocalizedMessage());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
 
     /**
      * Handles all exceptions.
      *
      * @return response entity
      */
-//    @ExceptionHandler(Throwable.class)
-//    public ResponseEntity<ExceptionResponse> handleException(Throwable e) {
-//        String message = new String(ResourceBundle
-//                .getBundle(MessageKey.BUNDLE_PATH, Locale.getDefault())
-//                .getString(MessageKey.SOMETHING_WENT_WRONG)
-//                .getBytes(StandardCharsets.ISO_8859_1));
-//        ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.NOT_FOUND.value(), message);
-//        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
-//    }
+    @ExceptionHandler(Throwable.class)
+    public ResponseEntity<ExceptionResponse> handleException(Throwable e) {
+        String message = new String(ResourceBundle
+                .getBundle(MessageKey.BUNDLE_PATH, Locale.getDefault())
+                .getString(MessageKey.SOMETHING_WENT_WRONG)
+                .getBytes(StandardCharsets.ISO_8859_1));
+        ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.NOT_FOUND.value(), message);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
 }

@@ -110,8 +110,6 @@ public class Order extends RepresentationModel<Order> {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (purchasePrice != null ? purchasePrice.hashCode() : 0);
         result = 31 * result + (purchaseTime != null ? purchaseTime.hashCode() : 0);
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        result = 31 * result + (certificate != null ? certificate.hashCode() : 0);
         return result;
     }
 

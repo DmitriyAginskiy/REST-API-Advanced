@@ -5,7 +5,6 @@ import com.epam.esm.dao.OrderDao;
 import com.epam.esm.dao.UserDao;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
-import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;
 import com.epam.esm.exception.ElementSearchException;
 import com.epam.esm.exception.OperationNotPerformedException;
@@ -17,6 +16,11 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * OrderService implementation.
+ *
+ * @author Dzmitry Ahinski
+ */
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -37,13 +41,13 @@ public class OrderServiceImpl implements OrderService {
         if(order.isEmpty()) {
             Optional<User> userOptional = userDao.findById(userId);
             Optional<GiftCertificate> giftCertificateOptional = giftCertificateDao.findById(certificateId);
-            BigDecimal userCash = userOptional.orElseThrow().getCash();
-            BigDecimal certificatePrice = giftCertificateOptional.orElseThrow().getPrice();
+            BigDecimal userCash = userOptional.orElseThrow(() -> new OperationNotPerformedException(userId, certificateId)).getCash();
+            BigDecimal certificatePrice = giftCertificateOptional.orElseThrow(() -> new OperationNotPerformedException(userId, certificateId)).getPrice();
             if(userCash.compareTo(certificatePrice) >= 0) {
                 userDao.updateCash(userId, userCash.subtract(certificatePrice));
                 orderDao.buyCertificate(userId, certificateId);
             }
-            return orderDao.findByUserAndCertificate(userId, certificateId).orElseThrow(() -> new ElementSearchException(userId, certificateId));
+            return orderDao.findByUserAndCertificate(userId, certificateId).orElseThrow(() -> new OperationNotPerformedException(userId, certificateId));
         } else {
             throw new OperationNotPerformedException(userId, certificateId);
         }

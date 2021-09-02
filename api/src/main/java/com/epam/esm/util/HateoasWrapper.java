@@ -11,6 +11,11 @@ import com.epam.esm.entity.User;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
+/**
+ * Hateoas wrapper class used for wrapping entities.
+ *
+ * @author Dzmitry Ahinski
+ */
 @Component
 public class HateoasWrapper {
 
@@ -19,17 +24,27 @@ public class HateoasWrapper {
                 .findOrderById(order.getId())).withSelfRel());
         order.getCertificate().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class)
                 .findGiftCertificateById(order.getCertificate().getId())).withSelfRel());
-        order.getUser().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class)
-                .findUserById(order.getUser().getId())).withSelfRel());
-        order.getCertificate().getTags().forEach(tag -> tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
-                .methodOn(TagController.class).findTagById(tag.getId())).withSelfRel()));
+        if(order.getUser().getLinks().isEmpty()) {
+            order.getUser().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class)
+                    .findUserById(order.getUser().getId())).withSelfRel());
+        }
+        order.getCertificate().getTags().forEach(tag -> {
+            if(tag.getLinks().isEmpty()) {
+                tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
+                        .methodOn(TagController.class).findTagById(tag.getId())).withSelfRel());
+            }
+        });
     }
 
     public void certificateWrap(GiftCertificate giftCertificate) {
         giftCertificate.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class)
                 .findGiftCertificateById(giftCertificate.getId())).withSelfRel());
-        giftCertificate.getTags().forEach(tag -> tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
-                .methodOn(TagController.class).findTagById(tag.getId())).withSelfRel()));
+        giftCertificate.getTags().forEach(tag -> {
+            if(tag.getLinks().isEmpty()) {
+                tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
+                        .methodOn(TagController.class).findTagById(tag.getId())).withSelfRel());
+            }
+        });
     }
 
     public void tagWrap(Tag tag) {

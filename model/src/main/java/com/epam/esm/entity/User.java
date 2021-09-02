@@ -101,7 +101,6 @@ public class User extends RepresentationModel<Tag> {
         result = 31 * result + (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (cash != null ? cash.hashCode() : 0);
-        result = 31 * result + (orders != null ? orders.hashCode() : 0);
         return result;
     }
 
@@ -111,7 +110,6 @@ public class User extends RepresentationModel<Tag> {
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
         sb.append(", cash=").append(cash);
-        sb.append(", orders=").append(orders);
         sb.append('}');
         return sb.toString();
     }

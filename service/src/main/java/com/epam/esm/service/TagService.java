@@ -37,6 +37,8 @@ public interface TagService {
     /**
      * Finds all tags.
      *
+     * @param page current page.
+     * @param size current page size.
      * @return list of the found tags.
      */
     List<Tag> findAll(int page, int size);

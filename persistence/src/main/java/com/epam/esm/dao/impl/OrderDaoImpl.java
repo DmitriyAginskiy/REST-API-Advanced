@@ -6,12 +6,14 @@ import com.epam.esm.entity.Order;
 import com.epam.esm.entity.Tag;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 /**
  * OrderDao implementation.
@@ -38,13 +40,13 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public List<Order> findAllByUserId(long userId, int page, int size) {
         return entityManager.createNativeQuery(OrderQuery.FIND_ORDERS_BY_USER, Order.class).setParameter(1, userId)
-                .setParameter(2, page).setParameter(2, size).getResultList();
+                .setParameter(2, page).setParameter(3, size).getResultList();
     }
 
     @Override
     public Optional<Order> findByUserAndCertificate(long userId, long certificateId) {
         Query query = entityManager.createNativeQuery(OrderQuery.FIND_ORDER_BY_USER_AND_CERTIFICATE, Order.class);
         query.setParameter(1, userId).setParameter(2, certificateId);
-        return query.getResultList().stream().findAny();
+        return query.getResultList().stream().findFirst();
     }
 }
