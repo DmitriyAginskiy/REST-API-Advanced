@@ -5,6 +5,7 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.entity.User;
 import com.epam.esm.service.TagService;
 import com.epam.esm.service.UserService;
+import com.epam.esm.util.HateoasWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final HateoasWrapper wrapper;
 
     /**
      * Init the user controller class.
@@ -38,8 +40,9 @@ public class UserController {
      * @author Dzmitry Ahinski
      */
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, HateoasWrapper wrapper) {
         this.userService = userService;
+        this.wrapper = wrapper;
     }
 
 
@@ -52,8 +55,7 @@ public class UserController {
     @GetMapping(value = "/{id}", produces = "application/json; charset=utf-8")
     public User findUserById(@PathVariable long id) {
         User user = userService.findById(id);
-        user.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class)
-                .findUserById(user.getId())).withSelfRel());
+        wrapper.userWrap(user);
         return user;
     }
 
@@ -68,8 +70,7 @@ public class UserController {
     public List<User> findAll(@RequestParam(defaultValue = "0") int page,
                              @RequestParam(defaultValue = "10") int size) {
         List<User> users = userService.findAll(page, size);
-        users.forEach(user -> user.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class)
-                .findUserById(user.getId())).withSelfRel()));
+        users.forEach(wrapper::userWrap);
         return users;
     }
 

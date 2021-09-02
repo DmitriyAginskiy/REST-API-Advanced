@@ -2,6 +2,7 @@ package com.epam.esm.controller;
 
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.service.GiftCertificateService;
+import com.epam.esm.util.HateoasWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ import java.util.List;
 public class GiftCertificateController {
 
     private final GiftCertificateService certificateService;
+    private final HateoasWrapper wrapper;
 
     /**
      * Init the gift certificates controller class.
@@ -36,8 +38,9 @@ public class GiftCertificateController {
      * @author Dzmitry Ahinski
      */
     @Autowired
-    public GiftCertificateController(GiftCertificateService certificateService) {
+    public GiftCertificateController(GiftCertificateService certificateService, HateoasWrapper wrapper) {
         this.certificateService = certificateService;
+        this.wrapper = wrapper;
     }
 
     /**
@@ -49,10 +52,7 @@ public class GiftCertificateController {
     @PostMapping(produces = "application/json; charset=utf-8")
     public GiftCertificate createGiftCertificate(@RequestBody GiftCertificate certificate) {
         GiftCertificate giftCertificate = certificateService.insert(certificate);
-        giftCertificate.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class)
-                .findGiftCertificateById(giftCertificate.getId())).withSelfRel());
-        giftCertificate.getTags().forEach(tag -> tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
-                .methodOn(TagController.class).findTagById(tag.getId())).withSelfRel()));
+        wrapper.certificateWrap(giftCertificate);
         return giftCertificate;
     }
 
@@ -77,12 +77,7 @@ public class GiftCertificateController {
                                                          @RequestParam(defaultValue = "0") int page,
                                                          @RequestParam(defaultValue = "10") int size) {
         List<GiftCertificate> certificates = certificateService.findAll(certificateName, description, sortByDate, sortByName, tagName, page, size);
-        for(GiftCertificate certificate : certificates) {
-            certificate.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class)
-                    .findGiftCertificateById(certificate.getId())).withSelfRel());
-            certificate.getTags().forEach(tag -> tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
-                    .methodOn(TagController.class).findTagById(tag.getId())).withSelfRel()));
-        }
+        certificates.forEach(wrapper::certificateWrap);
         return certificates;
     }
 
@@ -95,10 +90,7 @@ public class GiftCertificateController {
     @GetMapping(value = "/{id}", produces = "application/json; charset=utf-8")
     public GiftCertificate findGiftCertificateById(@PathVariable long id) {
         GiftCertificate giftCertificate = certificateService.findById(id);
-        giftCertificate.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class)
-                .findGiftCertificateById(id)).withSelfRel());
-        giftCertificate.getTags().forEach(tag -> tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
-                .methodOn(TagController.class).findTagById(tag.getId())).withSelfRel()));
+        wrapper.certificateWrap(giftCertificate);
         return giftCertificate;
     }
 
@@ -124,10 +116,7 @@ public class GiftCertificateController {
     @PatchMapping(value = "/{id}", produces = "application/json; charset=utf-8")
     public GiftCertificate updateGiftCertificate(@PathVariable long id, @RequestBody GiftCertificate certificate) {
         GiftCertificate giftCertificate = certificateService.update(id, certificate);
-        giftCertificate.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class)
-                .findGiftCertificateById(id)).withSelfRel());
-        giftCertificate.getTags().forEach(tag -> tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
-                .methodOn(TagController.class).findTagById(tag.getId())).withSelfRel()));
+        wrapper.certificateWrap(giftCertificate);
         return giftCertificate;
     }
 }

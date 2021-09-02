@@ -5,6 +5,7 @@ import com.epam.esm.entity.Tag;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -36,7 +37,7 @@ public class GiftCertificateValidator {
         return duration > 0;
     }
 
-    public static boolean areTagsValid(List<Tag> tags) {
+    public static boolean areTagsValid(Set<Tag> tags) {
         return tags != null && tags.stream().allMatch(t -> TagValidator.isNameValid(t.getName()));
     }
 }

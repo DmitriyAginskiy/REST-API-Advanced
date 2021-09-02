@@ -14,13 +14,9 @@ import java.util.ResourceBundle;
 public class ElementSearchException extends RuntimeException {
 
     public static final int ERROR_CODE = 40401;
-    String objectField;
+    long objectField;
 
     public ElementSearchException(long objectField) {
-        this.objectField = String.valueOf(objectField);
-    }
-
-    public ElementSearchException(String objectField) {
         this.objectField = objectField;
     }
 

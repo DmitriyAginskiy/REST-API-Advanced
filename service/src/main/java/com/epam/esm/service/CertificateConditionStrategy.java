@@ -49,16 +49,16 @@ public enum CertificateConditionStrategy {
     /**
      * Adds new field condition to the list.
      *
+     * @param newCertificate as GiftCertificate object
      * @param certificate as GiftCertificate object
-     * @param conditionList with FieldCondition objects
      */
     public abstract void updateCondition(GiftCertificate newCertificate, GiftCertificate certificate);
 
     /**
      * Creates list with FieldCondition objects.
      *
+     * @param newCertificate as GiftCertificate object
      * @param certificate as GiftCertificate object
-     * @return list with FieldCondition objects
      */
     public static void updateCertificate(GiftCertificate newCertificate, GiftCertificate certificate) {
         for(CertificateConditionStrategy conditionStrategy : CertificateConditionStrategy.values()) {

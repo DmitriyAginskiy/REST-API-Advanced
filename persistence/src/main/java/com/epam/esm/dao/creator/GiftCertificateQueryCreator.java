@@ -5,6 +5,7 @@ import com.epam.esm.dao.constant.TagColumnName;
 import com.epam.esm.dao.creator.criteria.Criteria;
 import com.epam.esm.dao.creator.criteria.impl.SearchCriteria;
 import com.epam.esm.dao.creator.criteria.impl.SortCriteria;
+import com.epam.esm.entity.Tag;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -7,7 +7,7 @@ import com.epam.esm.dao.creator.criteria.impl.SearchCriteria;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ElementSearchException;
-import com.epam.esm.exception.OperationFailedException;
+import com.epam.esm.exception.OperationNotPerformedException;
 import com.epam.esm.service.CertificateConditionStrategy;
 import com.epam.esm.service.CriteriaStrategy;
 import com.epam.esm.service.GiftCertificateService;
@@ -60,9 +60,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             }
             certificateDao.insert(certificate);
             Optional<GiftCertificate> certificateOptional = certificateDao.findById(certificate.getId());
-            return certificateOptional.orElseThrow(() -> new OperationFailedException(certificate.getId()));
+            return certificateOptional.orElseThrow(() -> new OperationNotPerformedException(certificate.getId()));
         } else {
-            throw new OperationFailedException(certificate.getId());
+            throw new OperationNotPerformedException(certificate.getId());
         }
     }
 
@@ -82,6 +82,14 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     public GiftCertificate update(long id, GiftCertificate certificate) {
         Optional<GiftCertificate> giftCertificateOptional = certificateDao.findById(id);
         GiftCertificate newCertificate = giftCertificateOptional.orElseThrow(() -> new ElementSearchException(id));
+        if(certificate.getTags() != null) {
+            HashSet<Tag> tagsWithoutDuplicates = new HashSet<>(certificate.getTags());
+            List<Tag> existingTags = tagService.findAllExisting(new ArrayList<>(certificate.getTags()));
+            List<Tag> newTags = tagsWithoutDuplicates.stream().filter(t -> !existingTags
+                    .contains(t)).collect(Collectors.toList());
+            newTags.addAll(existingTags);
+            newCertificate.setTags(new HashSet<>(newTags));
+        }
         CertificateConditionStrategy.updateCertificate(newCertificate, certificate);
         certificateDao.update(newCertificate);
         return newCertificate;

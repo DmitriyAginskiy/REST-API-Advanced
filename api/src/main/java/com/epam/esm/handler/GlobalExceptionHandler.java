@@ -1,17 +1,12 @@
 package com.epam.esm.handler;
 
 import com.epam.esm.exception.ElementSearchException;
-import com.epam.esm.exception.OperationFailedException;
-import com.epam.esm.exception.util.MessageKey;
+import com.epam.esm.exception.OperationNotPerformedException;
 import com.epam.esm.handler.entity.ExceptionResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 /**
  * Global exception handler.
@@ -37,9 +32,9 @@ public class GlobalExceptionHandler {
      *
      * @return response entity
      */
-    @ExceptionHandler(OperationFailedException.class)
-    public ResponseEntity<ExceptionResponse> handleException(OperationFailedException e) {
-        ExceptionResponse exceptionResponse = new ExceptionResponse(OperationFailedException.ERROR_CODE, e.getLocalizedMessage());
+    @ExceptionHandler(OperationNotPerformedException.class)
+    public ResponseEntity<ExceptionResponse> handleException(OperationNotPerformedException e) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(OperationNotPerformedException.ERROR_CODE, e.getLocalizedMessage());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 

@@ -7,17 +7,17 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- * Custom InvalidField exception.
+ * Custom OperationNotPerformed exception.
  *
  * @author Dzmitry Ahinski
  */
-public class OperationFailedException extends RuntimeException {
+public class OperationNotPerformedException extends RuntimeException {
 
     public static final int ERROR_CODE = 40402;
-    String objectField;
+    long objectField;
 
-    public OperationFailedException(long objectField) {
-        this.objectField = String.valueOf(objectField);
+    public OperationNotPerformedException(long objectField) {
+        this.objectField = objectField;
     }
 
     @Override

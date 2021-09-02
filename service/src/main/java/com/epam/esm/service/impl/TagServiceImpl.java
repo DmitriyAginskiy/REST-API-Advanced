@@ -3,7 +3,7 @@ package com.epam.esm.service.impl;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ElementSearchException;
-import com.epam.esm.exception.OperationFailedException;
+import com.epam.esm.exception.OperationNotPerformedException;
 import com.epam.esm.service.TagService;
 import com.epam.esm.validator.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +34,9 @@ public class TagServiceImpl implements TagService {
         Optional<Tag> tagOptional = tagDao.findByName(tag.getName());
         if(TagValidator.isNameValid(tag.getName()) && tagOptional.isEmpty()) {
             tagDao.insert(tag);
-            return tagDao.findById(tag.getId()).orElseThrow(() -> new OperationFailedException(tag.getId()));
+            return tagDao.findById(tag.getId()).orElseThrow(() -> new OperationNotPerformedException(tag.getId()));
         } else {
-            throw new OperationFailedException(tag.getId());
+            throw new OperationNotPerformedException(tag.getId());
         }
     }
 

@@ -3,6 +3,7 @@ package com.epam.esm.controller;
 
 import com.epam.esm.entity.Tag;
 import com.epam.esm.service.TagService;
+import com.epam.esm.util.HateoasWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ import java.util.List;
 public class TagController {
 
     private final TagService tagService;
+    private final HateoasWrapper wrapper;
 
     /**
      * Init the tags controller class.
@@ -35,8 +37,9 @@ public class TagController {
      * @author Dzmitry Ahinski
      */
     @Autowired
-    public TagController(TagService tagService) {
+    public TagController(TagService tagService, HateoasWrapper wrapper) {
         this.tagService = tagService;
+        this.wrapper = wrapper;
     }
 
     /**
@@ -48,8 +51,7 @@ public class TagController {
     @PostMapping(produces = "application/json; charset=utf-8")
     public Tag createTag(@RequestBody Tag tag) {
         Tag insertedTag = tagService.insert(tag);
-        insertedTag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class)
-                .findTagById(insertedTag.getId())).withSelfRel());
+        wrapper.tagWrap(insertedTag);
         return insertedTag;
     }
 
@@ -62,8 +64,7 @@ public class TagController {
     @GetMapping(value = "/{id}", produces = "application/json; charset=utf-8")
     public Tag findTagById(@PathVariable long id) {
         Tag tag = tagService.findById(id);
-        tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class)
-                .findTagById(tag.getId())).withSelfRel());
+        wrapper.tagWrap(tag);
         return tag;
     }
 
@@ -78,8 +79,7 @@ public class TagController {
     public List<Tag> findAll(@RequestParam(defaultValue = "0") int page,
                              @RequestParam(defaultValue = "10") int size) {
         List<Tag> tags = tagService.findAll(page, size);
-        tags.forEach(tag -> tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class)
-                .findTagById(tag.getId())).withSelfRel()));
+        tags.forEach(wrapper::tagWrap);
         return tags;
     }
 

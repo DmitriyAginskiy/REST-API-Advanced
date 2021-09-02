@@ -21,6 +21,14 @@ public interface OrderDao {
     void buyCertificate(long userId, long certificateId);
 
     /**
+     * Finds the order by id.
+     *
+     * @param id of the object to be found.
+     * @return optional object with found order.
+     */
+    Optional<Order> findById(long id);
+
+    /**
      * Finds all orders by user id.
      *
      * @param userId as user id.
