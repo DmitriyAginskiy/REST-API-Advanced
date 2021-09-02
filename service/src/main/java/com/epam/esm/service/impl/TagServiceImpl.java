@@ -63,4 +63,9 @@ public class TagServiceImpl implements TagService {
     public List<Tag> findAllExisting(List<Tag> tags) {
         return tagDao.findAllExisting(tags);
     }
+
+    @Override
+    public List<Tag> findMostExpensiveTag(long userId) {
+        return tagDao.findMostExpensiveTag(userId);
+    }
 }

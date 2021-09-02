@@ -43,9 +43,9 @@ public class OrderServiceImpl implements OrderService {
                 userDao.updateCash(userId, userCash.subtract(certificatePrice));
                 orderDao.buyCertificate(userId, certificateId);
             }
-            return orderDao.findByUserAndCertificate(userId, certificateId).orElseThrow(() -> new ElementSearchException(userId));
+            return orderDao.findByUserAndCertificate(userId, certificateId).orElseThrow(() -> new ElementSearchException(userId, certificateId));
         } else {
-            throw new OperationNotPerformedException(certificateId);
+            throw new OperationNotPerformedException(userId, certificateId);
         }
     }
 
@@ -62,6 +62,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order findByUserAndCertificate(long userId, long certificateId) {
-        return orderDao.findByUserAndCertificate(userId, certificateId).orElseThrow(() -> new ElementSearchException(userId));
+        return orderDao.findByUserAndCertificate(userId, certificateId).orElseThrow(() -> new ElementSearchException(userId, certificateId));
     }
 }

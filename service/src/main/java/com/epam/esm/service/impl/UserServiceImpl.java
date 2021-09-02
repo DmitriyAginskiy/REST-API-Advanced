@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService {
         return userOptional.orElseThrow(() -> new ElementSearchException(id));
     }
 
+    @Transactional
     @Override
     public List<User> findAll(int page, int size) {
         return userDao.findAll(page, size);

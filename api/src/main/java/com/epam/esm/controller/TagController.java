@@ -2,6 +2,7 @@ package com.epam.esm.controller;
 
 
 import com.epam.esm.entity.Tag;
+import com.epam.esm.entity.User;
 import com.epam.esm.service.TagService;
 import com.epam.esm.util.HateoasWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,5 +93,22 @@ public class TagController {
     public ResponseEntity<String> deleteTag(@PathVariable long id) {
         tagService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
+    }
+
+    /**
+     * Finds all most popular tag of a user (by cost).
+     *
+     * @return list with found tags.
+     * @param userId user id
+     * @param page pagination current page.
+     * @param size pagination current page size.
+     */
+    @GetMapping(produces = "application/json; charset=utf-8")
+    public List<Tag> findMostPopularUserTags(@RequestParam long userId,
+                                              @RequestParam(defaultValue = "0") int page,
+                                              @RequestParam(defaultValue = "10") int size) {
+        List<Tag> tags = tagService.findMostExpensiveTag(userId);
+        tags.forEach(wrapper::tagWrap);
+        return tags;
     }
 }

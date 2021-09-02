@@ -67,4 +67,11 @@ public interface TagDao {
      * @param id as tag id
      */
     void disconnectTagFromCertificates(long id);
+
+    /**
+     * Finds the most widely used tags of a user with the highest cost of all orders
+     *
+     * @return List object of found tags
+     */
+    List<Tag> findMostExpensiveTag(long userId);
 }

@@ -71,4 +71,10 @@ public class TagDaoImpl implements TagDao {
     public void disconnectTagFromCertificates(long id) {
         entityManager.createNativeQuery(TagQuery.DISCONNECT_TAG_FROM_CERTIFICATES).setParameter(1, id).executeUpdate();
     }
+
+    @Override
+    public List<Tag> findMostExpensiveTag(long userId) {
+        return entityManager.createNativeQuery(TagQuery.FIND_MOST_EXPENSIVE_TAG, Tag.class)
+                .setParameter(1, userId).setParameter(2, userId).getResultList();
+    }
 }

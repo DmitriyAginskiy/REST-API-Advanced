@@ -41,5 +41,17 @@ public interface TagService {
      */
     List<Tag> findAll(int page, int size);
 
+    /**
+     * Finds all existing tags from list.
+     *
+     * @return list of the found tags.
+     */
     List<Tag> findAllExisting(List<Tag> tags);
+
+    /**
+     * Finds the most widely used tags of a user with the highest cost of all orders
+     *
+     * @return list of found tags
+     */
+    List<Tag> findMostExpensiveTag(long userId);
 }

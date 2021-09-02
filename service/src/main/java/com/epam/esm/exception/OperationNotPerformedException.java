@@ -14,9 +14,9 @@ import java.util.ResourceBundle;
 public class OperationNotPerformedException extends RuntimeException {
 
     public static final int ERROR_CODE = 40402;
-    long objectField;
+    long[] objectField;
 
-    public OperationNotPerformedException(long objectField) {
+    public OperationNotPerformedException(long... objectField) {
         this.objectField = objectField;
     }
 
