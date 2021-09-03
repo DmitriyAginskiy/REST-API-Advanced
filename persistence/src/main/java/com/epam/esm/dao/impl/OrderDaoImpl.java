@@ -13,7 +13,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 /**
  * OrderDao implementation.
@@ -28,7 +27,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public void buyCertificate(long userId, long certificateId) {
-        entityManager.createNativeQuery(OrderQuery.BUY_CERTIFICATE_QUERY).setParameter(1, userId).setParameter(2, userId)
+        entityManager.createNativeQuery(OrderQuery.BUY_CERTIFICATE_QUERY).setParameter(1, certificateId).setParameter(2, userId)
                 .setParameter(3, certificateId).executeUpdate();
     }
 

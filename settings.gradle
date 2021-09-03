@@ -8,7 +8,7 @@
  */
 
 rootProject.name = 'SpringAdvanced'
-include('api')
+include('web')
 include('model')
 include('persistence')
 include('service')

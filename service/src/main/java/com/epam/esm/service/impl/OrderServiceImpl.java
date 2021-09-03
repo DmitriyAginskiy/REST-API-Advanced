@@ -9,6 +9,7 @@ import com.epam.esm.entity.User;
 import com.epam.esm.exception.ElementSearchException;
 import com.epam.esm.exception.OperationNotPerformedException;
 import com.epam.esm.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ public class OrderServiceImpl implements OrderService {
     private final UserDao userDao;
     private final GiftCertificateDao giftCertificateDao;
 
+    @Autowired
     public OrderServiceImpl(OrderDao orderDao, UserDao userDao, GiftCertificateDao giftCertificateDao) {
         this.orderDao = orderDao;
         this.userDao = userDao;
