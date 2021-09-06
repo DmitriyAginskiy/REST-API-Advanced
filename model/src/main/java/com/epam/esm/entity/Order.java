@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -47,6 +48,12 @@ public class Order extends RepresentationModel<Order> {
     public Order(long id, BigDecimal purchasePrice) {
         this.id = id;
         this.purchasePrice = purchasePrice;
+    }
+
+    public Order(BigDecimal purchasePrice, User user, GiftCertificate certificate) {
+        this.purchasePrice = purchasePrice;
+        this.user = user;
+        this.certificate = certificate;
     }
 
     public long getId() {
@@ -87,6 +94,11 @@ public class Order extends RepresentationModel<Order> {
 
     public void setCertificate(GiftCertificate certificate) {
         this.certificate = certificate;
+    }
+
+    @PrePersist
+    private void onPrePersist() {
+        setPurchaseTime(LocalDateTime.now());
     }
 
     @Override
