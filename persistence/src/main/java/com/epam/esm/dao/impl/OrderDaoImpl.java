@@ -23,7 +23,7 @@ public class OrderDaoImpl implements OrderDao {
     private EntityManager entityManager;
 
     @Override
-    public void buyCertificate(long userId, long certificateId) {
+    public void createOrder(long userId, long certificateId) {
         entityManager.createNativeQuery(OrderQuery.BUY_CERTIFICATE_QUERY).setParameter(1, certificateId).setParameter(2, userId)
                 .setParameter(3, certificateId).executeUpdate();
     }

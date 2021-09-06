@@ -18,7 +18,7 @@ public interface OrderDao {
      * @param userId as user id.
      * @param certificateId as certificate id.
      */
-    void buyCertificate(long userId, long certificateId);
+    void createOrder(long userId, long certificateId);
 
     /**
      * Finds the order by id.

@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
             BigDecimal certificatePrice = giftCertificateOptional.orElseThrow(() -> new OperationNotPerformedException(userId, certificateId)).getPrice();
             if(userCash.compareTo(certificatePrice) >= 0) {
                 userDao.updateCash(userId, userCash.subtract(certificatePrice));
-                orderDao.buyCertificate(userId, certificateId);
+                orderDao.createOrder(userId, certificateId);
             }
             return orderDao.findByUserAndCertificate(userId, certificateId).orElseThrow(() -> new OperationNotPerformedException(userId, certificateId));
         } else {
