@@ -43,7 +43,7 @@ public class OrderController {
      * @param certificateId the if of the certificate to be connected.
      */
     @PostMapping(produces = "application/json; charset=utf-8")
-    public Order buyCertificate(@RequestParam long userId, @RequestParam long certificateId) {
+    public Order createOrder(@RequestParam long userId, @RequestParam long certificateId) {
         Order order = orderService.createOrder(userId, certificateId);
         wrapper.orderWrap(order);
         return order;
