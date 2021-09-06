@@ -41,13 +41,11 @@ public class OrderServiceImpl implements OrderService {
     public Order createOrder(long userId, long certificateId) {
         Optional<Order> order = orderDao.findByUserAndCertificate(userId, certificateId);
         if(order.isEmpty()) {
-            Optional<User> userOptional = userDao.findById(userId);
-            Optional<GiftCertificate> giftCertificateOptional = giftCertificateDao.findById(certificateId);
-            BigDecimal userCash = userOptional.orElseThrow(() -> new OperationNotPerformedException(userId, certificateId)).getCash();
-            BigDecimal certificatePrice = giftCertificateOptional.orElseThrow(() -> new OperationNotPerformedException(userId, certificateId)).getPrice();
-            if(userCash.compareTo(certificatePrice) >= 0) {
-                userDao.updateCash(userId, userCash.subtract(certificatePrice));
-                orderDao.createOrder(userId, certificateId);
+            User user = userDao.findById(userId).orElseThrow(() -> new ElementSearchException(userId));
+            GiftCertificate certificate = giftCertificateDao.findById(certificateId).orElseThrow(() -> new ElementSearchException(certificateId));
+            if(user.getCash().compareTo(certificate.getPrice()) >= 0) {
+                userDao.updateCash(userId, user.getCash().subtract(certificate.getPrice()));
+                orderDao.createOrder(userId, certificateId, new Order(certificate.getPrice(), user, certificate));
             }
             return orderDao.findByUserAndCertificate(userId, certificateId).orElseThrow(() -> new OperationNotPerformedException(userId, certificateId));
         } else {
