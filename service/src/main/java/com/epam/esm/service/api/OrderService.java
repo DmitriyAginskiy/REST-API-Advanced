@@ -13,7 +13,7 @@ public interface OrderService {
      * @param certificateId id of a certificate.
      * @return found order.
      */
-    Order buyCertificate(long userId, long certificateId);
+    Order createOrder(long userId, long certificateId);
 
     /**
      * Finds the order by id.

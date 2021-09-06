@@ -44,7 +44,7 @@ public class OrderController {
      */
     @PostMapping(produces = "application/json; charset=utf-8")
     public Order buyCertificate(@RequestParam long userId, @RequestParam long certificateId) {
-        Order order = orderService.buyCertificate(userId, certificateId);
+        Order order = orderService.createOrder(userId, certificateId);
         wrapper.orderWrap(order);
         return order;
     }

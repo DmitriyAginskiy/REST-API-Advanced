@@ -38,7 +38,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public Order buyCertificate(long userId, long certificateId) {
+    public Order createOrder(long userId, long certificateId) {
         Optional<Order> order = orderDao.findByUserAndCertificate(userId, certificateId);
         if(order.isEmpty()) {
             Optional<User> userOptional = userDao.findById(userId);
