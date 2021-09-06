@@ -2,8 +2,6 @@ package com.epam.esm.dao.creator;
 
 import com.epam.esm.dao.constant.TagColumnName;
 
-import javax.management.Query;
-
 /**
  * Class that creates tag queries.
  *

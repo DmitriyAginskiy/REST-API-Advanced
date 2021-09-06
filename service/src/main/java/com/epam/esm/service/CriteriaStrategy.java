@@ -1,12 +1,10 @@
 package com.epam.esm.service;
 
 import com.epam.esm.dao.constant.GiftCertificateColumnName;
-import com.epam.esm.dao.constant.TagColumnName;
 import com.epam.esm.dao.creator.criteria.Criteria;
 import com.epam.esm.dao.creator.criteria.impl.SearchCriteria;
 import com.epam.esm.dao.creator.criteria.impl.SortCriteria;
 import com.epam.esm.validator.GiftCertificateValidator;
-import com.epam.esm.validator.TagValidator;
 
 import java.util.Optional;
 

@@ -1,10 +1,8 @@
 package com.epam.esm.validator;
 
-import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -14,6 +12,7 @@ import java.util.regex.Pattern;
  * @author Dzmitry Ahinski
  */
 public class GiftCertificateValidator {
+
     private static final Pattern NAME_PATTERN = Pattern.compile("[a-zA-Z0-9\\w\\s]{1,128}");
 
     public static boolean isNameValid(String name) {

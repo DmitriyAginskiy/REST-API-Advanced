@@ -26,14 +26,12 @@ public class UserServiceImpl implements UserService {
         this.userDao = userDao;
     }
 
-    @Transactional
     @Override
     public User findById(long id) {
         Optional<User> userOptional = userDao.findById(id);
         return userOptional.orElseThrow(() -> new ElementSearchException(id));
     }
 
-    @Transactional
     @Override
     public List<User> findAll(int page, int size) {
         return userDao.findAll(page, size);
