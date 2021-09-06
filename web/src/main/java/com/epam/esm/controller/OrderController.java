@@ -1,7 +1,7 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.entity.Order;
-import com.epam.esm.service.OrderService;
+import com.epam.esm.service.api.OrderService;
 import com.epam.esm.util.HateoasWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

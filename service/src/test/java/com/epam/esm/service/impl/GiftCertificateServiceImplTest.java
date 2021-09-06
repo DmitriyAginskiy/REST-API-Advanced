@@ -2,7 +2,7 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.api.GiftCertificateDao;
 import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.service.GiftCertificateService;
+import com.epam.esm.service.api.GiftCertificateService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

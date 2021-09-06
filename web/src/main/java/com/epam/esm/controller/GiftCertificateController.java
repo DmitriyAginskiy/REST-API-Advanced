@@ -1,7 +1,7 @@
 package com.epam.esm.controller;
 
 import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.service.GiftCertificateService;
+import com.epam.esm.service.api.GiftCertificateService;
 import com.epam.esm.util.HateoasWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

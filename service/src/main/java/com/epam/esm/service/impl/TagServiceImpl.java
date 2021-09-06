@@ -4,7 +4,7 @@ import com.epam.esm.dao.api.TagDao;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ElementSearchException;
 import com.epam.esm.exception.OperationNotPerformedException;
-import com.epam.esm.service.TagService;
+import com.epam.esm.service.api.TagService;
 import com.epam.esm.validator.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -2,7 +2,7 @@ package com.epam.esm.controller;
 
 
 import com.epam.esm.entity.Tag;
-import com.epam.esm.service.TagService;
+import com.epam.esm.service.api.TagService;
 import com.epam.esm.util.HateoasWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

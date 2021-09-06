@@ -3,7 +3,7 @@ package com.epam.esm.service.impl;
 import com.epam.esm.dao.api.UserDao;
 import com.epam.esm.entity.User;
 import com.epam.esm.exception.ElementSearchException;
-import com.epam.esm.service.UserService;
+import com.epam.esm.service.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

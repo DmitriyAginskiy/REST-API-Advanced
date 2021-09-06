@@ -2,7 +2,7 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.api.TagDao;
 import com.epam.esm.entity.Tag;
-import com.epam.esm.service.TagService;
+import com.epam.esm.service.api.TagService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

@@ -2,7 +2,7 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.api.UserDao;
 import com.epam.esm.entity.User;
-import com.epam.esm.service.UserService;
+import com.epam.esm.service.api.UserService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

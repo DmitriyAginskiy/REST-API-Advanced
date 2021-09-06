@@ -1,4 +1,4 @@
-package com.epam.esm.service;
+package com.epam.esm.service.api;
 
 import com.epam.esm.entity.GiftCertificate;
 import java.util.List;

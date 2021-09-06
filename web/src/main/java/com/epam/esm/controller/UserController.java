@@ -2,7 +2,7 @@ package com.epam.esm.controller;
 
 
 import com.epam.esm.entity.User;
-import com.epam.esm.service.UserService;
+import com.epam.esm.service.api.UserService;
 import com.epam.esm.util.HateoasWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
