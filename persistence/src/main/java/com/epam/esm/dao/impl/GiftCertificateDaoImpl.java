@@ -1,6 +1,6 @@
 package com.epam.esm.dao.impl;
 
-import com.epam.esm.dao.GiftCertificateDao;
+import com.epam.esm.dao.api.GiftCertificateDao;
 import com.epam.esm.dao.constant.GiftCertificateQuery;
 import com.epam.esm.dao.creator.GiftCertificateQueryCreator;
 import com.epam.esm.dao.creator.criteria.Criteria;

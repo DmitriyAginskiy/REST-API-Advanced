@@ -1,20 +1,15 @@
 package com.epam.esm.dao.impl;
 
-import com.epam.esm.dao.UserDao;
+import com.epam.esm.dao.api.UserDao;
 import com.epam.esm.dao.constant.UserQuery;
-import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.User;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 /**
  * UserDao implementation.

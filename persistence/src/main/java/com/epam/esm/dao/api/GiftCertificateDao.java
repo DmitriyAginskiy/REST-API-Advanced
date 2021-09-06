@@ -1,4 +1,4 @@
-package com.epam.esm.dao;
+package com.epam.esm.dao.api;
 
 import com.epam.esm.dao.creator.criteria.Criteria;
 import com.epam.esm.entity.GiftCertificate;

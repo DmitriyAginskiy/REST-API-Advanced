@@ -1,6 +1,6 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.dao.GiftCertificateDao;
+import com.epam.esm.dao.api.GiftCertificateDao;
 import com.epam.esm.dao.constant.TagColumnName;
 import com.epam.esm.dao.creator.criteria.Criteria;
 import com.epam.esm.dao.creator.criteria.impl.SearchCriteria;

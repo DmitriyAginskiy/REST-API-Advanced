@@ -1,6 +1,6 @@
 package com.epam.esm.dao.impl;
 
-import com.epam.esm.dao.TagDao;
+import com.epam.esm.dao.api.TagDao;
 import com.epam.esm.dao.constant.TagQuery;
 import com.epam.esm.dao.creator.TagQueryCreator;
 import com.epam.esm.entity.Tag;

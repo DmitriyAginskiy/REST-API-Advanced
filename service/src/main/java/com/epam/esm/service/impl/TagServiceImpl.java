@@ -1,6 +1,6 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.dao.TagDao;
+import com.epam.esm.dao.api.TagDao;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ElementSearchException;
 import com.epam.esm.exception.OperationNotPerformedException;
