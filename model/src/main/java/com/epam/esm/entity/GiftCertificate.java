@@ -14,9 +14,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 /**
@@ -140,6 +143,17 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
 
     public void setOrders(Set<Order> orders) {
         this.orders = orders;
+    }
+
+    @PrePersist
+    private void onPrePersist() {
+        setCreateDate(LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
+        setLastUpdateDate(LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
+    }
+
+    @PreUpdate
+    private void onPreUpdate() {
+        setLastUpdateDate(LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
     }
 
     @Override

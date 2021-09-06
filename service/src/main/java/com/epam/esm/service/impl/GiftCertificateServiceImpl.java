@@ -50,9 +50,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                 && GiftCertificateValidator.isDescriptionValid(certificate.getDescription())
                 && GiftCertificateValidator.isPriceValid(certificate.getPrice())
                 && GiftCertificateValidator.isDurationValid(certificate.getDuration())) {
-            LocalDateTime dateTime = LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-            certificate.setCreateDate(dateTime);
-            certificate.setLastUpdateDate(dateTime);
             if(certificate.getTags() != null && !certificate.getTags().isEmpty()) {
                 HashSet<Tag> tagsWithoutDuplicates = new HashSet<>(certificate.getTags());
                 List<Tag> existingTags = tagService.findAllExisting(new ArrayList<>(certificate.getTags()));
