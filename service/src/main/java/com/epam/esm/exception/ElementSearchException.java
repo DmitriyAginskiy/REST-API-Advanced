@@ -15,10 +15,10 @@ import java.util.ResourceBundle;
 public class ElementSearchException extends RuntimeException {
 
     public static final int ERROR_CODE = 40401;
-    long[] objectField;
+    Object[] fieldValue;
 
-    public ElementSearchException(long... objectField) {
-        this.objectField = objectField;
+    public ElementSearchException(Object... fieldValue) {
+        this.fieldValue = fieldValue;
     }
 
     @Override
@@ -26,6 +26,6 @@ public class ElementSearchException extends RuntimeException {
         return new String(ResourceBundle
                 .getBundle(MessageKey.BUNDLE_PATH, Locale.getDefault())
                 .getString(MessageKey.ELEMENT_SEARCH_KEY)
-                .getBytes(StandardCharsets.ISO_8859_1)) + Arrays.toString(objectField);
+                .getBytes(StandardCharsets.ISO_8859_1)) + Arrays.toString(fieldValue);
     }
 }

@@ -3,6 +3,7 @@ package com.epam.esm.exception;
 import com.epam.esm.exception.util.MessageKey;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -14,10 +15,10 @@ import java.util.ResourceBundle;
 public class OperationNotPerformedException extends RuntimeException {
 
     public static final int ERROR_CODE = 40402;
-    long[] objectField;
+    Object[] fieldValue;
 
-    public OperationNotPerformedException(long... objectField) {
-        this.objectField = objectField;
+    public OperationNotPerformedException(Object... fieldValue) {
+        this.fieldValue = fieldValue;
     }
 
     @Override
@@ -25,6 +26,6 @@ public class OperationNotPerformedException extends RuntimeException {
         return new String(ResourceBundle
                 .getBundle(MessageKey.BUNDLE_PATH, Locale.getDefault())
                 .getString(MessageKey.OPERATION_NOT_PERFORMED)
-                .getBytes(StandardCharsets.ISO_8859_1)) + objectField;
+                .getBytes(StandardCharsets.ISO_8859_1)) + Arrays.toString(fieldValue);
     }
 }
