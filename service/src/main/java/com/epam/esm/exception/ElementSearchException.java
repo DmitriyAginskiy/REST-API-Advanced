@@ -24,8 +24,8 @@ public class ElementSearchException extends RuntimeException {
     @Override
     public String getLocalizedMessage() {
         return new String(ResourceBundle
-                .getBundle(MessageKey.BUNDLE_PATH, Locale.getDefault())
-                .getString(MessageKey.ELEMENT_SEARCH_KEY)
+                .getBundle(MessageKey.BUNDLE_PATH.getMessageKey(), Locale.getDefault())
+                .getString(MessageKey.ELEMENT_SEARCH_KEY.getMessageKey())
                 .getBytes(StandardCharsets.ISO_8859_1)) + Arrays.toString(fieldValue);
     }
 }

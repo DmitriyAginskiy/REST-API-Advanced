@@ -1,16 +1,19 @@
 package com.epam.esm.exception.util;
 
-public class MessageKey {
+public enum MessageKey {
 
-    public static final String BUNDLE_PATH = "message";
+    BUNDLE_PATH("message"),
+    ELEMENT_SEARCH_KEY("element_search"),
+    OPERATION_NOT_PERFORMED("operation_not_performed"),
+    SOMETHING_WENT_WRONG("something_went_wrong");
 
-    public static final String ELEMENT_SEARCH_KEY = "element_search";
+    private String messageKey;
 
-    public static final String OPERATION_NOT_PERFORMED = "operation_not_performed";
+    MessageKey(String messageKey) {
+        this.messageKey = messageKey;
+    }
 
-    public static final String SOMETHING_WENT_WRONG = "something_went_wrong";
-
-    private MessageKey() {
-
+    public String getMessageKey() {
+        return this.messageKey;
     }
 }

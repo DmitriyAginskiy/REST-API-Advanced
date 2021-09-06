@@ -24,8 +24,8 @@ public class OperationNotPerformedException extends RuntimeException {
     @Override
     public String getLocalizedMessage() {
         return new String(ResourceBundle
-                .getBundle(MessageKey.BUNDLE_PATH, Locale.getDefault())
-                .getString(MessageKey.OPERATION_NOT_PERFORMED)
+                .getBundle(MessageKey.BUNDLE_PATH.getMessageKey(), Locale.getDefault())
+                .getString(MessageKey.OPERATION_NOT_PERFORMED.getMessageKey())
                 .getBytes(StandardCharsets.ISO_8859_1)) + Arrays.toString(fieldValue);
     }
 }

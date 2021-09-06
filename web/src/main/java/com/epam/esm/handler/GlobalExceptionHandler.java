@@ -51,8 +51,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<ExceptionResponse> handleException(Throwable e) {
         String message = new String(ResourceBundle
-                .getBundle(MessageKey.BUNDLE_PATH, Locale.getDefault())
-                .getString(MessageKey.SOMETHING_WENT_WRONG)
+                .getBundle(MessageKey.BUNDLE_PATH.getMessageKey(), Locale.getDefault())
+                .getString(MessageKey.SOMETHING_WENT_WRONG.getMessageKey())
                 .getBytes(StandardCharsets.ISO_8859_1));
         ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.NOT_FOUND.value(), message);
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
