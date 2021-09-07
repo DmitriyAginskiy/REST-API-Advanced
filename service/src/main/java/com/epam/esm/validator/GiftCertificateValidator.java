@@ -15,23 +15,23 @@ public class GiftCertificateValidator {
 
     private static final Pattern NAME_PATTERN = Pattern.compile("[a-zA-Z0-9\\w\\s]{1,128}");
 
-    public static boolean isNameValid(String name) {
+    public boolean isNameValid(String name) {
         return (name != null) && NAME_PATTERN.matcher(name).matches();
     }
 
-    public static boolean isDescriptionValid(String description) {
+    public boolean isDescriptionValid(String description) {
         return description != null && !description.isEmpty() && description.length() < 1000;
     }
 
-    public static boolean isPriceValid(BigDecimal price) {
+    public boolean isPriceValid(BigDecimal price) {
         return price != null && price.compareTo(BigDecimal.ZERO) > 0;
     }
 
-    public static boolean isDurationValid(int duration) {
+    public boolean isDurationValid(int duration) {
         return duration > 0;
     }
 
-    public static boolean areTagsValid(Set<Tag> tags) {
+    public boolean areTagsValid(Set<Tag> tags) {
         return tags != null && tags.stream().allMatch(t -> TagValidator.isNameValid(t.getName()));
     }
 }
