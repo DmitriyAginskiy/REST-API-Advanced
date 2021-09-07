@@ -34,13 +34,13 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> findAllByUserId(long userId, int page, int size) {
-        return entityManager.createNativeQuery(OrderQuery.FIND_ORDERS_BY_USER, Order.class).setParameter(1, userId)
+        return entityManager.createNativeQuery(OrderQuery.FIND_ORDERS_BY_USER.getQuery(), Order.class).setParameter(1, userId)
                 .setParameter(2, page).setParameter(3, size).getResultList();
     }
 
     @Override
     public Optional<Order> findByUserAndCertificate(long userId, long certificateId) {
-        Query query = entityManager.createNativeQuery(OrderQuery.FIND_ORDER_BY_USER_AND_CERTIFICATE, Order.class);
+        Query query = entityManager.createNativeQuery(OrderQuery.FIND_ORDER_BY_USER_AND_CERTIFICATE.getQuery(), Order.class);
         query.setParameter(1, userId).setParameter(2, certificateId);
         return query.getResultList().stream().findFirst();
     }
