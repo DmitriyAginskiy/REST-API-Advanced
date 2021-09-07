@@ -193,6 +193,8 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
         sb.append(", duration=").append(duration);
         sb.append(", createDate=").append(createDate);
         sb.append(", lastUpdateDate=").append(lastUpdateDate);
+        sb.append(", orders=").append(orders);
+        sb.append(", tags=").append(tags);
         sb.append('}');
         return sb.toString();
     }
