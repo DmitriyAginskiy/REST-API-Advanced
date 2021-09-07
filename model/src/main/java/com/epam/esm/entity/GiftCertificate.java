@@ -171,7 +171,6 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
         if (createDate != null ? !createDate.equals(that.createDate) : that.createDate != null) return false;
         if (lastUpdateDate != null ? !lastUpdateDate.equals(that.lastUpdateDate) : that.lastUpdateDate != null)
             return false;
-        if (orders != null ? !orders.equals(that.orders) : that.orders != null) return false;
         return tags != null ? tags.equals(that.tags) : that.tags == null;
     }
 
@@ -185,7 +184,6 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
         result = 31 * result + duration;
         result = 31 * result + (createDate != null ? createDate.hashCode() : 0);
         result = 31 * result + (lastUpdateDate != null ? lastUpdateDate.hashCode() : 0);
-        result = 31 * result + (orders != null ? orders.hashCode() : 0);
         result = 31 * result + (tags != null ? tags.hashCode() : 0);
         return result;
     }
