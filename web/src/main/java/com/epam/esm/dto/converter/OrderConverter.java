@@ -5,6 +5,11 @@ import com.epam.esm.entity.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Order DTO/ENTITY converter class.
+ *
+ * @author Dzmitry Ahinski
+ */
 @Component
 public class OrderConverter {
 

@@ -6,6 +6,11 @@ import org.springframework.hateoas.RepresentationModel;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * Dto of an order.
+ *
+ * @author Dzmitry Ahinski
+ */
 public class OrderDto extends RepresentationModel<OrderDto> {
 
     private long id;

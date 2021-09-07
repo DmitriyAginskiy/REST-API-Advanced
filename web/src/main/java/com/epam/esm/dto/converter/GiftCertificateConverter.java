@@ -10,6 +10,11 @@ import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Gift certificate DTO/ENTITY converter class.
+ *
+ * @author Dzmitry Ahinski
+ */
 @Component
 public class GiftCertificateConverter {
 

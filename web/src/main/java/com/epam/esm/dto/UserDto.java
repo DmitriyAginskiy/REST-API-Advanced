@@ -4,6 +4,11 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
 
+/**
+ * Dto of a user.
+ *
+ * @author Dzmitry Ahinski
+ */
 public class UserDto extends RepresentationModel<UserDto> {
 
     private long id;

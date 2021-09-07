@@ -38,13 +38,6 @@ public class User {
         this.cash = cash;
     }
 
-    public User(long id, String name, BigDecimal cash, Set<Order> orders) {
-        this.id = id;
-        this.name = name;
-        this.cash = cash;
-        this.orders = orders;
-    }
-
     public long getId() {
         return id;
     }

@@ -4,6 +4,11 @@ import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.User;
 import org.springframework.stereotype.Component;
 
+/**
+ * User DTO/ENTITY converter class.
+ *
+ * @author Dzmitry Ahinski
+ */
 @Component
 public class UserConverter {
 

@@ -3,7 +3,7 @@ package com.epam.esm.dto;
 import org.springframework.hateoas.RepresentationModel;
 
 /**
- * Entity of a tag.
+ * Dto of a tag.
  *
  * @author Dzmitry Ahinski
  */

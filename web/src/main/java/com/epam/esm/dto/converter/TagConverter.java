@@ -4,6 +4,11 @@ import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.Tag;
 import org.springframework.stereotype.Component;
 
+/**
+ * Tag DTO/ENTITY converter class.
+ *
+ * @author Dzmitry Ahinski
+ */
 @Component
 public class TagConverter {
 
