@@ -105,6 +105,7 @@ public class Order extends RepresentationModel<Order> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
         Order order = (Order) o;
 
@@ -118,9 +119,12 @@ public class Order extends RepresentationModel<Order> {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = super.hashCode();
+        result = 31 * result + (int) (id ^ (id >>> 32));
         result = 31 * result + (purchasePrice != null ? purchasePrice.hashCode() : 0);
         result = 31 * result + (purchaseTime != null ? purchaseTime.hashCode() : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (certificate != null ? certificate.hashCode() : 0);
         return result;
     }
 
