@@ -29,13 +29,13 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> findAll(int page, int size) {
-        return entityManager.createNativeQuery(UserQuery.FIND_ALL_QUERY, User.class).setParameter(1, page * size)
+        return entityManager.createNativeQuery(UserQuery.FIND_ALL_QUERY.getQuery(), User.class).setParameter(1, page * size)
                 .setParameter(2, size).getResultList();
     }
 
     @Override
     public void updateCash(long userId, BigDecimal newCash) {
-        entityManager.createNativeQuery(UserQuery.UPDATE_CASH_QUERY).setParameter(1, newCash)
+        entityManager.createNativeQuery(UserQuery.UPDATE_CASH_QUERY.getQuery()).setParameter(1, newCash)
                 .setParameter(2, userId).executeUpdate();
     }
 }
