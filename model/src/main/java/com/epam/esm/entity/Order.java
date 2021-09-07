@@ -1,8 +1,5 @@
 package com.epam.esm.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.hateoas.RepresentationModel;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,7 +19,7 @@ import java.time.LocalDateTime;
  */
 @Entity(name = "orders")
 @Table(name = "orders")
-public class Order extends RepresentationModel<Order> {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +28,6 @@ public class Order extends RepresentationModel<Order> {
 
     private BigDecimal purchasePrice;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime purchaseTime;
 
     @ManyToOne
