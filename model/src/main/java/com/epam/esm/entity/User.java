@@ -91,8 +91,7 @@ public class User extends RepresentationModel<Tag> {
 
         if (id != user.id) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
-        if (cash != null ? !cash.equals(user.cash) : user.cash != null) return false;
-        return orders != null ? orders.equals(user.orders) : user.orders == null;
+        return cash != null ? cash.equals(user.cash) : user.cash == null;
     }
 
     @Override
