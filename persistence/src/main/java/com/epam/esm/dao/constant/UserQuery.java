@@ -1,17 +1,22 @@
 package com.epam.esm.dao.constant;
 
 /**
- * Class with the user queries.
+ * Enum with the user queries.
  *
  * @author Dzmitry Ahinski
  */
-public class UserQuery {
+public enum UserQuery {
 
-    public static final String FIND_ALL_QUERY = "SELECT * FROM users LIMIT ?, ?;";
+    FIND_ALL_QUERY("SELECT * FROM users LIMIT ?, ?;"),
+    UPDATE_CASH_QUERY("UPDATE users SET cash = ? WHERE user_id = ?;");
 
-    public static final String UPDATE_CASH_QUERY = "UPDATE users SET cash = ? WHERE user_id = ?;";
+    private String query;
 
-    private UserQuery() {
+    UserQuery(String query) {
+        this.query = query;
+    }
 
+    public String getQuery() {
+        return query;
     }
 }
