@@ -1,5 +1,7 @@
 package com.epam.esm.controller;
 
+import com.epam.esm.dto.GiftCertificateDto;
+import com.epam.esm.dto.converter.GiftCertificateConverter;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.service.api.GiftCertificateService;
 import com.epam.esm.util.HateoasWrapper;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +31,7 @@ import java.util.List;
 public class GiftCertificateController {
 
     private final GiftCertificateService certificateService;
+    private final GiftCertificateConverter converter;
     private final HateoasWrapper wrapper;
 
     /**
@@ -36,22 +40,24 @@ public class GiftCertificateController {
      * @author Dzmitry Ahinski
      */
     @Autowired
-    public GiftCertificateController(GiftCertificateService certificateService, HateoasWrapper wrapper) {
+    public GiftCertificateController(GiftCertificateService certificateService, GiftCertificateConverter converter,
+                                     HateoasWrapper wrapper) {
         this.certificateService = certificateService;
+        this.converter = converter;
         this.wrapper = wrapper;
     }
 
     /**
      * Create a new gift certificate;
      *
-     * @param certificate an object to be created
+     * @param certificateDto an object to be created
      * @return created gift certificate object
      */
     @PostMapping(produces = "application/json; charset=utf-8")
-    public GiftCertificate createGiftCertificate(@RequestBody GiftCertificate certificate) {
-        GiftCertificate giftCertificate = certificateService.insert(certificate);
-        wrapper.certificateWrap(giftCertificate);
-        return giftCertificate;
+    public GiftCertificateDto createGiftCertificate(@RequestBody GiftCertificateDto certificateDto) {
+        GiftCertificateDto giftCertificateDto = converter.convertToDto(certificateService.insert(converter.convertToEntity(certificateDto)));
+        wrapper.certificateWrap(giftCertificateDto);
+        return giftCertificateDto;
     }
 
     /**
@@ -67,16 +73,18 @@ public class GiftCertificateController {
      * @return list with found items.
      */
     @GetMapping(produces = "application/json; charset=utf-8")
-    public List<GiftCertificate> findAllGiftCertificates(@RequestParam(required = false) String certificateName,
+    public List<GiftCertificateDto> findAllGiftCertificates(@RequestParam(required = false) String certificateName,
                                                          @RequestParam(required = false) String description,
                                                          @RequestParam(required = false) String sortByDate,
                                                          @RequestParam(required = false) String sortByName,
                                                          @RequestParam(required = false) List<String> tagName,
                                                          @RequestParam(defaultValue = "0") int page,
                                                          @RequestParam(defaultValue = "10") int size) {
-        List<GiftCertificate> certificates = certificateService.findAll(certificateName, description, sortByDate, sortByName, tagName, page, size);
-        certificates.forEach(wrapper::certificateWrap);
-        return certificates;
+        List<GiftCertificateDto> certificateDtoList = new ArrayList<>();
+        certificateService.findAll(certificateName, description, sortByDate, sortByName, tagName, page, size)
+                .forEach(certificate -> certificateDtoList.add(converter.convertToDto(certificate)));
+        certificateDtoList.forEach(wrapper::certificateWrap);
+        return certificateDtoList;
     }
 
     /**
@@ -86,10 +94,10 @@ public class GiftCertificateController {
      * @return found gift certificate object.
      */
     @GetMapping(value = "/{id}", produces = "application/json; charset=utf-8")
-    public GiftCertificate findGiftCertificateById(@PathVariable long id) {
-        GiftCertificate giftCertificate = certificateService.findById(id);
-        wrapper.certificateWrap(giftCertificate);
-        return giftCertificate;
+    public GiftCertificateDto findGiftCertificateById(@PathVariable long id) {
+        GiftCertificateDto giftCertificateDto = converter.convertToDto(certificateService.findById(id));
+        wrapper.certificateWrap(giftCertificateDto);
+        return giftCertificateDto;
     }
 
     /**
@@ -108,13 +116,14 @@ public class GiftCertificateController {
      * Updates gift certificate.
      *
      * @param id the id of certificate to be updated.
-     * @param certificate with new fields for update.
+     * @param certificateDto with new fields for update.
      * @return Updated object.
      */
     @PatchMapping(value = "/{id}", produces = "application/json; charset=utf-8")
-    public GiftCertificate updateGiftCertificate(@PathVariable long id, @RequestBody GiftCertificate certificate) {
-        GiftCertificate giftCertificate = certificateService.update(id, certificate);
-        wrapper.certificateWrap(giftCertificate);
-        return giftCertificate;
+    public GiftCertificateDto updateGiftCertificate(@PathVariable long id, @RequestBody GiftCertificateDto certificateDto) {
+        GiftCertificateDto giftCertificateDto = converter.convertToDto(certificateService.update(id,
+                converter.convertToEntity(certificateDto)));
+        wrapper.certificateWrap(giftCertificateDto);
+        return giftCertificateDto;
     }
 }
