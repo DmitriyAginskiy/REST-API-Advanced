@@ -18,7 +18,7 @@ public enum CriteriaStrategy {
     CERTIFICATE_NAME {
         @Override
         public Optional<Criteria> createCriteria(String criteria) {
-            if(GiftCertificateValidator.isNameValid(criteria)) {
+            if(giftCertificateValidator.isNameValid(criteria)) {
                 return Optional.of(new SearchCriteria(GiftCertificateColumnName.NAME, criteria));
             }
             return Optional.empty();
@@ -27,7 +27,7 @@ public enum CriteriaStrategy {
     DESCRIPTION {
         @Override
         public Optional<Criteria> createCriteria(String criteria) {
-            if(GiftCertificateValidator.isDescriptionValid(criteria)) {
+            if(giftCertificateValidator.isDescriptionValid(criteria)) {
                 return Optional.of(new SearchCriteria(GiftCertificateColumnName.DESCRIPTION, criteria));
             }
             return Optional.empty();
@@ -55,6 +55,8 @@ public enum CriteriaStrategy {
             return Optional.empty();
         }
     };
+
+    private static final GiftCertificateValidator giftCertificateValidator = new GiftCertificateValidator();
 
     /**
      * Creates criteria object from String.

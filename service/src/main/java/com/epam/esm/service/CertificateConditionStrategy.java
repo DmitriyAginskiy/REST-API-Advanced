@@ -14,7 +14,7 @@ public enum CertificateConditionStrategy {
         @Override
         public void updateCondition(GiftCertificate newCertificate, GiftCertificate certificate) {
             if(!newCertificate.getName().equals(certificate.getName())
-                    && GiftCertificateValidator.isNameValid(certificate.getName())) {
+                    && giftCertificateValidator.isNameValid(certificate.getName())) {
                 newCertificate.setName(certificate.getName());
             }
         }
@@ -23,7 +23,7 @@ public enum CertificateConditionStrategy {
         @Override
         public void updateCondition(GiftCertificate newCertificate, GiftCertificate certificate) {
             if(!newCertificate.getDescription().equals(certificate.getDescription())
-                    && GiftCertificateValidator.isDescriptionValid(certificate.getDescription())) {
+                    && giftCertificateValidator.isDescriptionValid(certificate.getDescription())) {
                 newCertificate.setDescription(certificate.getDescription());
             }
         }
@@ -32,7 +32,7 @@ public enum CertificateConditionStrategy {
         @Override
         public void updateCondition(GiftCertificate newCertificate, GiftCertificate certificate) {
             if(!newCertificate.getPrice().equals(certificate.getPrice())
-                    && GiftCertificateValidator.isPriceValid(certificate.getPrice())) {
+                    && giftCertificateValidator.isPriceValid(certificate.getPrice())) {
                 newCertificate.setPrice(certificate.getPrice());
             }
         }
@@ -40,11 +40,13 @@ public enum CertificateConditionStrategy {
     DURATION {
         @Override
         public void updateCondition(GiftCertificate newCertificate, GiftCertificate certificate) {
-            if(newCertificate.getDuration() != certificate.getDuration() && GiftCertificateValidator.isNameValid(certificate.getName())) {
+            if(newCertificate.getDuration() != certificate.getDuration() && giftCertificateValidator.isNameValid(certificate.getName())) {
                 newCertificate.setDuration(certificate.getDuration());
             }
         }
     };
+
+    private static final GiftCertificateValidator giftCertificateValidator = new GiftCertificateValidator();
 
     /**
      * Adds new field condition to the list.
