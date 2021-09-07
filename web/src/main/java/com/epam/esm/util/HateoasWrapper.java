@@ -5,7 +5,9 @@ import com.epam.esm.controller.OrderController;
 import com.epam.esm.controller.TagController;
 import com.epam.esm.controller.UserController;
 import com.epam.esm.dto.GiftCertificateDto;
+import com.epam.esm.dto.OrderDto;
 import com.epam.esm.dto.TagDto;
+import com.epam.esm.dto.UserDto;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.Tag;
@@ -21,16 +23,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class HateoasWrapper {
 
-    public void orderWrap(Order order) {
-        order.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(OrderController.class)
-                .findOrderById(order.getId())).withSelfRel());
-        order.getCertificate().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class)
-                .findGiftCertificateById(order.getCertificate().getId())).withSelfRel());
-        if(order.getUser().getLinks().isEmpty()) {
-            order.getUser().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class)
-                    .findUserById(order.getUser().getId())).withSelfRel());
+    public void orderWrap(OrderDto orderDto) {
+        orderDto.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(OrderController.class)
+                .findOrderById(orderDto.getId())).withSelfRel());
+        orderDto.getCertificateDto().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class)
+                .findGiftCertificateById(orderDto.getCertificateDto().getId())).withSelfRel());
+        if(orderDto.getUserDto().getLinks().isEmpty()) {
+            orderDto.getUserDto().add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class)
+                    .findUserById(orderDto.getUserDto().getId())).withSelfRel());
         }
-        order.getCertificate().getTags().forEach(tag -> {
+        orderDto.getCertificateDto().getTags().forEach(tag -> {
             if(tag.getLinks().isEmpty()) {
                 tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
                         .methodOn(TagController.class).findTagById(tag.getId())).withSelfRel());
@@ -54,8 +56,8 @@ public class HateoasWrapper {
                 .findTagById(tagDto.getId())).withSelfRel());
     }
 
-    public void userWrap(User user) {
-        user.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class)
-                .findUserById(user.getId())).withSelfRel());
+    public void userWrap(UserDto userDto) {
+        userDto.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class)
+                .findUserById(userDto.getId())).withSelfRel());
     }
 }
