@@ -1,7 +1,8 @@
 package com.epam.esm.controller;
 
 
-import com.epam.esm.entity.User;
+import com.epam.esm.dto.UserDto;
+import com.epam.esm.dto.converter.UserConverter;
 import com.epam.esm.service.api.UserService;
 import com.epam.esm.util.HateoasWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +25,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final UserConverter userConverter;
     private final HateoasWrapper wrapper;
 
     /**
@@ -31,8 +34,9 @@ public class UserController {
      * @author Dzmitry Ahinski
      */
     @Autowired
-    public UserController(UserService userService, HateoasWrapper wrapper) {
+    public UserController(UserService userService, UserConverter userConverter, HateoasWrapper wrapper) {
         this.userService = userService;
+        this.userConverter = userConverter;
         this.wrapper = wrapper;
     }
 
@@ -44,10 +48,10 @@ public class UserController {
      * @return found user object.
      */
     @GetMapping(value = "/{id}", produces = "application/json; charset=utf-8")
-    public User findUserById(@PathVariable long id) {
-        User user = userService.findById(id);
-        wrapper.userWrap(user);
-        return user;
+    public UserDto findUserById(@PathVariable long id) {
+        UserDto userDto = userConverter.convertToDto(userService.findById(id));
+        wrapper.userWrap(userDto);
+        return userDto;
     }
 
     /**
@@ -58,10 +62,11 @@ public class UserController {
      * @param size pagination current page size.
      */
     @GetMapping(produces = "application/json; charset=utf-8")
-    public List<User> findAll(@RequestParam(defaultValue = "0") int page,
+    public List<UserDto> findAll(@RequestParam(defaultValue = "0") int page,
                              @RequestParam(defaultValue = "10") int size) {
-        List<User> users = userService.findAll(page, size);
-        users.forEach(wrapper::userWrap);
-        return users;
+        List<UserDto> userDtoList = new ArrayList<>();
+        userService.findAll(page, size).forEach(user -> userDtoList.add(userConverter.convertToDto(user)));
+        userDtoList.forEach(wrapper::userWrap);
+        return userDtoList;
     }
 }

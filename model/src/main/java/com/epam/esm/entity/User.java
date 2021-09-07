@@ -1,8 +1,5 @@
 package com.epam.esm.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.hateoas.RepresentationModel;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +17,7 @@ import java.util.Set;
  */
 @Entity(name = "users")
 @Table(name = "users")
-public class User extends RepresentationModel<Tag> {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +27,6 @@ public class User extends RepresentationModel<Tag> {
     private String name;
     private BigDecimal cash;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private Set<Order> orders;
 
