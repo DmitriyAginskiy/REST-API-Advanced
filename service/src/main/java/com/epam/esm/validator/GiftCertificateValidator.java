@@ -1,6 +1,7 @@
 package com.epam.esm.validator;
 
 import com.epam.esm.entity.Tag;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -11,6 +12,7 @@ import java.util.regex.Pattern;
  *
  * @author Dzmitry Ahinski
  */
+@Component
 public class GiftCertificateValidator {
 
     private static final Pattern NAME_PATTERN = Pattern.compile("[a-zA-Z0-9\\w\\s]{1,128}");
@@ -29,9 +31,5 @@ public class GiftCertificateValidator {
 
     public boolean isDurationValid(int duration) {
         return duration > 0;
-    }
-
-    public boolean areTagsValid(Set<Tag> tags) {
-        return tags != null && tags.stream().allMatch(t -> TagValidator.isNameValid(t.getName()));
     }
 }

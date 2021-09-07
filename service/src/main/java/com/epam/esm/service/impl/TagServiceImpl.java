@@ -22,17 +22,19 @@ import java.util.Optional;
 public class TagServiceImpl implements TagService {
 
     private final TagDao tagDao;
+    private final TagValidator tagValidator;
 
     @Autowired
-    public TagServiceImpl(TagDao tagDao) {
+    public TagServiceImpl(TagDao tagDao, TagValidator tagValidator) {
         this.tagDao = tagDao;
+        this.tagValidator = tagValidator;
     }
 
     @Transactional
     @Override
     public Tag insert(Tag tag) {
         Optional<Tag> tagOptional = tagDao.findByName(tag.getName());
-        if(TagValidator.isNameValid(tag.getName()) && tagOptional.isEmpty()) {
+        if(tagValidator.isNameValid(tag.getName()) && tagOptional.isEmpty()) {
             tagDao.insert(tag);
             return tagDao.findById(tag.getId()).orElseThrow(() -> new OperationNotPerformedException(tag.getId()));
         } else {

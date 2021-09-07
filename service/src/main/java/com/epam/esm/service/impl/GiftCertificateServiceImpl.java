@@ -34,20 +34,25 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     private final GiftCertificateDao certificateDao;
     private final TagService tagService;
+    private final GiftCertificateValidator giftCertificateValidator;
+    private final TagValidator tagValidator;
 
     @Autowired
-    public GiftCertificateServiceImpl(GiftCertificateDao certificateDao, TagService tagService) {
+    public GiftCertificateServiceImpl(GiftCertificateDao certificateDao, TagService tagService,
+                                      GiftCertificateValidator giftCertificateValidator, TagValidator tagValidator) {
         this.certificateDao = certificateDao;
         this.tagService = tagService;
+        this.giftCertificateValidator = giftCertificateValidator;
+        this.tagValidator = tagValidator;
     }
 
     @Transactional
     @Override
     public GiftCertificate insert(GiftCertificate certificate) {
-        if(certificate != null && GiftCertificateValidator.isNameValid(certificate.getName())
-                && GiftCertificateValidator.isDescriptionValid(certificate.getDescription())
-                && GiftCertificateValidator.isPriceValid(certificate.getPrice())
-                && GiftCertificateValidator.isDurationValid(certificate.getDuration())) {
+        if(certificate != null && giftCertificateValidator.isNameValid(certificate.getName())
+                && giftCertificateValidator.isDescriptionValid(certificate.getDescription())
+                && giftCertificateValidator.isPriceValid(certificate.getPrice())
+                && giftCertificateValidator.isDurationValid(certificate.getDuration())) {
             if(certificate.getTags() != null && !certificate.getTags().isEmpty()) {
                 HashSet<Tag> tagsWithoutDuplicates = new HashSet<>(certificate.getTags());
                 List<Tag> existingTags = tagService.findAllExisting(new ArrayList<>(certificate.getTags()));
@@ -110,7 +115,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             criteriaOptional.ifPresent(criteriaList::add);
         }
         if(tagName != null && !tagName.isEmpty()) {
-            List<String> validTagNames = tagName.stream().filter(TagValidator::isNameValid).collect(Collectors.toList());
+            List<String> validTagNames = tagName.stream().filter(tagValidator::isNameValid).collect(Collectors.toList());
             validTagNames.forEach(tag -> criteriaList.add(new SearchCriteria(TagColumnName.TAG_NAME, tag)));
         }
         if(criteriaList.isEmpty()) {
