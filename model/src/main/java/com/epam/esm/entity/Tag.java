@@ -1,8 +1,5 @@
 package com.epam.esm.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import org.springframework.hateoas.RepresentationModel;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
