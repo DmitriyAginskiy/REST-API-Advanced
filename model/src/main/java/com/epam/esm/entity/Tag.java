@@ -25,7 +25,7 @@ public class Tag extends RepresentationModel<Tag> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tag_id")
     private long id;
-    @Column(name = "tag_name")
+    @Column(name = "tag_name", unique = true)
     private String name;
 
     @JsonIgnore
