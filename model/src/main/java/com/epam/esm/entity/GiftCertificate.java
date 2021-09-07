@@ -28,7 +28,7 @@ import java.util.Set;
  */
 @Entity(name = "gift_certificates")
 @Table(name = "gift_certificates")
-public class GiftCertificate extends RepresentationModel<GiftCertificate> {
+public class GiftCertificate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,12 +39,9 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
     private String description;
     private BigDecimal price;
     private int duration;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createDate;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastUpdateDate;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "certificate")
     private Set<Order> orders;
 
@@ -58,6 +55,14 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
 
     public GiftCertificate() {
 
+    }
+
+    public GiftCertificate(String name, String description, BigDecimal price, int duration, Set<Tag> tags) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.duration = duration;
+        this.tags = tags;
     }
 
     public GiftCertificate(long id, String name, String description, BigDecimal price, int duration, LocalDateTime createDate,
