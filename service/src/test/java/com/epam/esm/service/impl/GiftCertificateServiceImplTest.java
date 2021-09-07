@@ -3,6 +3,8 @@ package com.epam.esm.service.impl;
 import com.epam.esm.dao.api.GiftCertificateDao;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.service.api.GiftCertificateService;
+import com.epam.esm.validator.GiftCertificateValidator;
+import com.epam.esm.validator.TagValidator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -32,7 +34,7 @@ public class GiftCertificateServiceImplTest {
     @BeforeAll
     public void init() {
         MockitoAnnotations.initMocks(this);
-        service = new GiftCertificateServiceImpl(dao, null);
+        service = new GiftCertificateServiceImpl(dao, null, new GiftCertificateValidator(), new TagValidator());
     }
 
     @Test

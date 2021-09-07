@@ -8,10 +8,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class TagValidatorTest {
 
     private static Tag tag = new Tag(1, "SomeName");
+    private static TagValidator tagValidator = new TagValidator();
 
     @Test
     void isNameValid() {
-        boolean actual = TagValidator.isNameValid(tag.getName());
+        boolean actual = tagValidator.isNameValid(tag.getName());
         assertTrue(actual);
     }
 }

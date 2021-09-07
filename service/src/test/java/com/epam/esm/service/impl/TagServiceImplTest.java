@@ -3,6 +3,7 @@ package com.epam.esm.service.impl;
 import com.epam.esm.dao.api.TagDao;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.service.api.TagService;
+import com.epam.esm.validator.TagValidator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -26,7 +27,7 @@ class TagServiceImplTest {
     @BeforeAll
     public void init() {
         MockitoAnnotations.initMocks(this);
-        service = new TagServiceImpl(dao);
+        service = new TagServiceImpl(dao, new TagValidator());
     }
 
     @Test

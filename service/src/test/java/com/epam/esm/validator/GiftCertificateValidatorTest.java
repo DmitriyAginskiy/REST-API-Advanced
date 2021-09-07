@@ -7,9 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class GiftCertificateValidatorTest {
 
     private static GiftCertificate certificate;
+    private static GiftCertificateValidator giftCertificateValidator;
 
     @BeforeAll
     public static void setUp() {
@@ -24,35 +23,30 @@ class GiftCertificateValidatorTest {
         tags.add(new Tag(1, "TagName"));
         certificate = new GiftCertificate(1, "SomeName", "Description", new BigDecimal("15.2"), 5, LocalDateTime.now(),
                 LocalDateTime.now(), tags);
+        giftCertificateValidator = new GiftCertificateValidator();
     }
 
     @Test
     void isNameValid() {
-        boolean actual = GiftCertificateValidator.isNameValid(certificate.getName());
+        boolean actual = giftCertificateValidator.isNameValid(certificate.getName());
         assertTrue(actual);
     }
 
     @Test
     void isDescriptionValid() {
-        boolean actual = GiftCertificateValidator.isDescriptionValid(certificate.getDescription());
+        boolean actual = giftCertificateValidator.isDescriptionValid(certificate.getDescription());
         assertTrue(actual);
     }
 
     @Test
     void isPriceValid() {
-        boolean actual = GiftCertificateValidator.isPriceValid(certificate.getPrice());
+        boolean actual = giftCertificateValidator.isPriceValid(certificate.getPrice());
         assertTrue(actual);
     }
 
     @Test
     void isDurationValid() {
-        boolean actual = GiftCertificateValidator.isDurationValid(certificate.getDuration());
-        assertTrue(actual);
-    }
-
-    @Test
-    void areTagsValid() {
-        boolean actual = GiftCertificateValidator.areTagsValid(certificate.getTags());
+        boolean actual = giftCertificateValidator.isDurationValid(certificate.getDuration());
         assertTrue(actual);
     }
 }
