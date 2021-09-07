@@ -159,6 +159,7 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
         GiftCertificate that = (GiftCertificate) o;
 
@@ -168,18 +169,24 @@ public class GiftCertificate extends RepresentationModel<GiftCertificate> {
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (price != null ? !price.equals(that.price) : that.price != null) return false;
         if (createDate != null ? !createDate.equals(that.createDate) : that.createDate != null) return false;
-        return lastUpdateDate != null ? lastUpdateDate.equals(that.lastUpdateDate) : that.lastUpdateDate == null;
+        if (lastUpdateDate != null ? !lastUpdateDate.equals(that.lastUpdateDate) : that.lastUpdateDate != null)
+            return false;
+        if (orders != null ? !orders.equals(that.orders) : that.orders != null) return false;
+        return tags != null ? tags.equals(that.tags) : that.tags == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = super.hashCode();
+        result = 31 * result + (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + duration;
         result = 31 * result + (createDate != null ? createDate.hashCode() : 0);
         result = 31 * result + (lastUpdateDate != null ? lastUpdateDate.hashCode() : 0);
+        result = 31 * result + (orders != null ? orders.hashCode() : 0);
+        result = 31 * result + (tags != null ? tags.hashCode() : 0);
         return result;
     }
 
