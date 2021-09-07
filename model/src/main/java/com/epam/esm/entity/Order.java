@@ -134,6 +134,8 @@ public class Order extends RepresentationModel<Order> {
         sb.append("id=").append(id);
         sb.append(", purchasePrice=").append(purchasePrice);
         sb.append(", purchaseTime=").append(purchaseTime);
+        sb.append(", user=").append(user);
+        sb.append(", certificate=").append(certificate);
         sb.append('}');
         return sb.toString();
     }
