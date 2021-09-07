@@ -5,6 +5,7 @@ import com.epam.esm.controller.OrderController;
 import com.epam.esm.controller.TagController;
 import com.epam.esm.controller.UserController;
 import com.epam.esm.dto.GiftCertificateDto;
+import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.Tag;
@@ -40,17 +41,17 @@ public class HateoasWrapper {
     public void certificateWrap(GiftCertificateDto giftCertificateDto) {
         giftCertificateDto.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(GiftCertificateController.class)
                 .findGiftCertificateById(giftCertificateDto.getId())).withSelfRel());
-        giftCertificateDto.getTags().forEach(tag -> {
+        giftCertificateDto.getTags().forEach(tagDto -> {
             if(tagDto.getLinks().isEmpty()) {
-                tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
-                        .methodOn(TagController.class).findTagById(tag.getId())).withSelfRel());
+                tagDto.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
+                        .methodOn(TagController.class).findTagById(tagDto.getId())).withSelfRel());
             }
         });
     }
 
-    public void tagWrap(Tag tag) {
-        tag.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class)
-                .findTagById(tag.getId())).withSelfRel());
+    public void tagWrap(TagDto tagDto) {
+        tagDto.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(TagController.class)
+                .findTagById(tagDto.getId())).withSelfRel());
     }
 
     public void userWrap(User user) {

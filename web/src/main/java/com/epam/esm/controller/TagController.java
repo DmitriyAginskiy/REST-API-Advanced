@@ -1,6 +1,8 @@
 package com.epam.esm.controller;
 
 
+import com.epam.esm.dto.TagDto;
+import com.epam.esm.dto.converter.TagConverter;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.service.api.TagService;
 import com.epam.esm.util.HateoasWrapper;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +31,7 @@ import java.util.List;
 public class TagController {
 
     private final TagService tagService;
+    private final TagConverter tagConverter;
     private final HateoasWrapper wrapper;
 
     /**
@@ -36,20 +40,21 @@ public class TagController {
      * @author Dzmitry Ahinski
      */
     @Autowired
-    public TagController(TagService tagService, HateoasWrapper wrapper) {
+    public TagController(TagService tagService, TagConverter tagConverter, HateoasWrapper wrapper) {
         this.tagService = tagService;
+        this.tagConverter = tagConverter;
         this.wrapper = wrapper;
     }
 
     /**
      * Create a new tag.
      *
-     * @param tag an object to be created
+     * @param tagDto an object to be created
      * @return created Tag object.
      */
     @PostMapping(produces = "application/json; charset=utf-8")
-    public Tag createTag(@RequestBody Tag tag) {
-        Tag insertedTag = tagService.insert(tag);
+    public TagDto createTag(@RequestBody TagDto tagDto) {
+        TagDto insertedTag = tagConverter.convertToDto(tagService.insert(tagConverter.convertToEntity(tagDto)));
         wrapper.tagWrap(insertedTag);
         return insertedTag;
     }
@@ -61,10 +66,10 @@ public class TagController {
      * @return found tag object.
      */
     @GetMapping(value = "/{id}", produces = "application/json; charset=utf-8")
-    public Tag findTagById(@PathVariable long id) {
-        Tag tag = tagService.findById(id);
-        wrapper.tagWrap(tag);
-        return tag;
+    public TagDto findTagById(@PathVariable long id) {
+        TagDto tagDto = tagConverter.convertToDto(tagService.findById(id));
+        wrapper.tagWrap(tagDto);
+        return tagDto;
     }
 
     /**
@@ -75,11 +80,12 @@ public class TagController {
      * @param size pagination current page size.
      */
     @GetMapping(produces = "application/json; charset=utf-8")
-    public List<Tag> findAll(@RequestParam(defaultValue = "0") int page,
+    public List<TagDto> findAll(@RequestParam(defaultValue = "0") int page,
                              @RequestParam(defaultValue = "10") int size) {
-        List<Tag> tags = tagService.findAll(page, size);
-        tags.forEach(wrapper::tagWrap);
-        return tags;
+        List<TagDto> tagDtoList = new ArrayList<>();
+        tagService.findAll(page, size).forEach(tag -> tagDtoList.add(tagConverter.convertToDto(tag)));
+        tagDtoList.forEach(wrapper::tagWrap);
+        return tagDtoList;
     }
 
     /**
@@ -101,9 +107,9 @@ public class TagController {
      *
      */
     @GetMapping(produces = "application/json; charset=utf-8", params = "userId")
-    public Tag findMostPopularUserTags(@RequestParam long userId) {
-        Tag tag = tagService.findMostExpensiveTag(userId);
-        wrapper.tagWrap(tag);
-        return tag;
+    public TagDto findMostPopularUserTag(@RequestParam long userId) {
+        TagDto tagDto = tagConverter.convertToDto(tagService.findMostExpensiveTag(userId));
+        wrapper.tagWrap(tagDto);
+        return tagDto;
     }
 }

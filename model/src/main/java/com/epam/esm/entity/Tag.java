@@ -19,7 +19,7 @@ import java.util.Set;
  */
 @Entity(name = "tags")
 @Table(name = "tags")
-public class Tag extends RepresentationModel<Tag> {
+public class Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,6 @@ public class Tag extends RepresentationModel<Tag> {
     @Column(name = "tag_name", unique = true)
     private String name;
 
-    @JsonIgnore
     @ManyToMany(mappedBy = "tags")
     private Set<GiftCertificate> giftCertificates;
 
