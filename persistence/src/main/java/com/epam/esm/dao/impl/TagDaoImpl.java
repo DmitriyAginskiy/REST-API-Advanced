@@ -45,14 +45,14 @@ public class TagDaoImpl implements TagDao {
 
     @Override
     public Optional<Tag> findByName(String name) {
-       Query query = entityManager.createNativeQuery(TagQuery.FIND_BY_NAME, Tag.class);
+       Query query = entityManager.createNativeQuery(TagQuery.FIND_BY_NAME.getQuery(), Tag.class);
        query = query.setParameter(1, name);
        return query.getResultList().stream().findFirst();
     }
 
     @Override
     public List<Tag> findAll(int page, int size) {
-        return entityManager.createNativeQuery(TagQuery.FIND_ALL_TAGS, Tag.class)
+        return entityManager.createNativeQuery(TagQuery.FIND_ALL_TAGS.getQuery(), Tag.class)
                 .setParameter(1, page * size).setParameter(2, size).getResultList();
     }
 
@@ -69,12 +69,12 @@ public class TagDaoImpl implements TagDao {
 
     @Override
     public void disconnectTagFromCertificates(long id) {
-        entityManager.createNativeQuery(TagQuery.DISCONNECT_TAG_FROM_CERTIFICATES).setParameter(1, id).executeUpdate();
+        entityManager.createNativeQuery(TagQuery.DISCONNECT_TAG_FROM_CERTIFICATES.getQuery()).setParameter(1, id).executeUpdate();
     }
 
     @Override
     public Optional<Tag> findMostExpensiveTag(long userId) {
-        return entityManager.createNativeQuery(TagQuery.FIND_MOST_EXPENSIVE_TAG, Tag.class)
+        return entityManager.createNativeQuery(TagQuery.FIND_MOST_EXPENSIVE_TAG.getQuery(), Tag.class)
                 .setParameter(1, userId).setParameter(2, userId).getResultList().stream().findFirst();
     }
 }
