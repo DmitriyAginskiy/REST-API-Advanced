@@ -4,6 +4,7 @@ import com.epam.esm.dao.api.OrderDao;
 import com.epam.esm.dao.constant.OrderQuery;
 import com.epam.esm.entity.Order;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -39,9 +40,10 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Optional<Order> findByUserAndCertificate(long userId, long certificateId) {
+    public List<Order> findByUserAndCertificate(long userId, long certificateId) {
         Query query = entityManager.createNativeQuery(OrderQuery.FIND_ORDER_BY_USER_AND_CERTIFICATE.getQuery(), Order.class);
         query.setParameter(1, userId).setParameter(2, certificateId);
-        return query.getResultList().stream().findFirst();
+        System.out.println(query.getResultList());
+        return query.getResultList();
     }
 }

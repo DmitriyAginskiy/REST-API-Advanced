@@ -87,12 +87,13 @@ public class OrderController {
      *
      * @param userId the id of the user.
      * @param certificateId the id of the certificate.
-     * @return found order.
+     * @return found orders.
      */
     @GetMapping(produces = "application/json; charset=utf-8", params = { "userId", "certificateId" })
-    public OrderDto findAllByUserAndCertificate(@RequestParam long userId, @RequestParam long certificateId) {
-        OrderDto orderDto = orderConverter.convertToDto(orderService.findByUserAndCertificate(userId, certificateId));
-        wrapper.orderWrap(orderDto);
-        return orderDto;
+    public List<OrderDto> findAllByUserAndCertificate(@RequestParam long userId, @RequestParam long certificateId) {
+        List<OrderDto> orderDtoList = new ArrayList<>();
+        orderService.findByUserAndCertificate(userId, certificateId).forEach(order -> orderDtoList.add(orderConverter.convertToDto(order)));
+        orderDtoList.forEach(wrapper::orderWrap);
+        return orderDtoList;
     }
 }

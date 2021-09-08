@@ -44,6 +44,8 @@ public interface OrderDao {
      *
      * @param userId as user id.
      * @param certificateId as certificate id.
+     *
+     * @return list of cound certificates
      */
-    Optional<Order> findByUserAndCertificate(long userId, long certificateId);
+    List<Order> findByUserAndCertificate(long userId, long certificateId);
 }

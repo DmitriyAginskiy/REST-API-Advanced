@@ -55,8 +55,8 @@ class OrderServiceImplTest {
 
     @Test
     void findByUserAndCertificate() {
-        Mockito.when(orderDao.findByUserAndCertificate(1, 1)).thenReturn(Optional.of(order));
-        Order actual = orderService.findByUserAndCertificate(1, 1);
-        assertEquals(order, actual);
+        Mockito.when(orderDao.findByUserAndCertificate(1, 1)).thenReturn(List.of(order));
+        List<Order> actual = orderService.findByUserAndCertificate(1, 1);
+        assertEquals(order, actual.get(0));
     }
 }

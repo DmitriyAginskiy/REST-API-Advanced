@@ -38,18 +38,16 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public Order createOrder(long userId, long certificateId) {
-        Optional<Order> order = orderDao.findByUserAndCertificate(userId, certificateId);
-        if(order.isEmpty()) {
-            User user = userDao.findById(userId).orElseThrow(() -> new ElementSearchException(userId));
-            GiftCertificate certificate = giftCertificateDao.findById(certificateId).orElseThrow(() -> new ElementSearchException(certificateId));
-            if(user.getCash().compareTo(certificate.getPrice()) >= 0) {
-                userDao.updateCash(userId, user.getCash().subtract(certificate.getPrice()));
-                orderDao.createOrder(userId, certificateId, new Order(certificate.getPrice(), user, certificate));
-            }
-            return orderDao.findByUserAndCertificate(userId, certificateId).orElseThrow(() -> new OperationNotPerformedException(userId, certificateId));
+        User user = userDao.findById(userId).orElseThrow(() -> new ElementSearchException(userId));
+        GiftCertificate certificate = giftCertificateDao.findById(certificateId).orElseThrow(() -> new ElementSearchException(certificateId));
+        Order order = new Order(certificate.getPrice(), user, certificate);
+        if(user.getCash().compareTo(certificate.getPrice()) >= 0) {
+            userDao.updateCash(userId, user.getCash().subtract(certificate.getPrice()));
+            orderDao.createOrder(userId, certificateId, order);
         } else {
             throw new OperationNotPerformedException(userId, certificateId);
         }
+        return order;
     }
 
     @Override
@@ -64,7 +62,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order findByUserAndCertificate(long userId, long certificateId) {
-        return orderDao.findByUserAndCertificate(userId, certificateId).orElseThrow(() -> new ElementSearchException(userId, certificateId));
+    public List<Order> findByUserAndCertificate(long userId, long certificateId) {
+        return orderDao.findByUserAndCertificate(userId, certificateId);
     }
 }

@@ -39,7 +39,7 @@ public interface OrderService {
      * @param userId user id.
      * @param certificateId certificate id
      *
-     * @return found order.
+     * @return found orders.
      */
-    Order findByUserAndCertificate(long userId, long certificateId);
+    List<Order> findByUserAndCertificate(long userId, long certificateId);
 }
