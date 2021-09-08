@@ -116,7 +116,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         }
         if(tagName != null && !tagName.isEmpty()) {
             List<String> validTagNames = tagName.stream().filter(tagValidator::isNameValid).collect(Collectors.toList());
-            validTagNames.forEach(tag -> criteriaList.add(new SearchCriteria(TagColumnName.TAG_NAME, tag)));
+            validTagNames.forEach(tag -> criteriaList.add(new SearchCriteria(TagColumnName.TAG_NAME.getColumnName(), tag)));
         }
         if(criteriaList.isEmpty()) {
             return certificateDao.findAll(page, size);

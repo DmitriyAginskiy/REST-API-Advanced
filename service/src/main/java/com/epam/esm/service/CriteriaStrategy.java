@@ -19,7 +19,7 @@ public enum CriteriaStrategy {
         @Override
         public Optional<Criteria> createCriteria(String criteria) {
             if(giftCertificateValidator.isNameValid(criteria)) {
-                return Optional.of(new SearchCriteria(GiftCertificateColumnName.NAME, criteria));
+                return Optional.of(new SearchCriteria(GiftCertificateColumnName.NAME.getColumnName(), criteria));
             }
             return Optional.empty();
         }
@@ -28,7 +28,7 @@ public enum CriteriaStrategy {
         @Override
         public Optional<Criteria> createCriteria(String criteria) {
             if(giftCertificateValidator.isDescriptionValid(criteria)) {
-                return Optional.of(new SearchCriteria(GiftCertificateColumnName.DESCRIPTION, criteria));
+                return Optional.of(new SearchCriteria(GiftCertificateColumnName.DESCRIPTION.getColumnName(), criteria));
             }
             return Optional.empty();
         }
@@ -39,7 +39,7 @@ public enum CriteriaStrategy {
             if(criteria != null && (criteria.equalsIgnoreCase(SortCriteria.SORT_ASC)
                     || criteria.equalsIgnoreCase(SortCriteria.SORT_DESC))) {
                 String sortType = criteria.equalsIgnoreCase(SortCriteria.SORT_ASC) ? SortCriteria.SORT_ASC : SortCriteria.SORT_DESC;
-                return Optional.of(new SortCriteria(GiftCertificateColumnName.CREATE_DATE, sortType));
+                return Optional.of(new SortCriteria(GiftCertificateColumnName.CREATE_DATE.getColumnName(), sortType));
             }
             return Optional.empty();
         }
@@ -50,7 +50,7 @@ public enum CriteriaStrategy {
             if(criteria != null && (criteria.equalsIgnoreCase(SortCriteria.SORT_ASC)
                     || criteria.equalsIgnoreCase(SortCriteria.SORT_DESC))) {
                 String sortType = criteria.equalsIgnoreCase(SortCriteria.SORT_ASC) ? SortCriteria.SORT_ASC : SortCriteria.SORT_DESC;
-                return Optional.of(new SortCriteria(GiftCertificateColumnName.NAME, sortType));
+                return Optional.of(new SortCriteria(GiftCertificateColumnName.NAME.getColumnName(), sortType));
             }
             return Optional.empty();
         }
