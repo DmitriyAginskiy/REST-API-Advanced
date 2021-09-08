@@ -4,6 +4,8 @@ import com.epam.esm.dao.api.GiftCertificateDao;
 import com.epam.esm.dao.constant.GiftCertificateQuery;
 import com.epam.esm.dao.creator.GiftCertificateQueryCreator;
 import com.epam.esm.dao.creator.criteria.Criteria;
+import com.epam.esm.dao.exception.DaoException;
+import com.epam.esm.dao.exception.util.MessageManager;
 import com.epam.esm.entity.GiftCertificate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -34,8 +36,13 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
     @Override
-    public void delete(GiftCertificate giftCertificate) {
-        entityManager.remove(giftCertificate);
+    public void delete(long id) throws DaoException {
+        Optional<GiftCertificate> giftCertificateOptional = findById(id);
+        if(giftCertificateOptional.isPresent()) {
+            entityManager.remove(giftCertificateOptional.get());
+        } else {
+            throw new DaoException(MessageManager.CAN_NOT_DELETE.getMessage(id));
+        }
     }
 
     @Override

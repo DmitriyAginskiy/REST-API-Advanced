@@ -4,10 +4,12 @@ import com.epam.esm.dao.api.GiftCertificateDao;
 import com.epam.esm.dao.constant.TagColumnName;
 import com.epam.esm.dao.creator.criteria.Criteria;
 import com.epam.esm.dao.creator.criteria.impl.SearchCriteria;
+import com.epam.esm.dao.exception.DaoException;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ElementSearchException;
 import com.epam.esm.exception.OperationNotPerformedException;
+import com.epam.esm.exception.util.MessageManager;
 import com.epam.esm.service.CertificateConditionStrategy;
 import com.epam.esm.service.CriteriaStrategy;
 import com.epam.esm.service.api.GiftCertificateService;
@@ -63,20 +65,21 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             }
             certificateDao.insert(certificate);
             Optional<GiftCertificate> certificateOptional = certificateDao.findById(certificate.getId());
-            return certificateOptional.orElseThrow(() -> new OperationNotPerformedException(certificate.getId()));
+            return certificateOptional.orElseThrow(() -> new OperationNotPerformedException(
+                    MessageManager.OPERATION_NOT_PERFORMED.getMessage(certificate)
+            ));
         } else {
-            throw new OperationNotPerformedException(certificate.getId());
+            throw new OperationNotPerformedException(MessageManager.OPERATION_NOT_PERFORMED.getMessage(certificate));
         }
     }
 
     @Transactional
     @Override
     public void delete(long id) {
-        Optional<GiftCertificate> giftCertificateOptional = certificateDao.findById(id);
-        if(giftCertificateOptional.isPresent()) {
-            certificateDao.delete(giftCertificateOptional.get());
-        } else {
-            throw new ElementSearchException(id);
+        try {
+            certificateDao.delete(id);
+        } catch (DaoException exception) {
+            throw new OperationNotPerformedException(MessageManager.OPERATION_NOT_PERFORMED.getMessage(exception.getMessage()));
         }
     }
 
@@ -84,7 +87,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public GiftCertificate update(long id, GiftCertificate certificate) {
         Optional<GiftCertificate> giftCertificateOptional = certificateDao.findById(id);
-        GiftCertificate newCertificate = giftCertificateOptional.orElseThrow(() -> new ElementSearchException(id));
+        GiftCertificate newCertificate = giftCertificateOptional.orElseThrow(() -> new ElementSearchException(
+                MessageManager.ELEMENT_SEARCH_KEY.getMessage(id)
+        ));
         if(certificate.getTags() != null) {
             HashSet<Tag> tagsWithoutDuplicates = new HashSet<>(certificate.getTags());
             List<Tag> existingTags = tagService.findAllExisting(new ArrayList<>(certificate.getTags()));
@@ -101,7 +106,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public GiftCertificate findById(long id) {
         Optional<GiftCertificate> certificate = certificateDao.findById(id);
-        return certificate.orElseThrow(() -> new ElementSearchException(id));
+        return certificate.orElseThrow(() -> new ElementSearchException(MessageManager.ELEMENT_SEARCH_KEY.getMessage(id)));
     }
 
     @Override

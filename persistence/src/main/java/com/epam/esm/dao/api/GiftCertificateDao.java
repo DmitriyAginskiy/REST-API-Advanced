@@ -1,6 +1,7 @@
 package com.epam.esm.dao.api;
 
 import com.epam.esm.dao.creator.criteria.Criteria;
+import com.epam.esm.dao.exception.DaoException;
 import com.epam.esm.entity.GiftCertificate;
 
 import java.util.List;
@@ -24,10 +25,11 @@ public interface GiftCertificateDao {
     /**
      * Deletes gift certificate from the table.
      *
-     * @param giftCertificate object to be deleted.
+     * @param id of object to be deleted.
+     * @throws DaoException if the element does not exist
      *
      */
-    void delete(GiftCertificate giftCertificate);
+    void delete(long id) throws DaoException;
 
     /**
      * Updates the certificate.
