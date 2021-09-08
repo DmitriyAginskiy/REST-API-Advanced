@@ -1,5 +1,6 @@
 package com.epam.esm.dao.api;
 
+import com.epam.esm.dao.exception.DaoException;
 import com.epam.esm.entity.Tag;
 
 import java.util.List;
@@ -16,17 +17,17 @@ public interface TagDao {
      * Adds tag to the table.
      *
      * @param tag object to be added.
-     *
+     * @throws DaoException if the element already exists
      */
-    void insert(Tag tag);
+    void insert(Tag tag) throws DaoException;
 
     /**
      * Deletes tag from the table.
      *
-     * @param tag object to be deleted.
-     *
+     * @param id of object to be deleted.
+     * @throws DaoException if the element does not exist
      */
-    void delete(Tag tag);
+    void delete(long id) throws DaoException;
 
     /**
      * Finds the tag by id.
@@ -60,13 +61,6 @@ public interface TagDao {
      * @return list with found tags
      */
     List<Tag> findAllExisting(List<Tag> tags);
-
-    /**
-     * Disconnect tags from all certificates
-     *
-     * @param id as tag id
-     */
-    void disconnectTagFromCertificates(long id);
 
     /**
      * Finds the most widely used tag of a user with the highest cost of all orders

@@ -3,6 +3,8 @@ package com.epam.esm.dao.impl;
 import com.epam.esm.dao.api.TagDao;
 import com.epam.esm.dao.constant.TagQuery;
 import com.epam.esm.dao.creator.TagQueryCreator;
+import com.epam.esm.dao.exception.DaoException;
+import com.epam.esm.dao.exception.util.MessageManager;
 import com.epam.esm.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -29,13 +31,24 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public void insert(Tag tag) {
-        entityManager.persist(tag);
+    public void insert(Tag tag) throws DaoException {
+        Optional<Tag> tagOptional = findByName(tag.getName());
+        if(tagOptional.isPresent()) {
+            entityManager.persist(tag);
+        } else {
+            throw new DaoException(MessageManager.CAN_NOT_PERSIST.getMessage(tag));
+        }
     }
 
     @Override
-    public void delete(Tag tag) {
-        entityManager.remove(tag);
+    public void delete(long id) throws DaoException {
+        Optional<Tag> tagOptional = findById(id);
+        if(tagOptional.isPresent()) {
+            disconnectTagFromCertificates(id);
+            entityManager.remove(tagOptional.get());
+        } else {
+            throw new DaoException(MessageManager.CAN_NOT_DELETE.getMessage(id));
+        }
     }
 
     @Override
@@ -67,8 +80,7 @@ public class TagDaoImpl implements TagDao {
         return nativeQuery.getResultList();
     }
 
-    @Override
-    public void disconnectTagFromCertificates(long id) {
+    private void disconnectTagFromCertificates(long id) {
         entityManager.createNativeQuery(TagQuery.DISCONNECT_TAG_FROM_CERTIFICATES.getQuery()).setParameter(1, id).executeUpdate();
     }
 

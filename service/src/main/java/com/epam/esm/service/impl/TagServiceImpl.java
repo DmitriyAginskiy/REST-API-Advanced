@@ -1,9 +1,11 @@
 package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.api.TagDao;
+import com.epam.esm.dao.exception.DaoException;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ElementSearchException;
 import com.epam.esm.exception.OperationNotPerformedException;
+import com.epam.esm.exception.util.MessageManager;
 import com.epam.esm.service.api.TagService;
 import com.epam.esm.validator.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,27 +35,32 @@ public class TagServiceImpl implements TagService {
     @Transactional
     @Override
     public Tag insert(Tag tag) {
-        Optional<Tag> tagOptional = tagDao.findByName(tag.getName());
-        if(tagValidator.isNameValid(tag.getName()) && tagOptional.isEmpty()) {
-            tagDao.insert(tag);
-            return tagDao.findById(tag.getId()).orElseThrow(() -> new OperationNotPerformedException(tag.getId()));
+        if(tagValidator.isNameValid(tag.getName())) {
+            try {
+                tagDao.insert(tag);
+            } catch (DaoException exception) {
+                throw new OperationNotPerformedException(exception.getMessage());
+            }
+            return tag;
         } else {
-            throw new OperationNotPerformedException(tag.getId());
+            throw new OperationNotPerformedException(MessageManager.OPERATION_NOT_PERFORMED.getMessage(tag.getName()));
         }
     }
 
     @Transactional
     @Override
     public void delete(long id) {
-        Optional<Tag> tagOptional = tagDao.findById(id);
-        tagDao.disconnectTagFromCertificates(id);
-        tagDao.delete(tagOptional.orElseThrow(() -> new ElementSearchException(id)));
+        try {
+            tagDao.delete(id);
+        } catch (DaoException exception) {
+            throw new OperationNotPerformedException(exception.getMessage());
+        }
     }
 
     @Override
     public Tag findById(long id) {
         Optional<Tag> tagOptional = tagDao.findById(id);
-        return tagOptional.orElseThrow(() -> new ElementSearchException(id));
+        return tagOptional.orElseThrow(() -> new ElementSearchException(MessageManager.OPERATION_NOT_PERFORMED.getMessage(id)));
     }
 
     @Override
@@ -67,7 +74,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Tag findMostExpensiveTag(long userId) {
-        return tagDao.findMostExpensiveTag().orElseThrow(ElementSearchException::new);
+    public Tag findMostExpensiveTag() {
+        return tagDao.findMostExpensiveTag().orElseThrow(() -> new ElementSearchException(MessageManager.ELEMENT_SEARCH_KEY.getMessage()));
     }
 }
