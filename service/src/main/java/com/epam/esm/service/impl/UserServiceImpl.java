@@ -3,6 +3,7 @@ package com.epam.esm.service.impl;
 import com.epam.esm.dao.api.UserDao;
 import com.epam.esm.entity.User;
 import com.epam.esm.exception.ElementSearchException;
+import com.epam.esm.exception.util.MessageManager;
 import com.epam.esm.service.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(long id) {
         Optional<User> userOptional = userDao.findById(id);
-        return userOptional.orElseThrow(() -> new ElementSearchException(id));
+        return userOptional.orElseThrow(() -> new ElementSearchException(MessageManager.ELEMENT_SEARCH_KEY.getMessage(id)));
     }
 
     @Override
