@@ -50,11 +50,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<ExceptionResponse> handleException(Throwable e) {
-        String message = new String(ResourceBundle
-                .getBundle(MessageManager.BUNDLE_PATH.getMessageKey(), Locale.getDefault())
-                .getString(MessageManager.SOMETHING_WENT_WRONG.getMessageKey())
-                .getBytes(StandardCharsets.ISO_8859_1));
-        ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.NOT_FOUND.value(), message);
+        ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.NOT_FOUND.value(), MessageManager.SOMETHING_WENT_WRONG.getMessage());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 }

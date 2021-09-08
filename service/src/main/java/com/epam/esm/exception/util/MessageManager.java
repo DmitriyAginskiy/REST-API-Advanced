@@ -20,9 +20,13 @@ public enum MessageManager {
     }
 
     public String getMessage(Object... objectFields) {
-        return new String(ResourceBundle
+        String localMessage = new String(ResourceBundle
                 .getBundle(BUNDLE_PATH, Locale.getDefault())
                 .getString(message)
-                .getBytes(StandardCharsets.ISO_8859_1)) + Arrays.toString(objectFields);
+                .getBytes(StandardCharsets.ISO_8859_1));
+        if(objectFields.length != 0) {
+            localMessage += Arrays.toString(objectFields);
+        }
+        return localMessage;
     }
 }
