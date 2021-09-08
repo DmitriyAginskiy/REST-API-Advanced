@@ -8,6 +8,7 @@ import com.epam.esm.entity.Order;
 import com.epam.esm.entity.User;
 import com.epam.esm.exception.ElementSearchException;
 import com.epam.esm.exception.OperationNotPerformedException;
+import com.epam.esm.exception.util.MessageManager;
 import com.epam.esm.service.api.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,14 +39,16 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public Order createOrder(long userId, long certificateId) {
-        User user = userDao.findById(userId).orElseThrow(() -> new ElementSearchException(userId));
-        GiftCertificate certificate = giftCertificateDao.findById(certificateId).orElseThrow(() -> new ElementSearchException(certificateId));
+        User user = userDao.findById(userId).orElseThrow(() -> new ElementSearchException(MessageManager.ELEMENT_SEARCH_KEY.getMessage(userId)));
+        GiftCertificate certificate = giftCertificateDao.findById(certificateId).orElseThrow(() -> new ElementSearchException(
+                MessageManager.ELEMENT_SEARCH_KEY.getMessage(certificateId))
+        );
         Order order = new Order(certificate.getPrice(), user, certificate);
         if(user.getCash().compareTo(certificate.getPrice()) >= 0) {
             userDao.updateCash(userId, user.getCash().subtract(certificate.getPrice()));
             orderDao.createOrder(userId, certificateId, order);
         } else {
-            throw new OperationNotPerformedException(userId, certificateId);
+            throw new OperationNotPerformedException(MessageManager.OPERATION_NOT_PERFORMED.getMessage(userId, certificateId));
         }
         return order;
     }
@@ -53,7 +56,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order findById(long id) {
         Optional<Order> orderOptional = orderDao.findById(id);
-        return orderOptional.orElseThrow(() -> new ElementSearchException(id));
+        return orderOptional.orElseThrow(() -> new ElementSearchException(MessageManager.ELEMENT_SEARCH_KEY.getMessage(id)));
     }
 
     @Override
