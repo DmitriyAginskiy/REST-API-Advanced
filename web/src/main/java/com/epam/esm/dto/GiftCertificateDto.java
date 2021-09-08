@@ -5,6 +5,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,13 +25,13 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastUpdateDate;
 
-    private Set<TagDto> tags;
+    private List<TagDto> tags;
 
     public GiftCertificateDto() {
     }
 
     public GiftCertificateDto(long id, String name, String description, BigDecimal price, int duration,
-                              LocalDateTime createDate, LocalDateTime lastUpdateDate, Set<TagDto> tags) {
+                              LocalDateTime createDate, LocalDateTime lastUpdateDate, List<TagDto> tags) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -97,11 +98,11 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    public Set<TagDto> getTags() {
+    public List<TagDto> getTags() {
         return tags;
     }
 
-    public void setTags(Set<TagDto> tags) {
+    public void setTags(List<TagDto> tags) {
         this.tags = tags;
     }
 }

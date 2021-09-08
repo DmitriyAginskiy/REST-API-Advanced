@@ -7,7 +7,9 @@ import com.epam.esm.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -26,7 +28,7 @@ public class GiftCertificateConverter {
     }
 
     public GiftCertificateDto convertToDto(GiftCertificate giftCertificate) {
-        Set<TagDto> tagDtoSet = new HashSet<>();
+        List<TagDto> tagDtoSet = new ArrayList<>();
         giftCertificate.getTags().forEach(tag -> tagDtoSet.add(tagConverter.convertToDto(tag)));
         return new GiftCertificateDto(
                 giftCertificate.getId(),
