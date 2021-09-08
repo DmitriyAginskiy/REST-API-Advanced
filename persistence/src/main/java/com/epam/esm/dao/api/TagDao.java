@@ -71,8 +71,7 @@ public interface TagDao {
     /**
      * Finds the most widely used tag of a user with the highest cost of all orders
      *
-     * @param userId as user id
      * @return Optional object of found tag
      */
-    Optional<Tag> findMostExpensiveTag(long userId);
+    Optional<Tag> findMostExpensiveTag();
 }
