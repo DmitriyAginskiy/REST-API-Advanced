@@ -1,16 +1,22 @@
 package com.epam.esm.dao.constant;
 
 /**
- * Class with the gift certificates queries.
+ * Enum with the gift certificates queries.
  *
  * @author Dzmitry Ahinski
  */
-public final class GiftCertificateQuery {
+public enum GiftCertificateQuery {
 
-    public static final String FIND_ALL_QUERY = "SELECT gift_certificates.*, tags.* FROM gift_certificates LEFT JOIN "
-            + "gift_certificates_has_tags ON certificate_id = gift_certificates_id_fk LEFT JOIN tags ON tag_id = tags_id_fk GROUP BY certificate_id LIMIT ?, ?;";
+    FIND_ALL_QUERY("SELECT gift_certificates.*, tags.* FROM gift_certificates LEFT JOIN "
+            + "gift_certificates_has_tags ON certificate_id = gift_certificates_id_fk LEFT JOIN tags ON tag_id = tags_id_fk GROUP BY certificate_id LIMIT ?, ?;");
 
-    private GiftCertificateQuery() {
+    private String query;
 
+    GiftCertificateQuery(String query) {
+        this.query = query;
+    }
+
+    public String getQuery() {
+        return query;
     }
 }
