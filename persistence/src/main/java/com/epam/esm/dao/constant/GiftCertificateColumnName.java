@@ -1,27 +1,27 @@
 package com.epam.esm.dao.constant;
 
 /**
- * Class with the gift certificates columns names.
+ * Enum with the gift certificates columns names.
  *
  * @author Dzmitry Ahinski
  */
-public final class GiftCertificateColumnName {
+public enum GiftCertificateColumnName {
 
-    public static final String ID = "certificate_id";
+    ID("certificate_id"),
+    NAME("certificate_name"),
+    DESCRIPTION("description"),
+    PRICE("price"),
+    DURATION("duration"),
+    CREATE_DATE("create_date"),
+    LAST_UPDATE_DATE("last_update_date");
 
-    public static final String NAME = "certificate_name";
+    private String columnName;
 
-    public static final String DESCRIPTION = "description";
+    GiftCertificateColumnName(String columnName) {
+        this.columnName = columnName;
+    }
 
-    public static final String PRICE = "price";
-
-    public static final String DURATION = "duration";
-
-    public static final String CREATE_DATE = "create_date";
-
-    public static final String LAST_UPDATE_DATE = "last_update_date";
-
-    private GiftCertificateColumnName() {
-
+    public String getColumnName() {
+        return columnName;
     }
 }
