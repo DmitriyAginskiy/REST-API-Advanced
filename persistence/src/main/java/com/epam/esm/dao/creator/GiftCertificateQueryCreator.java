@@ -57,26 +57,18 @@ public class GiftCertificateQueryCreator {
      */
     private static void addSearchCriteria(List<Criteria> criteriaList, StringBuilder finalQuery) {
         List<Criteria> searchCriteriaList = criteriaList.stream().filter(t -> t instanceof SearchCriteria).collect(Collectors.toList());
-        int counter = 0;
-        if(!searchCriteriaList.isEmpty()) {
-            for(int i = 0; i < searchCriteriaList.size(); i++) {
-                Criteria criteria = searchCriteriaList.get(i);
-                finalQuery.append(WHITESPACE);
-                if(criteria.getCriteriaField().equals(TagColumnName.TAG_NAME)) {
-                    counter++;
-                }
-                criteria.addCriteria(finalQuery);
-                if(i != searchCriteriaList.size() - 1) {
-                    finalQuery.append(WHITESPACE);
-                    finalQuery.append(criteria.getCriteriaField().equals(TagColumnName.TAG_NAME) ?
-                            OR_WORD : AND_WORD);
-                }
-            }
-            if(counter > 0) {
-                finalQuery.append(WHITESPACE).append(GROUP_BY).append(WHITESPACE).append(GiftCertificateColumnName.ID);
-                finalQuery.append(WHITESPACE).append(HAVING).append(WHITESPACE).append(COUNT_ALL);
-                finalQuery.append(WHITESPACE).append(EQUALS).append(WHITESPACE).append(counter);
-            }
+        searchCriteriaList.forEach(criteria -> {
+            finalQuery.append(WHITESPACE);
+            criteria.addCriteria(finalQuery);
+            finalQuery.append(WHITESPACE).append(criteria.getCriteriaField().equals(TagColumnName.TAG_NAME.getColumnName()) ?
+                    OR_WORD : AND_WORD);
+        });
+        long tagNameFieldCount = searchCriteriaList.stream().filter(criteria -> criteria.getCriteriaField().equals(TagColumnName.TAG_NAME.getColumnName()))
+                .count();
+        if(tagNameFieldCount > 0) {
+            finalQuery.append(WHITESPACE).append(GROUP_BY).append(WHITESPACE).append(GiftCertificateColumnName.ID);
+            finalQuery.append(WHITESPACE).append(HAVING).append(WHITESPACE).append(COUNT_ALL);
+            finalQuery.append(WHITESPACE).append(EQUALS).append(WHITESPACE).append(tagNameFieldCount);
         }
     }
 
