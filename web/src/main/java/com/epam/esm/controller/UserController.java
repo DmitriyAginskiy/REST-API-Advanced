@@ -40,7 +40,6 @@ public class UserController {
         this.wrapper = wrapper;
     }
 
-
     /**
      * Finds user by id
      *
