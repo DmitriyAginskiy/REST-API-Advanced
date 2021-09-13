@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
  */
 public class OperationNotPerformedException extends RuntimeException {
 
-    public static final int ERROR_CODE = 40402;
+    public static final int ERROR_CODE = 40001;
 
     public OperationNotPerformedException(String message) {
         super(message);
