@@ -6,7 +6,6 @@ import com.epam.esm.dao.creator.TagQueryCreator;
 import com.epam.esm.dao.exception.DaoException;
 import com.epam.esm.dao.exception.util.MessageManager;
 import com.epam.esm.entity.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -25,10 +24,6 @@ public class TagDaoImpl implements TagDao {
 
     @PersistenceContext
     private EntityManager entityManager;
-
-    @Autowired
-    public TagDaoImpl() {
-    }
 
     @Override
     public void insert(Tag tag) throws DaoException {
