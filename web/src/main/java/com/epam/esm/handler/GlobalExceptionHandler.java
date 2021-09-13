@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(OperationNotPerformedException.class)
     public ResponseEntity<ExceptionResponse> handleException(OperationNotPerformedException e) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(OperationNotPerformedException.ERROR_CODE, e.getLocalizedMessage());
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<ExceptionResponse> handleException(Throwable e) {
-        ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.NOT_FOUND.value(), MessageManager.SOMETHING_WENT_WRONG.getMessage());
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+        ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), MessageManager.SOMETHING_WENT_WRONG.getMessage());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 }
