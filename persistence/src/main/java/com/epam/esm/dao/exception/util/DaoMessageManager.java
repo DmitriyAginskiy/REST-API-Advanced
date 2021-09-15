@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public enum MessageManager {
+public enum DaoMessageManager {
 
     CAN_NOT_DELETE("can_not_delete"),
     CAN_NOT_PERSIST("can_not_persist");
@@ -14,7 +14,7 @@ public enum MessageManager {
 
     private String message;
 
-    MessageManager(String message) {
+    DaoMessageManager(String message) {
         this.message = message;
     }
 
