@@ -39,10 +39,16 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     public void delete(long id) throws DaoException {
         Optional<GiftCertificate> giftCertificateOptional = findById(id);
         if(giftCertificateOptional.isPresent()) {
+            removeTagsFromCertificate(id);
             entityManager.remove(giftCertificateOptional.get());
         } else {
             throw new DaoException(DaoMessageManager.CAN_NOT_DELETE.getMessage(id));
         }
+    }
+
+    private void removeTagsFromCertificate(long id) {
+        entityManager.createNativeQuery(GiftCertificateQuery.REMOVE_TAGS_FROM_CERTIFICATE.getQuery())
+                .setParameter(1, id).executeUpdate();
     }
 
     @Override
@@ -62,8 +68,8 @@ public class GiftCertificateDaoImpl implements GiftCertificateDao {
     }
 
     @Override
-    public List<GiftCertificate> findAllByCriteria(List<Criteria> criteriaList) {
-        String query = GiftCertificateQueryCreator.createSearchQuery(criteriaList);
+    public List<GiftCertificate> findAllByCriteria(List<Criteria> criteriaList, int page, int size) {
+        String query = GiftCertificateQueryCreator.createSearchQuery(criteriaList, page, size);
         return entityManager.createNativeQuery(query, GiftCertificate.class).getResultList();
     }
 }

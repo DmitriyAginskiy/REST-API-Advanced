@@ -22,13 +22,21 @@ public class GiftCertificateQueryCreator {
     private static final String WHERE_WORD = "WHERE";
     private static final String ORDER_BY = "ORDER BY";
     private static final String GROUP_BY = "GROUP BY";
-    private static final String COUNT_ALL = "COUNT(*)";
     private static final String HAVING = "HAVING";
-    private static final String EQUALS = "=";
     private static final String COMMA = ",";
     private static final String SEMICOLON = ";";
     private static final String WHITESPACE = " ";
     private static final String OR_WORD = "OR";
+    private static final String LIMIT = "LIMIT";
+    private static final String OPENING_BRACKET = "(";
+    private static final String CLOSING_BRACKET = ")";
+    private static final String CASE = "CASE";
+    private static final String WHEN = "WHEN";
+    private static final String THEN = "THEN";
+    private static final String END = "END";
+    private static final String COUNT = "COUNT";
+    private static final String ONE = "1";
+    private static final String EQUAL_OR_GREATER = ">=";
 
     /**
      * Creates gift certificate searching query with criteria.
@@ -36,15 +44,16 @@ public class GiftCertificateQueryCreator {
      * @param criteriaList as list
      * @return String as final search query
      */
-    public static String createSearchQuery(List<Criteria> criteriaList) {
+    public static String createSearchQuery(List<Criteria> criteriaList, int page, int size) {
         if(criteriaList == null || criteriaList.isEmpty()) {
             return QUERY_WITHOUT_SEARCH_CRITERIA;
         }
         StringBuilder finalQuery = new StringBuilder(QUERY_WITHOUT_SEARCH_CRITERIA);
-        addSortCriteria(criteriaList, finalQuery);
         finalQuery.append(WHITESPACE);
-        finalQuery.append(WHERE_WORD);
         addSearchCriteria(criteriaList, finalQuery);
+        addSortCriteria(criteriaList, finalQuery);
+        finalQuery.append(WHITESPACE).append(LIMIT).append(WHITESPACE);
+        finalQuery.append(page).append(COMMA).append(WHITESPACE).append(size);
         finalQuery.append(SEMICOLON);
         return finalQuery.toString();
     }
@@ -57,19 +66,55 @@ public class GiftCertificateQueryCreator {
      */
     private static void addSearchCriteria(List<Criteria> criteriaList, StringBuilder finalQuery) {
         List<Criteria> searchCriteriaList = criteriaList.stream().filter(t -> t instanceof SearchCriteria).collect(Collectors.toList());
+        addWhereCondition(searchCriteriaList, finalQuery);
+        finalQuery.append(WHITESPACE).append(GROUP_BY).append(WHITESPACE).append(GiftCertificateColumnName.ID.getColumnName());
+        List<Criteria> tagNamesCriteriaList = searchCriteriaList.stream().filter(criteria ->
+                criteria.getCriteriaField().equalsIgnoreCase(TagColumnName.TAG_NAME.getColumnName()))
+                .collect(Collectors.toList());
+        if(!tagNamesCriteriaList.isEmpty()) {
+            finalQuery.append(WHITESPACE).append(HAVING).append(WHITESPACE);
+            tagNamesCriteriaList.forEach(criteria -> {
+                if(!criteria.equals(tagNamesCriteriaList.stream().findFirst().get())) {
+                    finalQuery.append(WHITESPACE).append(AND_WORD).append(WHITESPACE);
+                }
+                addTagNameHavingLikeCondition(criteria, finalQuery);
+            });
+        }
+    }
+
+    /**
+     * Adds where condition to the final query.
+     *
+     * @param searchCriteriaList as list of criteria
+     * @param finalQuery as final search query
+     */
+    private static void addWhereCondition(List<Criteria> searchCriteriaList, StringBuilder finalQuery) {
+        if(!searchCriteriaList.isEmpty()) {
+            finalQuery.append(WHERE_WORD);
+        }
         searchCriteriaList.forEach(criteria -> {
             finalQuery.append(WHITESPACE);
             criteria.addCriteria(finalQuery);
-            finalQuery.append(WHITESPACE).append(criteria.getCriteriaField().equals(TagColumnName.TAG_NAME.getColumnName()) ?
-                    OR_WORD : AND_WORD);
+            if(searchCriteriaList.size() > 1 && !criteria.equals(searchCriteriaList.get(searchCriteriaList.size() - 1))) {
+                finalQuery.append(WHITESPACE).append(criteria.getCriteriaField().equalsIgnoreCase(TagColumnName.TAG_NAME.getColumnName()) ?
+                        OR_WORD : AND_WORD);
+            }
         });
-        long tagNameFieldCount = searchCriteriaList.stream().filter(criteria -> criteria.getCriteriaField().equals(TagColumnName.TAG_NAME.getColumnName()))
-                .count();
-        if(tagNameFieldCount > 0) {
-            finalQuery.append(WHITESPACE).append(GROUP_BY).append(WHITESPACE).append(GiftCertificateColumnName.ID);
-            finalQuery.append(WHITESPACE).append(HAVING).append(WHITESPACE).append(COUNT_ALL);
-            finalQuery.append(WHITESPACE).append(EQUALS).append(WHITESPACE).append(tagNameFieldCount);
-        }
+    }
+
+    /**
+     * Adds having condition with tags names to the final query.
+     *
+     * @param criteria as criteria to be added
+     * @param finalQuery as final search query
+     */
+    private static void addTagNameHavingLikeCondition(Criteria criteria, StringBuilder finalQuery) {
+        finalQuery.append(COUNT).append(OPENING_BRACKET).append(CASE).append(WHITESPACE).append(WHEN)
+                .append(WHITESPACE);
+        criteria.addCriteria(finalQuery);
+        finalQuery.append(WHITESPACE).append(THEN).append(WHITESPACE).append(ONE).append(WHITESPACE)
+                .append(END).append(CLOSING_BRACKET).append(WHITESPACE).append(EQUAL_OR_GREATER)
+                .append(WHITESPACE).append(ONE);
     }
 
     /**

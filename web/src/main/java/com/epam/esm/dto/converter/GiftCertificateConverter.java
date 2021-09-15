@@ -44,7 +44,9 @@ public class GiftCertificateConverter {
 
     public GiftCertificate convertToEntity(GiftCertificateDto giftCertificateDto) {
         Set<Tag> tagSet = new HashSet<>();
-        giftCertificateDto.getTags().forEach(tagDto -> tagSet.add(tagConverter.convertToEntity(tagDto)));
+        if(giftCertificateDto.getTags() != null) {
+            giftCertificateDto.getTags().forEach(tagDto -> tagSet.add(tagConverter.convertToEntity(tagDto)));
+        }
         return new GiftCertificate(
                 giftCertificateDto.getName(),
                 giftCertificateDto.getDescription(),

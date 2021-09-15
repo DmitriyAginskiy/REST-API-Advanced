@@ -59,5 +59,5 @@ public interface GiftCertificateDao {
      * @param criteriaList list of criteria
      * @return list with found certificates.
      */
-    List<GiftCertificate> findAllByCriteria(List<Criteria> criteriaList);
+    List<GiftCertificate> findAllByCriteria(List<Criteria> criteriaList, int page, int size);
 }

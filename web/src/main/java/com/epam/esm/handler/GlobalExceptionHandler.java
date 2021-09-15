@@ -2,12 +2,16 @@ package com.epam.esm.handler;
 
 import com.epam.esm.exception.ElementSearchException;
 import com.epam.esm.exception.OperationNotPerformedException;
-import com.epam.esm.exception.util.ServiceMessageManager;
 import com.epam.esm.handler.entity.ExceptionResponse;
+import com.epam.esm.util.ExceptionManager;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
  * Global exception handler.
@@ -15,7 +19,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @author Dzmitry Ahinski
  */
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      * Handles Element Search exceptions.
@@ -23,7 +27,7 @@ public class GlobalExceptionHandler {
      * @return response entity
      */
     @ExceptionHandler(ElementSearchException.class)
-    public ResponseEntity<ExceptionResponse> handleException(ElementSearchException e) {
+    public ResponseEntity<ExceptionResponse> handleElementSearchException(ElementSearchException e) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ElementSearchException.ERROR_CODE, e.getLocalizedMessage());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
@@ -34,19 +38,44 @@ public class GlobalExceptionHandler {
      * @return response entity
      */
     @ExceptionHandler(OperationNotPerformedException.class)
-    public ResponseEntity<ExceptionResponse> handleException(OperationNotPerformedException e) {
+    public ResponseEntity<ExceptionResponse> handleOperationNotPerformedException(OperationNotPerformedException e) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(OperationNotPerformedException.ERROR_CODE, e.getLocalizedMessage());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
     /**
-     * Handles all exceptions.
+     * Handles MethodArgumentTypeMismatchException exceptions.
      *
      * @return response entity
      */
-    @ExceptionHandler(Throwable.class)
-    public ResponseEntity<ExceptionResponse> handleException(Throwable e) {
-        ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), ServiceMessageManager.SOMETHING_WENT_WRONG.getMessage());
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ExceptionResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ExceptionManager.INVALID_PARAMETER.getCode(),
+                ExceptionManager.INVALID_PARAMETER.getMessage(e.getValue()));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Handles InvalidFormatException exceptions.
+     *
+     * @return response entity
+     */
+    @ExceptionHandler(InvalidFormatException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidFormatException(InvalidFormatException e) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ExceptionManager.INVALID_FIELD.getCode(),
+                ExceptionManager.INVALID_FIELD.getMessage(e.getValue()));
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Handles HttpMediaTypeNotSupportedException exceptions.
+     *
+     * @return response entity
+     */
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException e) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ExceptionManager.UNSUPPORTED_MEDIA_TYPE.getCode(),
+                ExceptionManager.UNSUPPORTED_MEDIA_TYPE.getMessage(e.getContentType()));
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     }
 }

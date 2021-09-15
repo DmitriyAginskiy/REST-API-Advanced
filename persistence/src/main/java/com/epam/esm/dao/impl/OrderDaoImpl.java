@@ -43,7 +43,6 @@ public class OrderDaoImpl implements OrderDao {
     public List<Order> findByUserAndCertificate(long userId, long certificateId) {
         Query query = entityManager.createNativeQuery(OrderQuery.FIND_ORDER_BY_USER_AND_CERTIFICATE.getQuery(), Order.class);
         query.setParameter(1, userId).setParameter(2, certificateId);
-        System.out.println(query.getResultList());
         return query.getResultList();
     }
 }

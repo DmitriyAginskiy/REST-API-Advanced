@@ -69,7 +69,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                     ServiceMessageManager.OPERATION_NOT_PERFORMED.getMessage(certificate)
             ));
         } else {
-            throw new OperationNotPerformedException(ServiceMessageManager.OPERATION_NOT_PERFORMED.getMessage(certificate));
+            throw new OperationNotPerformedException(ServiceMessageManager.INVALID_FIELDS.getMessage(certificate));
         }
     }
 
@@ -79,7 +79,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         try {
             certificateDao.delete(id);
         } catch (DaoException exception) {
-            throw new OperationNotPerformedException(ServiceMessageManager.OPERATION_NOT_PERFORMED.getMessage(exception.getMessage()));
+            throw new OperationNotPerformedException(exception.getMessage());
         }
     }
 
@@ -90,7 +90,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         GiftCertificate newCertificate = giftCertificateOptional.orElseThrow(() -> new ElementSearchException(
                 ServiceMessageManager.ELEMENT_SEARCH_KEY.getMessage(id)
         ));
-        if(certificate.getTags() != null) {
+        if(certificate.getTags() != null && !certificate.getTags().isEmpty()) {
             HashSet<Tag> tagsWithoutDuplicates = new HashSet<>(certificate.getTags());
             List<Tag> existingTags = tagService.findAllExisting(new ArrayList<>(certificate.getTags()));
             List<Tag> newTags = tagsWithoutDuplicates.stream().filter(t -> !existingTags
@@ -126,7 +126,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         if(criteriaList.isEmpty()) {
             return certificateDao.findAll(page, size);
         } else {
-            return certificateDao.findAllByCriteria(criteriaList);
+            return certificateDao.findAllByCriteria(criteriaList, page, size);
         }
     }
 }

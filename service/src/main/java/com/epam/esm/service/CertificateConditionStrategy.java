@@ -40,7 +40,7 @@ public enum CertificateConditionStrategy {
     DURATION {
         @Override
         public void updateCondition(GiftCertificate newCertificate, GiftCertificate certificate) {
-            if(newCertificate.getDuration() != certificate.getDuration() && giftCertificateValidator.isNameValid(certificate.getName())) {
+            if(newCertificate.getDuration() != certificate.getDuration() && giftCertificateValidator.isDurationValid(certificate.getDuration())) {
                 newCertificate.setDuration(certificate.getDuration());
             }
         }

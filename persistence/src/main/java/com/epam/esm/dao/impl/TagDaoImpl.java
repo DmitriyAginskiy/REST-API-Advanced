@@ -28,10 +28,10 @@ public class TagDaoImpl implements TagDao {
     @Override
     public void insert(Tag tag) throws DaoException {
         Optional<Tag> tagOptional = findByName(tag.getName());
-        if(tagOptional.isPresent()) {
+        if(tagOptional.isEmpty()) {
             entityManager.persist(tag);
         } else {
-            throw new DaoException(DaoMessageManager.CAN_NOT_PERSIST.getMessage(tag));
+            throw new DaoException(DaoMessageManager.CAN_NOT_PERSIST.getMessage(tag.getName()));
         }
     }
 

@@ -43,7 +43,7 @@ public class TagServiceImpl implements TagService {
             }
             return tag;
         } else {
-            throw new OperationNotPerformedException(ServiceMessageManager.OPERATION_NOT_PERFORMED.getMessage(tag.getName()));
+            throw new OperationNotPerformedException(ServiceMessageManager.INVALID_FIELDS.getMessage(tag));
         }
     }
 
@@ -60,7 +60,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public Tag findById(long id) {
         Optional<Tag> tagOptional = tagDao.findById(id);
-        return tagOptional.orElseThrow(() -> new ElementSearchException(ServiceMessageManager.OPERATION_NOT_PERFORMED.getMessage(id)));
+        return tagOptional.orElseThrow(() -> new ElementSearchException(ServiceMessageManager.ELEMENT_SEARCH_KEY.getMessage(id)));
     }
 
     @Override

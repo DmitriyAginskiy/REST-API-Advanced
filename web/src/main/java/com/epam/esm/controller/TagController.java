@@ -106,8 +106,8 @@ public class TagController {
      * @param userId user id
      *
      */
-    @GetMapping(produces = "application/json; charset=utf-8", params = "mode")
-    public TagDto findMostPopularUserTag(@RequestParam String mode) {
+    @GetMapping(produces = "application/json; charset=utf-8", path = "/mostExpensive")
+    public TagDto findMostPopularUserTag() {
         TagDto tagDto = tagConverter.convertToDto(tagService.findMostExpensiveTag());
         wrapper.tagWrap(tagDto);
         return tagDto;
