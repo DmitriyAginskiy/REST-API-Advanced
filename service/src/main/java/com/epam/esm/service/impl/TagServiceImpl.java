@@ -5,7 +5,7 @@ import com.epam.esm.dao.exception.DaoException;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.ElementSearchException;
 import com.epam.esm.exception.OperationNotPerformedException;
-import com.epam.esm.exception.util.MessageManager;
+import com.epam.esm.exception.util.ServiceMessageManager;
 import com.epam.esm.service.api.TagService;
 import com.epam.esm.validator.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class TagServiceImpl implements TagService {
             }
             return tag;
         } else {
-            throw new OperationNotPerformedException(MessageManager.OPERATION_NOT_PERFORMED.getMessage(tag.getName()));
+            throw new OperationNotPerformedException(ServiceMessageManager.OPERATION_NOT_PERFORMED.getMessage(tag.getName()));
         }
     }
 
@@ -60,7 +60,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public Tag findById(long id) {
         Optional<Tag> tagOptional = tagDao.findById(id);
-        return tagOptional.orElseThrow(() -> new ElementSearchException(MessageManager.OPERATION_NOT_PERFORMED.getMessage(id)));
+        return tagOptional.orElseThrow(() -> new ElementSearchException(ServiceMessageManager.OPERATION_NOT_PERFORMED.getMessage(id)));
     }
 
     @Override
@@ -75,6 +75,6 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag findMostExpensiveTag() {
-        return tagDao.findMostExpensiveTag().orElseThrow(() -> new ElementSearchException(MessageManager.ELEMENT_SEARCH_KEY.getMessage()));
+        return tagDao.findMostExpensiveTag().orElseThrow(() -> new ElementSearchException(ServiceMessageManager.ELEMENT_SEARCH_KEY.getMessage()));
     }
 }

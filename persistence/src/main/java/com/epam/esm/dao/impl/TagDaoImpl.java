@@ -4,7 +4,7 @@ import com.epam.esm.dao.api.TagDao;
 import com.epam.esm.dao.constant.TagQuery;
 import com.epam.esm.dao.creator.TagQueryCreator;
 import com.epam.esm.dao.exception.DaoException;
-import com.epam.esm.dao.exception.util.MessageManager;
+import com.epam.esm.dao.exception.util.DaoMessageManager;
 import com.epam.esm.entity.Tag;
 import org.springframework.stereotype.Repository;
 
@@ -31,7 +31,7 @@ public class TagDaoImpl implements TagDao {
         if(tagOptional.isPresent()) {
             entityManager.persist(tag);
         } else {
-            throw new DaoException(MessageManager.CAN_NOT_PERSIST.getMessage(tag));
+            throw new DaoException(DaoMessageManager.CAN_NOT_PERSIST.getMessage(tag));
         }
     }
 
@@ -42,7 +42,7 @@ public class TagDaoImpl implements TagDao {
             disconnectTagFromCertificates(id);
             entityManager.remove(tagOptional.get());
         } else {
-            throw new DaoException(MessageManager.CAN_NOT_DELETE.getMessage(id));
+            throw new DaoException(DaoMessageManager.CAN_NOT_DELETE.getMessage(id));
         }
     }
 
