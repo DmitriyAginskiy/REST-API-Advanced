@@ -5,11 +5,16 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Gets exceptions messages from resources.
+ *
+ * @author Dzmitry Ahinski
+ */
 public enum ServiceMessageManager {
 
     ELEMENT_SEARCH_KEY("element_search"),
-    OPERATION_NOT_PERFORMED("operation_not_performed"),
-    SOMETHING_WENT_WRONG("something_went_wrong");
+    INVALID_FIELDS("invalid_fields"),
+    OPERATION_NOT_PERFORMED("operation_not_performed");
 
     private static final String BUNDLE_PATH = "service_exception_message";
 

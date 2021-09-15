@@ -5,6 +5,11 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Manages exceptions of dao layer.
+ *
+ * @author Dzmitry Ahinski
+ */
 public enum DaoMessageManager {
 
     CAN_NOT_DELETE("can_not_delete"),
