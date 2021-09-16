@@ -18,6 +18,8 @@ import com.epam.esm.validator.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -63,6 +65,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                 newTags.addAll(existingTags);
                 certificate.setTags(new HashSet<>(newTags));
             }
+            certificate.setPrice(certificate.getPrice().setScale(2, RoundingMode.HALF_UP));
             certificateDao.insert(certificate);
             Optional<GiftCertificate> certificateOptional = certificateDao.findById(certificate.getId());
             return certificateOptional.orElseThrow(() -> new OperationNotPerformedException(

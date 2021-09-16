@@ -1,5 +1,7 @@
 package com.epam.esm.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;

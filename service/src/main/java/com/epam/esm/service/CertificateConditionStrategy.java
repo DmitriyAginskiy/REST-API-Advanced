@@ -3,6 +3,10 @@ package com.epam.esm.service;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.validator.GiftCertificateValidator;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+
 /**
  * Enum contains methods for certificate fields.
  *
@@ -33,7 +37,7 @@ public enum CertificateConditionStrategy {
         public void updateCondition(GiftCertificate newCertificate, GiftCertificate certificate) {
             if(!newCertificate.getPrice().equals(certificate.getPrice())
                     && giftCertificateValidator.isPriceValid(certificate.getPrice())) {
-                newCertificate.setPrice(certificate.getPrice());
+                newCertificate.setPrice(certificate.getPrice().setScale(2, RoundingMode.HALF_UP));
             }
         }
     },
