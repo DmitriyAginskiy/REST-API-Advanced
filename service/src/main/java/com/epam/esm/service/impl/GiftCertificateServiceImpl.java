@@ -79,7 +79,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         try {
             certificateDao.delete(id);
         } catch (DaoException exception) {
-            throw new OperationNotPerformedException(exception.getMessage());
+            throw new ElementSearchException(exception.getMessage());
         }
     }
 

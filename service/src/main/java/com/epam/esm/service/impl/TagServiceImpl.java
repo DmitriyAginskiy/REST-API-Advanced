@@ -53,7 +53,7 @@ public class TagServiceImpl implements TagService {
         try {
             tagDao.delete(id);
         } catch (DaoException exception) {
-            throw new OperationNotPerformedException(exception.getMessage());
+            throw new ElementSearchException(exception.getMessage());
         }
     }
 
