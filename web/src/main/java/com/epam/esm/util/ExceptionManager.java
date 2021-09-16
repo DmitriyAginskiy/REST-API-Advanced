@@ -14,7 +14,8 @@ public enum ExceptionManager {
 
     INVALID_PARAMETER(40002, "invalid_parameter"),
     INVALID_FIELD(40003, "invalid_field"),
-    UNSUPPORTED_MEDIA_TYPE(41501, "unsupported_media_type");
+    UNSUPPORTED_MEDIA_TYPE(41501, "unsupported_media_type"),
+    METHOD_NOT_ALLOWED(40501, "method_not_allowed");
 
     private static final String BUNDLE_PATH = "global_message";
 

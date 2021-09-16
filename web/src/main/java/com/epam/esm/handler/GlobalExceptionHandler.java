@@ -8,9 +8,12 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.server.MethodNotAllowedException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
@@ -73,9 +76,21 @@ public class GlobalExceptionHandler {
      * @return response entity
      */
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-    protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException e) {
+    public ResponseEntity<ExceptionResponse> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException e) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ExceptionManager.UNSUPPORTED_MEDIA_TYPE.getCode(),
                 ExceptionManager.UNSUPPORTED_MEDIA_TYPE.getMessage(e.getContentType()));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+    }
+
+    /**
+     * Handles MethodNotAllowed exceptions.
+     *
+     * @return response entity
+     */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ExceptionResponse> handleMethodNotAllowed(HttpRequestMethodNotSupportedException e) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ExceptionManager.METHOD_NOT_ALLOWED.getCode(),
+                ExceptionManager.METHOD_NOT_ALLOWED.getMessage(e.getMethod()));
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.METHOD_NOT_ALLOWED);
     }
 }
