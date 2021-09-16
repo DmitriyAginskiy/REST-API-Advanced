@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 public class GiftCertificateValidator {
 
     private static final Pattern NAME_PATTERN = Pattern.compile("[a-zA-Z0-9\\w\\s]{1,128}");
+    private static final int MAX_DURATION_VALUE = 36500;
 
     public boolean isNameValid(String name) {
         return (name != null) && NAME_PATTERN.matcher(name).matches();
@@ -30,6 +31,6 @@ public class GiftCertificateValidator {
     }
 
     public boolean isDurationValid(int duration) {
-        return duration > 0;
+        return duration > 0 && duration < MAX_DURATION_VALUE;
     }
 }
