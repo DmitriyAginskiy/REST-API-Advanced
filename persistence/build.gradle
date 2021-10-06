@@ -1,3 +1,8 @@
+plugins {
+    id 'org.springframework.boot' version '2.5.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+}
+
 repositories {
     mavenLocal()
     mavenCentral()
@@ -5,8 +10,13 @@ repositories {
 
 dependencies {
     implementation project(':model')
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
     implementation group: 'com.h2database', name: 'h2', version: '1.4.200'
-    implementation group: 'org.springframework', name: 'spring-jdbc', version: '5.3.3'
     implementation group: 'com.zaxxer', name: 'HikariCP', version: '4.0.3'
+}
+
+test {
+    useJUnitPlatform()
 }

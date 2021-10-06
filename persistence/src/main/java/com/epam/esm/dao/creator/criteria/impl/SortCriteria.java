@@ -28,4 +28,9 @@ public class SortCriteria implements Criteria {
         query.append(WHITESPACE);
         query.append(sortType);
     }
+
+    @Override
+    public String getCriteriaField() {
+        return sortField;
+    }
 }

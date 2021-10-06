@@ -1,10 +1,10 @@
 package com.epam.esm.validator;
 
-import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -12,31 +12,25 @@ import java.util.regex.Pattern;
  *
  * @author Dzmitry Ahinski
  */
+@Component
 public class GiftCertificateValidator {
+
     private static final Pattern NAME_PATTERN = Pattern.compile("[a-zA-Z0-9\\w\\s]{1,128}");
+    private static final int MAX_DURATION_VALUE = 36500;
 
-    public static boolean areValidFields(GiftCertificate certificate) {
-        return isNameValid(certificate.getName()) && isDescriptionValid(certificate.getDescription())
-                && isPriceValid(certificate.getPrice()) && isDurationValid(certificate.getDuration());
-    }
-
-    public static boolean isNameValid(String name) {
+    public boolean isNameValid(String name) {
         return (name != null) && NAME_PATTERN.matcher(name).matches();
     }
 
-    public static boolean isDescriptionValid(String description) {
+    public boolean isDescriptionValid(String description) {
         return description != null && !description.isEmpty() && description.length() < 1000;
     }
 
-    public static boolean isPriceValid(BigDecimal price) {
+    public boolean isPriceValid(BigDecimal price) {
         return price != null && price.compareTo(BigDecimal.ZERO) > 0;
     }
 
-    public static boolean isDurationValid(int duration) {
-        return duration > 0;
-    }
-
-    public static boolean areTagsValid(List<Tag> tags) {
-        return tags != null && tags.stream().allMatch(t -> TagValidator.isNameValid(t.getName()));
+    public boolean isDurationValid(int duration) {
+        return duration > 0 && duration < MAX_DURATION_VALUE;
     }
 }

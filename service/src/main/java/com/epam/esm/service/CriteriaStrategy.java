@@ -1,12 +1,10 @@
 package com.epam.esm.service;
 
 import com.epam.esm.dao.constant.GiftCertificateColumnName;
-import com.epam.esm.dao.constant.TagColumnName;
 import com.epam.esm.dao.creator.criteria.Criteria;
 import com.epam.esm.dao.creator.criteria.impl.SearchCriteria;
 import com.epam.esm.dao.creator.criteria.impl.SortCriteria;
 import com.epam.esm.validator.GiftCertificateValidator;
-import com.epam.esm.validator.TagValidator;
 
 import java.util.Optional;
 
@@ -20,17 +18,8 @@ public enum CriteriaStrategy {
     CERTIFICATE_NAME {
         @Override
         public Optional<Criteria> createCriteria(String criteria) {
-            if(GiftCertificateValidator.isNameValid(criteria)) {
-                return Optional.of(new SearchCriteria(GiftCertificateColumnName.NAME, criteria));
-            }
-            return Optional.empty();
-        }
-    },
-    TAG_NAME {
-        @Override
-        public Optional<Criteria> createCriteria(String criteria) {
-            if(TagValidator.isNameValid(criteria)) {
-                return Optional.of(new SearchCriteria(TagColumnName.TAG_NAME, criteria));
+            if(giftCertificateValidator.isNameValid(criteria)) {
+                return Optional.of(new SearchCriteria(GiftCertificateColumnName.NAME.getColumnName(), criteria));
             }
             return Optional.empty();
         }
@@ -38,8 +27,8 @@ public enum CriteriaStrategy {
     DESCRIPTION {
         @Override
         public Optional<Criteria> createCriteria(String criteria) {
-            if(GiftCertificateValidator.isDescriptionValid(criteria)) {
-                return Optional.of(new SearchCriteria(GiftCertificateColumnName.DESCRIPTION, criteria));
+            if(giftCertificateValidator.isDescriptionValid(criteria)) {
+                return Optional.of(new SearchCriteria(GiftCertificateColumnName.DESCRIPTION.getColumnName(), criteria));
             }
             return Optional.empty();
         }
@@ -50,7 +39,7 @@ public enum CriteriaStrategy {
             if(criteria != null && (criteria.equalsIgnoreCase(SortCriteria.SORT_ASC)
                     || criteria.equalsIgnoreCase(SortCriteria.SORT_DESC))) {
                 String sortType = criteria.equalsIgnoreCase(SortCriteria.SORT_ASC) ? SortCriteria.SORT_ASC : SortCriteria.SORT_DESC;
-                return Optional.of(new SortCriteria(GiftCertificateColumnName.CREATE_DATE, sortType));
+                return Optional.of(new SortCriteria(GiftCertificateColumnName.CREATE_DATE.getColumnName(), sortType));
             }
             return Optional.empty();
         }
@@ -61,11 +50,13 @@ public enum CriteriaStrategy {
             if(criteria != null && (criteria.equalsIgnoreCase(SortCriteria.SORT_ASC)
                     || criteria.equalsIgnoreCase(SortCriteria.SORT_DESC))) {
                 String sortType = criteria.equalsIgnoreCase(SortCriteria.SORT_ASC) ? SortCriteria.SORT_ASC : SortCriteria.SORT_DESC;
-                return Optional.of(new SortCriteria(GiftCertificateColumnName.NAME, sortType));
+                return Optional.of(new SortCriteria(GiftCertificateColumnName.NAME.getColumnName(), sortType));
             }
             return Optional.empty();
         }
     };
+
+    private static final GiftCertificateValidator giftCertificateValidator = new GiftCertificateValidator();
 
     /**
      * Creates criteria object from String.

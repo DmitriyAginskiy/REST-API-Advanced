@@ -34,4 +34,9 @@ public class SearchCriteria implements Criteria {
         query.append(PERCENT_SYMBOL);
         query.append(APOSTROPHE);
     }
+
+    @Override
+    public String getCriteriaField() {
+        return fieldForSearch;
+    }
 }

@@ -1,10 +1,9 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.dao.GiftCertificateDao;
-import com.epam.esm.dao.TagDao;
+import com.epam.esm.dao.api.TagDao;
 import com.epam.esm.entity.Tag;
-import com.epam.esm.service.GiftCertificateService;
-import com.epam.esm.service.TagService;
+import com.epam.esm.service.api.TagService;
+import com.epam.esm.validator.TagValidator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -28,29 +27,22 @@ class TagServiceImplTest {
     @BeforeAll
     public void init() {
         MockitoAnnotations.initMocks(this);
-        service = new TagServiceImpl(dao);
+        service = new TagServiceImpl(dao, new TagValidator());
     }
 
     @Test
     void findById() {
         Mockito.when(dao.findById(1)).thenReturn(Optional.of(tag));
-        Optional<Tag> actual = dao.findById(1);
-        assertEquals(tag, actual.get());
-    }
-
-    @Test
-    void findByName() {
-        Mockito.when(dao.findByName("SomeTag")).thenReturn(Optional.of(tag));
-        Optional<Tag> actual = dao.findByName("SomeTag");
-        assertEquals(tag, actual.get());
+        Tag actual = service.findById(1);
+        assertEquals(tag, actual);
     }
 
     @Test
     void findAll() {
         List<Tag> expected = new ArrayList<>();
         expected.add(tag);
-        Mockito.when(dao.findAll()).thenReturn(expected);
-        List<Tag> actual = dao.findAll();
+        Mockito.when(dao.findAll(0, 10)).thenReturn(expected);
+        List<Tag> actual = service.findAll(0, 10);
         assertEquals(expected, actual);
     }
 }

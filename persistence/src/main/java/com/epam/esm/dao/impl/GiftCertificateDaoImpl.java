@@ -1,26 +1,17 @@
 package com.epam.esm.dao.impl;
 
-import com.epam.esm.dao.GiftCertificateDao;
-import com.epam.esm.dao.constant.GiftCertificateColumnName;
+import com.epam.esm.dao.api.GiftCertificateDao;
 import com.epam.esm.dao.constant.GiftCertificateQuery;
-import com.epam.esm.dao.creator.FieldCondition;
 import com.epam.esm.dao.creator.GiftCertificateQueryCreator;
 import com.epam.esm.dao.creator.criteria.Criteria;
-import com.epam.esm.dao.mapper.GiftCertificateMapper;
+import com.epam.esm.dao.exception.DaoException;
+import com.epam.esm.dao.exception.util.DaoMessageManager;
 import com.epam.esm.entity.GiftCertificate;
-import com.epam.esm.entity.Tag;
-import com.epam.esm.exception.DaoException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.sql.Timestamp;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,96 +23,53 @@ import java.util.Optional;
 @Repository
 public class GiftCertificateDaoImpl implements GiftCertificateDao {
 
-    private final JdbcTemplate jdbcTemplate;
-    private final GiftCertificateMapper mapper;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
-    public GiftCertificateDaoImpl(DataSource dataSource, GiftCertificateMapper mapper) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-        this.mapper = mapper;
+    public GiftCertificateDaoImpl() {
     }
 
     @Override
-    public long insert(GiftCertificate certificate) throws DaoException {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        boolean isInserted = jdbcTemplate.update(con -> {
-            PreparedStatement statement = con.prepareStatement(GiftCertificateQuery.INSERT_GIFT_CERTIFICATE_QUERY,
-                    Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, certificate.getName());
-            statement.setString(2, certificate.getDescription());
-            statement.setBigDecimal(3, certificate.getPrice());
-            statement.setInt(4, certificate.getDuration());
-            statement.setTimestamp(5, Timestamp.valueOf(certificate.getCreateDate()));
-            statement.setTimestamp(6, Timestamp.valueOf(certificate.getLastUpdateDate()));
-            return statement;
-        }, keyHolder) == 1;
-        if (isInserted && keyHolder.getKey() != null) {
-            if (certificate.getTags() != null && !certificate.getTags().isEmpty()) {
-                updateCertificateTags(keyHolder.getKey().longValue(), certificate.getTags());
-            }
-            return keyHolder.getKey().longValue();
+    public void insert(GiftCertificate certificate) {
+        entityManager.persist(certificate);
+    }
+
+    @Override
+    public void delete(long id) throws DaoException {
+        Optional<GiftCertificate> giftCertificateOptional = findById(id);
+        if(giftCertificateOptional.isPresent()) {
+            removeTagsFromCertificate(id);
+            entityManager.remove(giftCertificateOptional.get());
         } else {
-            throw new DaoException("Element with id " + certificate.getId() + " was not inserted!");
+            throw new DaoException(DaoMessageManager.CAN_NOT_DELETE.getMessage(id));
         }
     }
 
-    @Override
-    public void delete(long id) {
-        jdbcTemplate.update(GiftCertificateQuery.DELETE_CERTIFICATE_QUERY, id);
+    private void removeTagsFromCertificate(long id) {
+        entityManager.createNativeQuery(GiftCertificateQuery.REMOVE_TAGS_FROM_CERTIFICATE.getQuery())
+                .setParameter(1, id).executeUpdate();
     }
 
     @Override
-    public boolean removeTagsFromCertificate(long id) {
-        return jdbcTemplate.update(GiftCertificateQuery.REMOVE_TAGS_FROM_CERTIFICATE, id) > 0;
-    }
-
-    @Override
-    public void update(long id, List<FieldCondition> conditionList) throws DaoException {
-        String query = GiftCertificateQueryCreator.createUpdateQuery(conditionList);
-        boolean isUpdated = jdbcTemplate.update(con -> {
-            PreparedStatement statement = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            FieldCondition buffer = null;
-            for(int i = 1; i < conditionList.size() + 1; i++) {
-                buffer = conditionList.get(i - 1);
-                switch (buffer.getName()) {
-                    case GiftCertificateColumnName.PRICE: {
-                        statement.setBigDecimal(i, new BigDecimal(buffer.getValue()));
-                        break;
-                    } case GiftCertificateColumnName.DURATION: {
-                        statement.setInt(i, Integer.parseInt(buffer.getValue()));
-                        break;
-                    } default: {
-                        statement.setString(i, buffer.getValue());
-                        break;
-                    }
-                }
-            }
-            statement.setLong(conditionList.size() + 1, id);
-            return statement;
-        }) == 1;
-        if (!isUpdated) {
-            throw new DaoException("Element with id " + id + " was not updated!");
-        }
+    public void update(GiftCertificate certificate) {
+        entityManager.merge(certificate);
     }
 
     @Override
     public Optional<GiftCertificate> findById(long id) {
-        return jdbcTemplate.query(GiftCertificateQuery.FIND_BY_ID_QUERY, mapper, id).stream().findFirst();
+        return Optional.ofNullable(entityManager.find(GiftCertificate.class, id));
     }
 
     @Override
-    public List<GiftCertificate> findAll() {
-        return jdbcTemplate.query(GiftCertificateQuery.FIND_ALL_QUERY, mapper);
+    public List<GiftCertificate> findAll(int page, int size) {
+        return entityManager.createNativeQuery(GiftCertificateQuery.FIND_ALL_QUERY.getQuery(), GiftCertificate.class)
+                .setParameter(1, page * size).setParameter(2, size).getResultList();
     }
 
     @Override
-    public List<GiftCertificate> findAllByCriteria(List<Criteria> criteriaList) {
-        String query = GiftCertificateQueryCreator.createSearchQuery(criteriaList);
-        return jdbcTemplate.query(query, mapper);
-    }
-
-    @Override
-    public boolean updateCertificateTags(long id, List<Tag> tags) {
-        return tags.stream().allMatch(tag -> jdbcTemplate.update(GiftCertificateQuery.CERTIFICATE_UPDATE_TAGS, id, tag.getId()) == 1);
+    public List<GiftCertificate> findAllByCriteria(List<Criteria> criteriaList, int page, int size) {
+        String query = GiftCertificateQueryCreator.createSearchQuery(criteriaList, page, size);
+        return entityManager.createNativeQuery(query, GiftCertificate.class).getResultList();
     }
 }

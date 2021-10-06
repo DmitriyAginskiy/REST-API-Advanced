@@ -1,16 +1,16 @@
 package com.epam.esm.service.impl;
 
-import com.epam.esm.dao.TagDao;
+import com.epam.esm.dao.api.TagDao;
+import com.epam.esm.dao.exception.DaoException;
 import com.epam.esm.entity.Tag;
-import com.epam.esm.exception.DaoException;
 import com.epam.esm.exception.ElementSearchException;
-import com.epam.esm.exception.InvalidFieldException;
-import com.epam.esm.service.TagService;
+import com.epam.esm.exception.OperationNotPerformedException;
+import com.epam.esm.exception.util.ServiceMessageManager;
+import com.epam.esm.service.api.TagService;
 import com.epam.esm.validator.TagValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,59 +24,57 @@ import java.util.Optional;
 public class TagServiceImpl implements TagService {
 
     private final TagDao tagDao;
+    private final TagValidator tagValidator;
 
     @Autowired
-    public TagServiceImpl(TagDao tagDao) {
+    public TagServiceImpl(TagDao tagDao, TagValidator tagValidator) {
         this.tagDao = tagDao;
+        this.tagValidator = tagValidator;
     }
 
     @Transactional
     @Override
     public Tag insert(Tag tag) {
-        System.out.println("insert tag: " + TransactionSynchronizationManager.isActualTransactionActive());
-        Optional<Tag> tagOptional = tagDao.findByName(tag.getName());
-        if(TagValidator.isNameValid(tag.getName()) && tagOptional.isEmpty()) {
+        if(tagValidator.isNameValid(tag.getName())) {
             try {
-                long id = tagDao.insert(tag);
-                return tagDao.findById(id).orElseThrow(() -> new ElementSearchException("Tag " + tag + " is not added!"));
-            } catch (DaoException e) {
-                throw new ElementSearchException(e.getMessage());
+                tagDao.insert(tag);
+            } catch (DaoException exception) {
+                throw new OperationNotPerformedException(exception.getMessage());
             }
+            return tag;
         } else {
-            throw new InvalidFieldException("Invalid name field");
+            throw new OperationNotPerformedException(ServiceMessageManager.INVALID_FIELDS.getMessage(tag));
         }
     }
 
     @Transactional
     @Override
     public void delete(long id) {
-        Optional<Tag> tagOptional = tagDao.findById(id);
-        if(tagOptional.isPresent()) {
-            tagDao.disconnectTagFromCertificates(id);
+        try {
             tagDao.delete(id);
-            System.out.println("delete tag: " + TransactionSynchronizationManager.isActualTransactionActive());
-        } else {
-            throw new ElementSearchException("There is not element with id " + id);
+        } catch (DaoException exception) {
+            throw new ElementSearchException(exception.getMessage());
         }
     }
 
     @Override
     public Tag findById(long id) {
         Optional<Tag> tagOptional = tagDao.findById(id);
-        if(tagOptional.isPresent()) {
-            return tagOptional.get();
-        } else {
-            throw new ElementSearchException("There is not element with id " + id);
-        }
+        return tagOptional.orElseThrow(() -> new ElementSearchException(ServiceMessageManager.ELEMENT_SEARCH_KEY.getMessage(id)));
     }
 
     @Override
-    public List<Tag> findAll() {
-        return tagDao.findAll();
+    public List<Tag> findAll(int page, int size) {
+        return tagDao.findAll(page, size);
     }
 
     @Override
     public List<Tag> findAllExisting(List<Tag> tags) {
         return tagDao.findAllExisting(tags);
+    }
+
+    @Override
+    public Tag findMostExpensiveTag() {
+        return tagDao.findMostExpensiveTag().orElseThrow(() -> new ElementSearchException(ServiceMessageManager.ELEMENT_SEARCH_KEY.getMessage()));
     }
 }

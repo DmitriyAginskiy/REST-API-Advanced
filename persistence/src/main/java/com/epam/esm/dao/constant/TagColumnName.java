@@ -1,17 +1,22 @@
 package com.epam.esm.dao.constant;
 
 /**
- * Class with the tags columns names.
+ * Enum with the tags columns names.
  *
  * @author Dzmitry Ahinski
  */
-public final class TagColumnName {
+public enum TagColumnName {
 
-    public static final String TAG_ID = "tag_id";
+    TAG_ID("tag_id"),
+    TAG_NAME("tag_name");
 
-    public static final String TAG_NAME = "tag_name";
+    private String columnName;
 
-    private TagColumnName() {
+    TagColumnName(String columnName) {
+        this.columnName = columnName;
+    }
 
+    public String getColumnName() {
+        return columnName;
     }
 }
